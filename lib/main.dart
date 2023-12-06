@@ -12,6 +12,7 @@ import 'package:univ_app/view/pages/myotpverification.dart';
 import 'package:univ_app/view/pages/myregister.dart';
 import 'package:univ_app/view/pages/myresetpassword.dart';
 import 'package:univ_app/view/pages/mysocialprofile.dart';
+import 'package:univ_app/view/pages/myuserperformance.dart';
 import 'package:univ_app/view/pages/myuserprofile.dart';
 import 'package:univ_app/view/pages/mywelcomepage.dart';
 
@@ -25,6 +26,7 @@ void main() {
       GetPage(name: '/home', page: () => const MyHome()),
       GetPage(name: '/social_profile', page: () => const MySocialProfile()),
       GetPage(name: '/user_profile', page: () => const MyUserProfile()),
+      GetPage(name: '/performance', page: () => const MyUserPerformance()),
       GetPage(name: '/event_details', page: () => const MyEventDetails()),
       GetPage(name: '/event_gallery', page: () => const MyEventGallery()),
       GetPage(name: '/event_registration', page: () => const MyEventRegistration()),

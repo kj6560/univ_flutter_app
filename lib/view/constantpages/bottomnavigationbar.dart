@@ -37,9 +37,13 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       setState(() {
         currentRoute = 1;
       });
-    } else if (Get.currentRoute == "/social_profile") {
+    }else if (Get.currentRoute == "/performance") {
       setState(() {
         currentRoute = 2;
+      });
+    } else if (Get.currentRoute == "/social_profile") {
+      setState(() {
+        currentRoute = 3;
       });
     }
     loadProfilePicture();
@@ -63,6 +67,10 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         BottomNavigationBarItem(
           icon: Icon(Icons.business),
           label: 'Community',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.school),
+          label: 'Performance',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.school),

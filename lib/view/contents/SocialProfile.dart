@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/controllers/socialprofilecontroller.dart';
 import 'package:univ_app/utility/values.dart';
+import 'package:univ_app/view/contents/UserCertificates.dart';
 import 'package:univ_app/view/contents/UserPerformance.dart';
 import 'package:univ_app/view/contents/UserPhotosGallery.dart';
 import 'package:univ_app/view/contents/UserVideosGallery.dart';
@@ -43,7 +44,7 @@ class _SocialProfileState extends State<SocialProfile>
     var list = [
       UserPhotosGallery(), // FIRST ITEM
       UserVideosGallery(), // SECOND ITEM
-      UserPerformance(), // THIRD ITEM
+      UserCertificates(),
     ];
     return list[_selectedIndex];
   }
@@ -540,7 +541,7 @@ class _SocialProfileState extends State<SocialProfile>
                     text: 'Video',
                   ),
                   Tab(
-                    text: 'Performance',
+                    text: 'Certificates',
                   ),
                 ],
                 labelColor: Colors.black,
