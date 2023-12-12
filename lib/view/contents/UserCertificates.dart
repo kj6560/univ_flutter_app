@@ -27,7 +27,7 @@ class _UserCertificatesState extends State<UserCertificates> {
 
   Future<bool> _pickImage() async {
     final pickedImage =
-    await _imagePicker.pickImage(source: ImageSource.gallery);
+        await _imagePicker.pickImage(source: ImageSource.gallery);
 
     if (pickedImage != null) {
       setState(() {
@@ -71,7 +71,7 @@ class _UserCertificatesState extends State<UserCertificates> {
           },
         );
       }
-    }else{
+    } else {
       setState(() {
         _isLoading = false;
       });
@@ -116,80 +116,55 @@ class _UserCertificatesState extends State<UserCertificates> {
     }
     return false;
   }
+
   @override
   Widget build(BuildContext context) {
     return GetX<UserCertificatesController>(
       builder: (logic) {
         return logic.userFiles.length > 0
             ? SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 1.0,
-                    mainAxisSpacing: 1.0,
-                    crossAxisSpacing: 1.0),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                ),
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: Container(
-                        color: Colors.grey,
-                        child: InkWell(
-                            onTap: () {
-                              showDialog(
-                                builder: (BuildContext context) => AlertDialog(
-                                  backgroundColor: Colors.transparent,
-                                  insetPadding: EdgeInsets.all(1),
-                                  content: ConstrainedBox(
-                                    constraints: BoxConstraints(
-                                        maxWidth: 400, maxHeight: 400),
-                                    child: CachedNetworkImage(
-                                      fit: BoxFit.contain,
-                                      // Adjust the fit based on your requirement
-                                      imageUrl: Values.userGallery +
-                                          logic.userFiles[index].filePath,
-                                      placeholder: (context, url) =>
-                                          CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
-                                    ),
-                                  ),
-                                ),
-                                context: context,
-                              );
-                            },
-                            child: CachedNetworkImage(
-                              height: 150,
-                              fit: BoxFit.cover,
-                              imageUrl: Values.userGallery +
-                                  logic.userFiles[index].filePath,
-                              // URL of the image
-                              placeholder: (context, url) => const Center(
-                                child:
-                                    CircularProgressIndicator(strokeWidth: 3.0),
-                              ),
-                              // Placeholder widget
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error), // Error widget
-                            )),
+                  (BuildContext context, int index) {
+                    return CachedNetworkImage(
+                      height: 150,
+                      fit: BoxFit.cover,
+                      imageUrl:
+                          Values.userGallery + logic.userFiles[index].filePath,
+                      // URL of the image
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(strokeWidth: 3.0),
                       ),
+                      // Placeholder widget
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error), // Error widget
                     );
                   },
-                  childCount: logic.userFiles.length,
+                  childCount: logic.userFiles
+                      .length, // Replace this with the number of items you want
                 ),
               )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    child: const Text("Add Certificates"),
-                    onTap: () {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      _pickImage();
-                    },
-                  )
-                ],
+            : SliverToBoxAdapter(
+                child: InkWell(
+                  onTap: () {
+                    _pickImage();
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 50.0),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [Icon(Icons.add), Text("Add Certificates")],
+                      ),
+                    ),
+                  ),
+                ),
               );
       },
     );

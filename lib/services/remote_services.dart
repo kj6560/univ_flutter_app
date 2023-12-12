@@ -251,7 +251,6 @@ class RemoteServices {
         return false;
       }
     } catch (e) {
-
     } finally {}
   }
 
@@ -261,18 +260,17 @@ class RemoteServices {
       var token = prefs.getString("token");
       http.Response response =
           await http.post(Uri.parse(Values.registerForEvents),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer $token',
-          },
-          body: data);
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer $token',
+              },
+              body: data);
 
       if (response.statusCode == 200) {
-          var responseObj = jsonDecode(response.body);
-          return responseObj;
+        var responseObj = jsonDecode(response.body);
+        return responseObj;
       }
-
     } catch (e) {}
   }
 

@@ -20,7 +20,6 @@ class UserCertificatesController extends GetxController {
     var all_photos = await RemoteServices.fetchUserFiles(id, 3);
     if (all_photos != null) {
       userFiles.value = all_photos;
-      userFiles.value = all_photos;
       for(var files in userFiles.value){
         Values.cacheFile(Values.userGallery +
             files.filePath);

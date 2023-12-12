@@ -20,10 +20,13 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         Get.offAllNamed("/community");
         break;
       case 2:
+        Get.offAllNamed("/performance");
+        break;
+      case 3:
         Get.offAllNamed("/social_profile");
+        break;
       default:
     }
-
   }
 
   @override
@@ -37,7 +40,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       setState(() {
         currentRoute = 1;
       });
-    }else if (Get.currentRoute == "/performance") {
+    } else if (Get.currentRoute == "/performance") {
       setState(() {
         currentRoute = 2;
       });
@@ -73,7 +76,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           label: 'Performance',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.school),
+          icon: Icon(Icons.person_2_rounded),
           label: 'Profile',
         ),
       ],

@@ -44,7 +44,7 @@ class _SocialProfileState extends State<SocialProfile>
     var list = [
       UserPhotosGallery(), // FIRST ITEM
       UserVideosGallery(), // SECOND ITEM
-      UserCertificates(),
+      UserCertificates(), // THIRD ITEM
     ];
     return list[_selectedIndex];
   }
@@ -100,7 +100,7 @@ class _SocialProfileState extends State<SocialProfile>
           },
         );
       }
-    }else{
+    } else {
       setState(() {
         _isLoading = false;
       });
@@ -157,7 +157,7 @@ class _SocialProfileState extends State<SocialProfile>
           },
         );
       }
-    }else{
+    } else {
       setState(() {
         _isLoading = false;
       });
@@ -211,7 +211,7 @@ class _SocialProfileState extends State<SocialProfile>
           },
         );
       }
-    }else{
+    } else {
       setState(() {
         _isLoading = false;
       });
@@ -336,6 +336,98 @@ class _SocialProfileState extends State<SocialProfile>
     return false;
   }
 
+  Future<bool> _pickCertificate() async {
+    final pickedImage =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      setState(() {
+        _imageFile = pickedImage;
+      });
+      bool status = await uploadCertificate('image');
+      if (status) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Upload Successful'),
+              content: const Text('The file was uploaded successfully.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Get.offAllNamed("/social_profile"); // Close the dialog
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Upload Failed'),
+              content: const Text("File upload failed."),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    return false;
+  }
+
+  Future<bool> uploadCertificate(String type) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      int? id = await prefs.getInt("id");
+      String? _token = await prefs.getString("token");
+      if (_imageFile == null) {
+        setState(() {
+          _isLoading = false;
+        });
+        return false;
+      }
+
+      Uri url = Uri.parse("${Values.userImageUpload}?user_id=${id}&type=3");
+      var request = http.MultipartRequest('POST', url);
+      request.headers['Authorization'] = 'Bearer $_token';
+      // Add the file to the request
+      request.files.add(await http.MultipartFile.fromPath(
+        type,
+        _imageFile!.path,
+      ));
+
+      // Send the request
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        setState(() {
+          _isLoading = false;
+        });
+        return true;
+      } else {
+        // Handle the error
+        return false;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -355,33 +447,7 @@ class _SocialProfileState extends State<SocialProfile>
                     children: [
                       IconButton(
                           onPressed: () {
-                            showMenu<String>(
-                              context: context,
-                              position:
-                                  const RelativeRect.fromLTRB(50, 50, 0, 0),
-                              items: <PopupMenuEntry<String>>[
-                                const PopupMenuItem<String>(
-                                  value: 'Photos',
-                                  child: Text('Add Photos'),
-                                ),
-                                const PopupMenuItem<String>(
-                                  value: 'Videos',
-                                  child: Text('Add Videos'),
-                                ),
-                              ],
-                            ).then((String? value) {
-                              setState(() {
-                                _isLoading = true;
-                              });
-                              if (value != null) {
-                                // Handle the selected menu item.
-                                if (value == 'Photos') {
-                                  _pickImage();
-                                } else if (value == 'Videos') {
-                                  _pickVideo();
-                                }
-                              }
-                            });
+                            _showBottomSheet(context);
                           },
                           icon: const Icon(
                             Icons.add,
@@ -416,10 +482,8 @@ class _SocialProfileState extends State<SocialProfile>
                                     radius: 60,
                                     foregroundColor: Colors.black,
                                     backgroundColor: Colors.white,
-                                    backgroundImage:
-                                    CachedNetworkImageProvider(
-                                        Values.profilePic + logic.profilePic)
-                                    ),
+                                    backgroundImage: CachedNetworkImageProvider(
+                                        Values.profilePic + logic.profilePic)),
                               ),
                             ),
                             Container(
@@ -552,6 +616,94 @@ class _SocialProfileState extends State<SocialProfile>
         ),
         _getTabAtIndex(),
       ],
+    );
+  }
+
+  final List<String> items = ["Add Photos", "Add Videos", "Add Certificates"];
+
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext builder) {
+        return FractionallySizedBox(
+          heightFactor: 0.25,
+          child: Column(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      size: 24,
+                    )),
+              ],
+            ),
+            Divider(
+              height: 20,
+              thickness: 2,
+              color: const Color.fromRGBO(26, 188, 156, 70),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _isLoading = true;
+                });
+                _pickImage();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Add Photos", style: TextStyle(fontSize: 16)),
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _isLoading = true;
+                });
+                _pickVideo();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Add Videos", style: TextStyle(fontSize: 16)),
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _isLoading = true;
+                });
+                _pickCertificate();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Add Certificates", style: TextStyle(fontSize: 16)),
+                  ],
+                ),
+              ),
+            ),
+          ]),
+        );
+      },
     );
   }
 }

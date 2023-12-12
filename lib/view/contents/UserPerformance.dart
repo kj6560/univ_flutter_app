@@ -14,46 +14,59 @@ class _UserPerformanceState extends State<UserPerformance> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UserPerformanceController>(builder: (logic) {
-      return SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            // Replace this with your custom list item widget.
-            return Card(
-              child: _children(logic.performanceData)
-              );
-          },
-          childCount: logic.performanceData.length, // Number of list items
-        ),
+      return CustomScrollView(
+        slivers: <Widget>[
+          SliverGrid(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 1,
+              crossAxisSpacing: 5.0,
+              mainAxisSpacing: 5.0,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    elevation: 5.0,
+                    child: _children(logic.performanceData),
+                  ),
+                );
+              },
+              childCount: logic.performanceData
+                  .length, // Replace this with the number of items you want
+            ),
+          ),
+        ],
       );
     });
   }
 
   _children(var data) {
-    List<Widget> children = []; // Define List<Widget>
+    List<Widget> children = [];
     data.forEach((dynamicModel) {
       dynamicModel.data.forEach((key, value) {
         children.add(
-           Padding(
-             padding: const EdgeInsets.all(8.0),
-             child: Row(
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(key,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-                Text(value!=null?value:"")
+                Text(
+                  key,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Text(value != null ? value : "")
               ],
+            ),
           ),
-           ),
         );
       });
     });
-
-
-    // Now, use the children list within a Column widget
-    // For example, assuming it's inside the build method
-    return Column(
-      children: children,
+    children = children.reversed.toList();
+    return SingleChildScrollView(
+      child: Column(
+        children: children,
+      ),
     );
   }
-
-
 }
