@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
@@ -32,6 +34,8 @@ class Values {
   static const String resetPassword = "$baseUrl/api/resetPassword";
   static const String registerForEvents = "$baseUrl/api/registerNow";
 
+
+  static const Color primaryColor = const Color.fromRGBO(26, 188, 156, 70);
   static bool isValidPhoneNumber(String phoneNumber) {
     // Regular expression for a typical 10-digit Indian phone number
     // Modify the regex pattern according to the phone number format you want to validate

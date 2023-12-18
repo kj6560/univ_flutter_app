@@ -172,14 +172,14 @@ class _UserProfileState extends State<UserProfile> {
                       : Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: CircleAvatar(
-                            radius: 62,
+                            radius: 52,
                             backgroundColor: Colors.black,
                             child: InkWell(
                               onTap: () {
                                 _pickProfileImage();
                               },
                               child: CircleAvatar(
-                                  radius: 60,
+                                  radius: 50,
                                   foregroundColor: Colors.black,
                                   backgroundColor: Colors.white,
                                   backgroundImage: CachedNetworkImageProvider(

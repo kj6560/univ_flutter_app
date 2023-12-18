@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:univ_app/controllers/categorycontroller.dart';
 import 'package:univ_app/controllers/slidercontroller.dart';
 import 'package:univ_app/models/category.dart';
@@ -200,39 +201,58 @@ class _HomeState extends State<Home> {
                                             const Icon(
                                                 Icons.error), // Error widget
                                       )),
-                                  Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Text(
-                                            "${controller.events[index].eventDate}"),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Text(
-                                            "${controller.events[index].eventBio?.substring(0, 40)}..."),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Center(
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              registerForEvent(
-                                                  controller.events[index].id);
-                                            },
-                                            child: const Text('Register'),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(2.0),
+                                            child: Text(
+                                                "${DateFormat('d MMM y').format(controller.events[index].eventDate)}",
+                                            style: TextStyle(color: Values.primaryColor,fontSize: 15,fontWeight: FontWeight.bold),
+                                            ),
                                           ),
-                                        ),
-                                      )
-                                    ],
+                                          Padding(
+                                            padding: const EdgeInsets.all(2.0),
+                                            child: Text(
+                                                "${controller.events[index].eventBio?.substring(0, 120)}..."),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 130,right: 8),
+                                            child: Row(
+                                              children: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    registerForEvent(controller
+                                                        .events[index].id);
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Text('Register'),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   )
                                 ],
                               ),
                             );
                           },
-                          separatorBuilder: (context, index) => const SizedBox(
-                                height: 20,
-                              )),
+                          separatorBuilder: (context, index) => Padding(
+                            padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 5.0, bottom: 5.0),
+                            child: Container(
+                              color: Colors.grey,
+                              child: const SizedBox(
+                                    height: 1,
+                                  ),
+                            ),
+                          )),
                     ),
                   );
                 }),

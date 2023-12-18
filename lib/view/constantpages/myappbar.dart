@@ -123,7 +123,7 @@ class _MyAppBarState extends State<MyAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color.fromRGBO(26, 188, 156, 70),
+      backgroundColor: Values.primaryColor,
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

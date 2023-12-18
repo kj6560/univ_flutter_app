@@ -100,7 +100,7 @@ class _MyLoginState extends State<MyLogin> {
                   height:
                       MediaQuery.of(context).size.height * 0.35000000000000003,
                   decoration: BoxDecoration(
-                    color: const Color(0xff3a57e8),
+                    color: Values.primaryColor,
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.zero,
                     border:
@@ -129,8 +129,9 @@ class _MyLoginState extends State<MyLogin> {
                         children: [
                           const CircleAvatar(
                             radius: 60,
+                            backgroundColor: Values.primaryColor,
                             child: Image(
-                              image: AssetImage('assets/logo_white.png'),
+                              image: AssetImage('assets/logo_white_act.png'),
                               height: 100,
                               width: 100,
                               fit: BoxFit.scaleDown,
@@ -139,7 +140,7 @@ class _MyLoginState extends State<MyLogin> {
                           const Padding(
                             padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                             child: Align(
-                              alignment: Alignment.centerLeft,
+                              alignment: Alignment.center,
                               child: Text(
                                 "Login",
                                 textAlign: TextAlign.start,
@@ -253,7 +254,7 @@ class _MyLoginState extends State<MyLogin> {
                                     fontWeight: FontWeight.w700,
                                     fontStyle: FontStyle.normal,
                                     fontSize: 14,
-                                    color: Color(0xff3a57e8),
+                                    color: Values.primaryColor,
                                   ),
                                 ),
                               ),
@@ -264,7 +265,7 @@ class _MyLoginState extends State<MyLogin> {
                               login(emailController.text.toString(),
                                   passwordController.text.toString());
                             },
-                            color: const Color(0xff3a57e8),
+                            color: Values.primaryColor,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16.0),
@@ -329,6 +330,7 @@ class _MyLoginState extends State<MyLogin> {
                 ),
               ],
             ),
+      
           );
   }
 }

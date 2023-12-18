@@ -130,18 +130,42 @@ class _UserCertificatesState extends State<UserCertificates> {
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return CachedNetworkImage(
-                      height: 150,
-                      fit: BoxFit.cover,
-                      imageUrl:
-                          Values.userGallery + logic.userFiles[index].filePath,
-                      // URL of the image
-                      placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(strokeWidth: 3.0),
+                    return InkWell(
+                      onTap: (){
+                        showDialog(
+                          builder: (BuildContext context) => AlertDialog(
+                            backgroundColor: Colors.transparent,
+                            insetPadding: EdgeInsets.all(1),
+                            content: ConstrainedBox(
+                              constraints:
+                              BoxConstraints(maxWidth: 400, maxHeight: 400),
+                              child: CachedNetworkImage(
+                                fit: BoxFit.contain,
+                                // Adjust the fit based on your requirement
+                                imageUrl: Values.userGallery + logic.userFiles[index].filePath,
+                                placeholder: (context, url) =>
+                                    CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                              ),
+                            ),
+                          ),
+                          context: context,
+                        );
+                      },
+                      child: CachedNetworkImage(
+                        height: 150,
+                        fit: BoxFit.cover,
+                        imageUrl:
+                            Values.userGallery + logic.userFiles[index].filePath,
+                        // URL of the image
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(strokeWidth: 3.0),
+                        ),
+                        // Placeholder widget
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error), // Error widget
                       ),
-                      // Placeholder widget
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error), // Error widget
                     );
                   },
                   childCount: logic.userFiles

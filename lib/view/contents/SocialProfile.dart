@@ -242,7 +242,7 @@ class _SocialProfileState extends State<SocialProfile>
 
       // Send the request
       var response = await request.send();
-      print(await response.stream.bytesToString());
+
       if (response.statusCode == 200) {
         setState(() {
           _isLoading = false;
@@ -472,14 +472,14 @@ class _SocialProfileState extends State<SocialProfile>
                         child: Column(
                           children: [
                             CircleAvatar(
-                              radius: 62,
+                              radius: 52,
                               backgroundColor: Colors.black,
                               child: InkWell(
                                 onTap: () {
                                   _pickProfileImage();
                                 },
                                 child: CircleAvatar(
-                                    radius: 60,
+                                    radius: 50,
                                     foregroundColor: Colors.black,
                                     backgroundColor: Colors.white,
                                     backgroundImage: CachedNetworkImageProvider(
@@ -489,11 +489,20 @@ class _SocialProfileState extends State<SocialProfile>
                             Container(
                                 margin: const EdgeInsets.only(
                                     left: 0, top: 5, right: 0, bottom: 0),
-                                child: Text(logic.profileName,
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold))),
+                                child: Column(
+                                  children: [
+                                    Text(logic.profileName,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold)),
+                                    InkWell(
+                                        onTap: () {
+                                          Get.offAllNamed("/user_profile");
+                                        },
+                                        child: Text("Edit",style: TextStyle(color:Values.primaryColor ,fontSize: 16),))
+                                  ],
+                                )),
                           ],
                         ),
                       ),
@@ -506,19 +515,19 @@ class _SocialProfileState extends State<SocialProfile>
                         children: [
                           Container(
                               margin: const EdgeInsets.only(
-                                  left: 10, top: 1, right: 20, bottom: 0),
+                                  left: 5, top: 0, right: 20, bottom: 0),
                               child: const Column(
                                 children: [
                                   Text("Following",
                                       style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
-                                  Text("10",
+                                        color: Values.primaryColor,
+                                        fontSize: 18,
+                                      )),
+                                  Text("0",
                                       style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
+                                        color: Values.primaryColor,
+                                        fontSize: 18,
+                                      )),
                                 ],
                               )),
                           Container(
@@ -528,14 +537,14 @@ class _SocialProfileState extends State<SocialProfile>
                                 children: [
                                   Text("Followers",
                                       style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
-                                  Text("10",
+                                        color: Values.primaryColor,
+                                        fontSize: 18,
+                                      )),
+                                  Text("0",
                                       style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
+                                        color: Values.primaryColor,
+                                        fontSize: 18,
+                                      )),
                                 ],
                               ))
                         ],
@@ -585,11 +594,14 @@ class _SocialProfileState extends State<SocialProfile>
                 child: Container(
                     margin: const EdgeInsets.only(
                         left: 10, top: 10, right: 8, bottom: 5),
-                    child: Text(logic.about,
-                        style: const TextStyle(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text(logic.about,
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 15,
-                            fontWeight: FontWeight.bold))),
+                          )),
+                    )),
               );
             }),
         SliverToBoxAdapter(

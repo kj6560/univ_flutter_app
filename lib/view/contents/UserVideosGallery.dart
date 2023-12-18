@@ -29,7 +29,7 @@ class _UserVideosGalleryState extends State<UserVideosGallery> {
           ),
           delegate: SliverChildBuilderDelegate(
             addRepaintBoundaries: true,
-                (BuildContext context, int index) {
+            (BuildContext context, int index) {
               final videoUrl =
                   Values.userGallery + logic.userFiles[index].filePath;
               return Padding(
@@ -103,43 +103,43 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Widget build(BuildContext context) {
     return is_loading
         ? CircularProgressIndicator(
-      strokeWidth: 3.0,
-    )
+            strokeWidth: 1.5, // Adjust the strokeWidth here
+          )
         : FutureBuilder(
-      future: _initializeVideoPlayerFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Container(
-            height: 160,
-            width: 160,
-            child: AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              child: InkWell(
-                onTap: () {
-                  setState(() {
-                    if (_controller.value.isPlaying) {
-                      _controller.pause();
-                    } else {
-                      _controller.play();
-                    }
-                  });
-                },
-                child: Container(
-                  height: 130,
-                  width: 170,
-                  child: VideoPlayer(_controller),
-                ),
-              ),
-            ),
+            future: _initializeVideoPlayerFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Container(
+                  height: 160,
+                  width: 160,
+                  child: AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          if (_controller.value.isPlaying) {
+                            _controller.pause();
+                          } else {
+                            _controller.play();
+                          }
+                        });
+                      },
+                      child: Container(
+                        height: 130,
+                        width: 170,
+                        child: VideoPlayer(_controller),
+                      ),
+                    ),
+                  ),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 1.5, // Adjust the strokeWidth here
+                  ),
+                );
+              }
+            },
           );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(
-              strokeWidth: 3.0,
-            ),
-          );
-        }
-      },
-    );
   }
 }
