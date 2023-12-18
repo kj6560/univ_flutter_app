@@ -8,11 +8,67 @@ class Community extends StatefulWidget {
   State<Community> createState() => _CommunityState();
 }
 
-class _CommunityState extends State<Community> {
+class _CommunityState extends State<Community>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2), // Change the duration as needed
+    );
+
+    _animation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOutCirc,
+      ),
+    );
+
+    _animationController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Center(
-        child: Text(
-            "We are developing an awesome community!! \nPlease stay connected for more updates",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),));
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return Transform.scale(
+                  scale: _animation.value,
+                  child: Icon(
+                    Icons.share_arrival_time,
+                    size: 100.0,
+                    color: const Color.fromRGBO(26, 188, 156, 70),
+                  ),
+                );
+              },
+            ),
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  "We are creating an awesome community for you. Stay connected for more updates",style: TextStyle(fontSize: 18),),
+            ),
+          )
+        ]);
   }
 }

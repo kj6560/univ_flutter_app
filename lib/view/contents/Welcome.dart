@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:univ_app/controllers/slidercontroller.dart';
-import 'package:univ_app/controllers/eventcontroller.dart';
+
 
 class Welcome extends StatefulWidget {
   @override
