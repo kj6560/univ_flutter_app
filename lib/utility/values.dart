@@ -10,6 +10,7 @@ import 'package:univ_app/models/user.dart';
 class Values {
   static const String baseUrl =
       "https://univsportatech.com"; //"http://192.168.1.3/univ/public";
+  static const String communityBaseUrl = "http://univsportatech.com:4000";
   static const String appName = "Univ";
   static const String sliderUrl = "$baseUrl/api/sliders";
   static const String sliderImageUrl = "$baseUrl/uploads/event_gallery/images";
@@ -33,6 +34,11 @@ class Values {
   static const String sendOtp = "$baseUrl/api/sendEmailOtp";
   static const String resetPassword = "$baseUrl/api/resetPassword";
   static const String registerForEvents = "$baseUrl/api/registerNow";
+
+  //community routes
+  static const String fetchPosts = "$communityBaseUrl/api/v1/posts";
+
+
 
 
   static const Color primaryColor = const Color.fromRGBO(26, 188, 156, 70);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:univ_app/controllers/communitycontroller.dart';
 import 'package:univ_app/controllers/slidercontroller.dart';
 import 'package:univ_app/controllers/eventcontroller.dart';
 
@@ -12,6 +13,7 @@ class _CommunityState extends State<Community>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
+  CommunityController communityController = Get.put(CommunityController());
 
   @override
   void initState() {
@@ -43,32 +45,27 @@ class _CommunityState extends State<Community>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Center(
-            child: AnimatedBuilder(
-              animation: _animationController,
-              builder: (context, child) {
-                return Transform.scale(
-                  scale: _animation.value,
-                  child: Icon(
-                    Icons.share_arrival_time,
-                    size: 100.0,
-                    color: const Color.fromRGBO(26, 188, 156, 70),
-                  ),
-                );
+    return GetBuilder<CommunityController>(builder: (logic) {
+      return  CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Center(child: Text("hello total data in posts")),
+          ),
+          SliverGrid(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Number of columns
+              mainAxisSpacing: 8.0, // Spacing between rows
+              crossAxisSpacing: 8.0, // Spacing between columns
+            ),
+            delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                return Text("${logic.posts[index].postCaption}");
               },
+              childCount: logic.posts.length,
             ),
           ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                  "We are creating an awesome community for you. Stay connected for more updates",style: TextStyle(fontSize: 18),),
-            ),
-          )
-        ]);
+        ],
+      );
+    });
   }
 }

@@ -31,8 +31,14 @@ class _MyLoginState extends State<MyLogin> {
               },
               body: jsonEncode({'email': email, 'password': password}));
       if (response.statusCode == 200) {
-        var responseObject = json.decode(response.body);
         final prefs = await SharedPreferences.getInstance();
+
+
+        String communityToken = await loginToCommunity(email,password,prefs);
+        print(communityToken);
+        prefs.setString("communityToken", communityToken);
+        var responseObject = json.decode(response.body);
+
         prefs.setString("token", responseObject['token']);
         var userObj = responseObject['user'];
         prefs.setInt("id", userObj['id']);
@@ -330,7 +336,24 @@ class _MyLoginState extends State<MyLogin> {
                 ),
               ],
             ),
-      
           );
   }
+}
+
+Future<String> loginToCommunity(String email,String password, SharedPreferences prefs) async{
+  print(Uri.parse('${Values.communityBaseUrl}/auth/login'));
+  http.Response responseCommunity =
+      await http.post(Uri.parse('${Values.communityBaseUrl}/auth/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({'email': email, 'password': password}));
+
+  if (responseCommunity.statusCode == 200) {
+    print("logged in to community");
+    var responseCommunityObject = json.decode(responseCommunity.body);
+    if(responseCommunityObject['token'] !=null)
+      return responseCommunityObject['token'];
+  }
+  return "";
 }

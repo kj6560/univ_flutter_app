@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:univ_app/controllers/communitycontroller.dart';
 import 'package:univ_app/controllers/eventcontroller.dart';
 import 'package:univ_app/controllers/slidercontroller.dart';
 import 'package:univ_app/view/constantpages/bottomnavigationbar.dart';

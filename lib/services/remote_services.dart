@@ -290,4 +290,23 @@ class RemoteServices {
     } catch (e) {
     } finally {}
   }
+
+  static Future<String?> fetchPosts() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var communityToken = prefs.getString("communityToken");
+
+      http.Response response =
+      await http.post(Uri.parse(Values.fetchPosts),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $communityToken',
+          },);
+      if (response.statusCode == 200) {
+        var responseObj = jsonDecode(response.body);
+        return jsonEncode(responseObj['posts']);
+      }
+    } catch (e) {}
+  }
 }
