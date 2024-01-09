@@ -34,9 +34,9 @@ class _MyLoginState extends State<MyLogin> {
         final prefs = await SharedPreferences.getInstance();
 
 
-        String communityToken = await loginToCommunity(email,password,prefs);
-        print(communityToken);
-        prefs.setString("communityToken", communityToken);
+        // String communityToken = await loginToCommunity(email,password,prefs);
+        // prefs.setString("communityToken", communityToken);
+
         var responseObject = json.decode(response.body);
 
         prefs.setString("token", responseObject['token']);

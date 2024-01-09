@@ -8,8 +8,8 @@ import 'dart:convert';
 import 'package:univ_app/models/user.dart';
 
 class Values {
-  static const String baseUrl =
-      "https://univsportatech.com"; //"http://192.168.1.3/univ/public";
+  static const String siteUrl  = "https://univsportatech.com";
+  static const String baseUrl = "https://univsportatech.com" ;
   static const String communityBaseUrl = "http://univsportatech.com:4000";
   static const String appName = "Univ";
   static const String sliderUrl = "$baseUrl/api/sliders";

@@ -34,13 +34,12 @@ class _HomeState extends State<Home> {
             child: const Center(
                 child:
                     CircularProgressIndicator())) // Show progress indicator when loading
-        : SingleChildScrollView(
-            child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Column(
-              children: <Widget>[
-                GetX<SliderController>(builder: (controller) {
-                  return CarouselSlider(
+        : CustomScrollView(
+            slivers: <Widget>[
+              GetX<SliderController>(
+                builder: (controller) {
+                  return SliverToBoxAdapter(
+                    child: CarouselSlider(
                       items: controller.sliders.map((slider) {
                         return Builder(
                           builder: (BuildContext context) {
@@ -50,10 +49,6 @@ class _HomeState extends State<Home> {
                                   const EdgeInsets.symmetric(horizontal: 1.0),
                               decoration:
                                   const BoxDecoration(color: Colors.white),
-                              // child: Image.network(
-                              //   '${Values.sliderImageUrl}/${slider.image}',
-                              //   fit: BoxFit.fill,
-                              // )
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: CachedNetworkImage(
@@ -61,14 +56,13 @@ class _HomeState extends State<Home> {
                                   fit: BoxFit.cover,
                                   imageUrl:
                                       '${Values.sliderImageUrl}/${slider.image}',
-                                  // URL of the image
                                   placeholder: (context, url) => const Center(
                                     child: CircularProgressIndicator(
-                                        strokeWidth: 3.0),
+                                      strokeWidth: 3.0,
+                                    ),
                                   ),
-                                  // Placeholder widget
                                   errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error), // Error widget
+                                      const Icon(Icons.error),
                                 ),
                               ),
                             );
@@ -90,27 +84,34 @@ class _HomeState extends State<Home> {
                         enlargeCenterPage: true,
                         enlargeFactor: 0.2,
                         scrollDirection: Axis.horizontal,
-                      ));
-                }),
-                Padding(
-                  padding: const EdgeInsets.all(18.0),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              SliverPadding(
+                padding: EdgeInsets.all(8.0),
+                sliver: SliverToBoxAdapter(
                   child: TextField(
                     controller: editingController,
                     decoration: const InputDecoration(
-                        labelText: "Events",
-                        hintText: "Search Events",
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15.0)))),
+                      labelText: "Events",
+                      hintText: "Search Events",
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      ),
+                    ),
                     onChanged: (value) {
                       eventController
                           .filterEvents(editingController.text.toString());
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+              ),
+              SliverPadding(
+                padding: EdgeInsets.all(8.0),
+                sliver: SliverToBoxAdapter(
                   child: Container(
                     color: Colors.grey,
                     child: Row(
@@ -119,9 +120,10 @@ class _HomeState extends State<Home> {
                         const Text(
                           "CATEGORIES",
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Obx(() {
                           return Theme(
@@ -129,26 +131,28 @@ class _HomeState extends State<Home> {
                               canvasColor: Colors.grey,
                             ),
                             child: DropdownButton<Category>(
-                              items: categoryController.categories // <- Here
+                              items: categoryController.categories
                                   .map(
                                     (value) => DropdownMenuItem(
                                       value: value,
-                                      child: Text(value.name,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal)),
+                                      child: Text(
+                                        value.name,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
                                     ),
                                   )
                                   .toList(),
                               onChanged: (selectdCategories) {
-                                setState(
-                                  () {
-                                    selectedCategory = selectdCategories;
-                                  },
-                                );
+                                setState(() {
+                                  selectedCategory = selectdCategories;
+                                });
                                 eventController.filterEventsByCategory(
-                                    selectdCategories!.id.toString());
+                                  selectdCategories!.id.toString(),
+                                );
                               },
                               value: selectedCategory,
                               hint: const Text(
@@ -162,26 +166,30 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-                GetX<EventController>(builder: (controller) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListView.separated(
-                          scrollDirection: Axis.vertical,
-                          itemCount: controller.events.length,
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext ctxt, int index) {
-                            return InkWell(
-                              onTap: () {
-                                Get.offAllNamed("/event_details", parameters: {
-                                  "event_id": "${controller.events[index].id}"
-                                });
-                              },
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                      height: 100,
+              ),
+              GetX<EventController>(
+                builder: (controller) {
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext ctxt, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Get.offAllNamed(
+                                    "/event_details",
+                                    parameters: {
+                                      "event_id":
+                                          "${controller.events[index].id}"
+                                    },
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      height: 120,
                                       width:
                                           MediaQuery.of(context).size.width / 4,
                                       child: CachedNetworkImage(
@@ -190,75 +198,86 @@ class _HomeState extends State<Home> {
                                         fit: BoxFit.fill,
                                         imageUrl:
                                             '${Values.eventImageUrl}/${controller.events[index].eventImage}',
-                                        // URL of the image
                                         placeholder: (context, url) =>
                                             const Center(
                                           child: CircularProgressIndicator(
-                                              strokeWidth: 3.0),
+                                            strokeWidth: 3.0,
+                                          ),
                                         ),
-                                        // Placeholder widget
                                         errorWidget: (context, url, error) =>
-                                            const Icon(
-                                                Icons.error), // Error widget
-                                      )),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: Text(
-                                                "${DateFormat('d MMM y').format(controller.events[index].eventDate)}",
-                                            style: TextStyle(color: Values.primaryColor,fontSize: 15,fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: Text(
-                                                "${controller.events[index].eventBio?.substring(0, 120)}..."),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 130,right: 8),
-                                            child: Row(
-                                              children: [
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    registerForEvent(controller
-                                                        .events[index].id);
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      Text('Register'),
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                            const Icon(Icons.error),
                                       ),
                                     ),
-                                  )
-                                ],
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(3.0),
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(2.0),
+                                              child: Text(
+                                                "${DateFormat('d MMM y').format(controller.events[index].eventDate)}",
+                                                style: TextStyle(
+                                                  color: Values.primaryColor,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(2.0),
+                                              child: Text(
+                                                "${controller.events[index].eventBio?.substring(0, 120)}...",
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 130,
+                                                right: 8,
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      registerForEvent(
+                                                        controller
+                                                            .events[index].id,
+                                                      );
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        Text('Register'),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            );
-                          },
-                          separatorBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 5.0, bottom: 5.0),
-                            child: Container(
-                              color: Colors.grey,
-                              child: const SizedBox(
-                                    height: 1,
-                                  ),
-                            ),
-                          )),
+                              Divider(
+                                height: 1,
+                                thickness: 1,
+                                color: Colors.grey,
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                      childCount: controller.events.length,
                     ),
                   );
-                }),
-              ],
-            ),
-          ));
+                },
+              ),
+            ],
+          );
   }
 
   void registerForEvent(var event_id) async {

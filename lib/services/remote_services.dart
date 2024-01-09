@@ -303,9 +303,9 @@ class RemoteServices {
             'Accept': 'application/json',
             'Authorization': 'Bearer $communityToken',
           },);
+      print(response.statusCode);
       if (response.statusCode == 200) {
-        var responseObj = jsonDecode(response.body);
-        return jsonEncode(responseObj['posts']);
+        return response.body;
       }
     } catch (e) {}
   }
