@@ -42,4 +42,14 @@ class EventPartner {
     "created_at": createdAt,
     "updated_at": updatedAt,
   };
+  factory EventPartner.fromMap(Map<String, dynamic> map) {
+    return EventPartner(
+      id: map["id"],
+      eventId: map["event_id"],
+      partnerName: map["partner_name"],
+      partnerLogo: map["partner_logo"],
+      createdAt: map["created_at"],
+      updatedAt: map["updated_at"],
+    );
+  }
 }

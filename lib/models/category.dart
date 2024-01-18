@@ -40,4 +40,15 @@ class Category {
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
       };
+
+  factory Category.fromMap(Map<String, dynamic> map) {
+    return Category(
+      id: map["id"],
+      name: map["name"],
+      description: map["description"],
+      icon: map["icon"],
+      createdAt: DateTime.parse(map["created_at"]),
+      updatedAt: DateTime.parse(map["updated_at"]),
+    );
+  }
 }

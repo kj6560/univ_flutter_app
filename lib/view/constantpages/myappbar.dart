@@ -139,12 +139,12 @@ class _MyAppBarState extends State<MyAppBar> {
           )
               : Container(),
           SizedBox(
-            height: kToolbarHeight, // Set the height of SizedBox equal to the AppBar height
+            height: kToolbarHeight,
             child: Center(
               child: Container(
                 alignment: Alignment.center,
-                height: 45, // Set the height of the container to adjust the size of CircleAvatar
-                width: 45, // Set the width of the container to adjust the size of CircleAvatar
+                height: 45,
+                width: 45,
                 child: InkWell(
                   onTap: () {
                     Get.offAllNamed("/user_profile");

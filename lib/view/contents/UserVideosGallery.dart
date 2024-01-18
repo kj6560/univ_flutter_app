@@ -33,7 +33,7 @@ class _UserVideosGalleryState extends State<UserVideosGallery> {
               final videoUrl =
                   Values.userGallery + logic.userFiles[index].filePath;
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(3.0),
                 child: Container(
                   color: Colors.grey,
                   child: VideoPlayerScreen(videoUrl: videoUrl),
@@ -102,14 +102,17 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return is_loading
-        ? CircularProgressIndicator(
-            strokeWidth: 1.5, // Adjust the strokeWidth here
+        ? Padding(
+            padding: const EdgeInsets.all(68.0),
+            child: CircularProgressIndicator(
+              strokeWidth: 2.0, // Adjust the strokeWidth here
+            ),
           )
         : FutureBuilder(
             future: _initializeVideoPlayerFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return Container(
+                return SizedBox(
                   height: 160,
                   width: 160,
                   child: AspectRatio(
@@ -125,8 +128,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                         });
                       },
                       child: Container(
-                        height: 130,
-                        width: 170,
+                        height: 160,
+                        width: 160,
                         child: VideoPlayer(_controller),
                       ),
                     ),
@@ -135,7 +138,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               } else {
                 return const Center(
                   child: CircularProgressIndicator(
-                    strokeWidth: 1.5, // Adjust the strokeWidth here
+                    strokeWidth: 2.0, // Adjust the strokeWidth here
                   ),
                 );
               }

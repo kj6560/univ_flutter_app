@@ -558,7 +558,7 @@ class _SocialProfileState extends State<SocialProfile>
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: const Text('Alert Dialog Title'),
+                                      title: const Text('Logout'),
                                       content: const Text(
                                           'Are you sure you want to logout ?'),
                                       actions: <Widget>[
@@ -595,7 +595,7 @@ class _SocialProfileState extends State<SocialProfile>
                     margin: const EdgeInsets.only(
                         left: 10, top: 10, right: 8, bottom: 5),
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
+                      padding: const EdgeInsets.only(left: 15.0,right: 8.0),
                       child: Text(logic.about,
                           style: const TextStyle(
                             color: Colors.black,
@@ -605,25 +605,28 @@ class _SocialProfileState extends State<SocialProfile>
               );
             }),
         SliverToBoxAdapter(
-          child: Column(
-            children: [
-              TabBar(
-                controller: tabController,
-                tabs: const [
-                  Tab(
-                    text: 'Photo',
-                  ),
-                  Tab(
-                    text: 'Video',
-                  ),
-                  Tab(
-                    text: 'Certificates',
-                  ),
-                ],
-                labelColor: Colors.black,
-                indicatorColor: Colors.green,
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                TabBar(
+                  controller: tabController,
+                  tabs: const [
+                    Tab(
+                      text: 'Photo',
+                    ),
+                    Tab(
+                      text: 'Video',
+                    ),
+                    Tab(
+                      text: 'Certificates',
+                    ),
+                  ],
+                  labelColor: Colors.black,
+                  indicatorColor: Colors.green,
+                ),
+              ],
+            ),
           ),
         ),
         _getTabAtIndex(),

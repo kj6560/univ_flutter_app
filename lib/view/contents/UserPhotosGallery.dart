@@ -20,14 +20,14 @@ class _UserPhotosGalleryState extends State<UserPhotosGallery> {
       builder: (logic) {
         return SliverGrid(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
+              crossAxisCount: 2,
               childAspectRatio: 1.0,
               mainAxisSpacing: 1.0,
               crossAxisSpacing: 1.0),
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               return Padding(
-                padding: const EdgeInsets.all(1.0),
+                padding: const EdgeInsets.all(3.0),
                 child: Container(
                   color: Colors.grey,
                   child: InkWell(

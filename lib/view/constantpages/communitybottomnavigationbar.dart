@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/utility/values.dart';
@@ -75,12 +76,12 @@ class _MyCommunityBottomNavigationBarState
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.home, size: 40), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.search, size: 40), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.add_box_rounded, size: 40), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.ondemand_video_rounded, size: 40), label: ""),
+        BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.home, size: 20), label: ""),
+        BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.magnifyingGlass, size: 20), label: ""),
+        BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.squarePlus, size: 20), label: ""),
+        BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.film, size: 20), label: ""),
         BottomNavigationBarItem(icon: CircleAvatar(
-                radius: 20,
+                radius: 14,
                 foregroundColor: Colors.black,
                 backgroundColor: Colors.white,
                 backgroundImage: CachedNetworkImageProvider(
@@ -90,6 +91,8 @@ class _MyCommunityBottomNavigationBarState
       type: BottomNavigationBarType.fixed,
       selectedItemColor: const Color.fromRGBO(26, 188, 156, 70),
       onTap: _onItemTapped,
+      unselectedFontSize: 1,
+      selectedFontSize: 1,
     );
   }
 }

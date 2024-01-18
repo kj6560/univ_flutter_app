@@ -125,46 +125,49 @@ class _UserCertificatesState extends State<UserCertificates> {
             ? SliverGrid(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
+                  crossAxisSpacing: 1.0,
+                  mainAxisSpacing: 1.0,
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return InkWell(
-                      onTap: (){
-                        showDialog(
-                          builder: (BuildContext context) => AlertDialog(
-                            backgroundColor: Colors.transparent,
-                            insetPadding: EdgeInsets.all(1),
-                            content: ConstrainedBox(
-                              constraints:
-                              BoxConstraints(maxWidth: 400, maxHeight: 400),
-                              child: CachedNetworkImage(
-                                fit: BoxFit.contain,
-                                // Adjust the fit based on your requirement
-                                imageUrl: Values.userGallery + logic.userFiles[index].filePath,
-                                placeholder: (context, url) =>
-                                    CircularProgressIndicator(),
-                                errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
+                    return Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: InkWell(
+                        onTap: (){
+                          showDialog(
+                            builder: (BuildContext context) => AlertDialog(
+                              backgroundColor: Colors.transparent,
+                              insetPadding: EdgeInsets.all(1),
+                              content: ConstrainedBox(
+                                constraints:
+                                BoxConstraints(maxWidth: 400, maxHeight: 400),
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.contain,
+                                  // Adjust the fit based on your requirement
+                                  imageUrl: Values.userGallery + logic.userFiles[index].filePath,
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                ),
                               ),
                             ),
+                            context: context,
+                          );
+                        },
+                        child: CachedNetworkImage(
+                          height: 150,
+                          fit: BoxFit.cover,
+                          imageUrl:
+                              Values.userGallery + logic.userFiles[index].filePath,
+                          // URL of the image
+                          placeholder: (context, url) => const Center(
+                            child: CircularProgressIndicator(strokeWidth: 3.0),
                           ),
-                          context: context,
-                        );
-                      },
-                      child: CachedNetworkImage(
-                        height: 150,
-                        fit: BoxFit.cover,
-                        imageUrl:
-                            Values.userGallery + logic.userFiles[index].filePath,
-                        // URL of the image
-                        placeholder: (context, url) => const Center(
-                          child: CircularProgressIndicator(strokeWidth: 3.0),
+                          // Placeholder widget
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error), // Error widget
                         ),
-                        // Placeholder widget
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error), // Error widget
                       ),
                     );
                   },

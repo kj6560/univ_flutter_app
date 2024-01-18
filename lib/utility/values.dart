@@ -36,7 +36,7 @@ class Values {
   static const String registerForEvents = "$baseUrl/api/registerNow";
 
   //community routes
-  static const String fetchPosts = "$communityBaseUrl/api/v1/posts";
+  static const String fetchPosts = "$baseUrl/api/fetchPosts";
 
 
 

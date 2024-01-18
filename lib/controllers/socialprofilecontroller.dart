@@ -49,6 +49,7 @@ class SocialProfileController extends GetxController {
       prefs.setString("state", "");
       prefs.setString("pincode", "");
       await prefs.clear();
+      RemoteServices.logoutUser(id);
       Get.offAllNamed("/login");
     }
 

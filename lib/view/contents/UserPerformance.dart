@@ -16,26 +16,25 @@ class _UserPerformanceState extends State<UserPerformance> {
     return GetBuilder<UserPerformanceController>(builder: (logic) {
       return CustomScrollView(
         slivers: <Widget>[
-          SliverGrid(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 1,
-              crossAxisSpacing: 5.0,
-              mainAxisSpacing: 5.0,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 5.0,
-                    child: _children(logic.performanceData),
+          logic.performanceData.length > 0
+              ? SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                      (BuildContext ctxt, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ExpansionTile(
+                      collapsedBackgroundColor: Colors.grey,
+                      title:
+                          Text(logic.performanceData[0].data.values.firstOrNull !="" ? logic.performanceData[0].data.values.firstOrNull:logic.performanceData[0].data.values.lastOrNull),
+                      children: _children(logic.performanceData),
+                    ),
+                  );
+                }, childCount: logic.performanceData.length))
+              : SliverToBoxAdapter(
+                  child: Center(
+                    child: Text("Performance data not available"),
                   ),
-                );
-              },
-              childCount: logic.performanceData
-                  .length, // Replace this with the number of items you want
-            ),
-          ),
+                )
         ],
       );
     });
@@ -47,13 +46,13 @@ class _UserPerformanceState extends State<UserPerformance> {
       dynamicModel.data.forEach((key, value) {
         children.add(
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(15.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   key,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
                 Text(value != null ? value : "")
               ],
@@ -63,10 +62,6 @@ class _UserPerformanceState extends State<UserPerformance> {
       });
     });
     children = children.reversed.toList();
-    return SingleChildScrollView(
-      child: Column(
-        children: children,
-      ),
-    );
+    return children;
   }
 }

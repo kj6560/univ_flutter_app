@@ -32,7 +32,7 @@ class _MyCommunityState extends State<MyCommunity> {
           child: MyAppBar(),
         ),
         body: Community(),
-        bottomNavigationBar: MyBottomNavigationBar(),
+        bottomNavigationBar: MyCommunityBottomNavigationBar(),
       ),
     );
   }

@@ -36,6 +36,7 @@ class _HomeState extends State<Home> {
                     CircularProgressIndicator())) // Show progress indicator when loading
         : CustomScrollView(
             slivers: <Widget>[
+              //sliders
               GetX<SliderController>(
                 builder: (controller) {
                   return SliverToBoxAdapter(
@@ -89,6 +90,8 @@ class _HomeState extends State<Home> {
                   );
                 },
               ),
+
+              //event search
               SliverPadding(
                 padding: EdgeInsets.all(8.0),
                 sliver: SliverToBoxAdapter(
@@ -176,6 +179,10 @@ class _HomeState extends State<Home> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
+                              Text(
+                                controller.events[index].eventName.toUpperCase(),
+                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),
+                              ),
                               InkWell(
                                 onTap: () {
                                   Get.offAllNamed(
@@ -229,7 +236,7 @@ class _HomeState extends State<Home> {
                                               padding:
                                                   const EdgeInsets.all(2.0),
                                               child: Text(
-                                                "${controller.events[index].eventBio?.substring(0, 120)}...",
+                                                "${controller.events[index].eventBio != null && controller.events[index].eventBio.length > 30 ? controller.events[index].eventBio.substring(0, 120) : ""}...",
                                               ),
                                             ),
                                             Padding(

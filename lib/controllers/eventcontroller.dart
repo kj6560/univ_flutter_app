@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:univ_app/models/event.dart';
 import 'package:univ_app/services/remote_services.dart';
+import 'package:univ_app/utility/DBHelper.dart';
 import 'package:univ_app/utility/values.dart';
 
 class EventController extends GetxController {
@@ -19,13 +21,33 @@ class EventController extends GetxController {
   }
 
   void fetchEvents() async {
-    var all_events = await RemoteServices.fetchEvents();
-    if (all_events != null) {
-      events.value = all_events;
-      for(var event in events.value){
-        Values.cacheFile("${Values.eventImageUrl}/${event.eventImage}");
+    final conn = DBHelper.instance;
+    var dbclient = await conn.db;
+    List<Event>? all_events = [];
+    try {
+      var total_count = await Sqflite.firstIntValue(
+          await dbclient!.rawQuery('SELECT COUNT(*) FROM events'));
+      var hasInternet = await RemoteServices.hasInternet();
+      if (hasInternet) {
+        all_events = await RemoteServices.fetchEvents();
+        if (all_events != null && total_count != all_events.length) {
+          for (var event in all_events) {
+            Values.cacheFile("${Values.eventImageUrl}/${event.eventImage}");
+            await dbclient!.insert('events', event.toJson());
+          }
+          eventList = all_events;
+        }
+      } else {
+        List<Map<String, dynamic>> maps = await dbclient!.query('events');
+        maps.forEach((element) {
+          Event ev = Event.fromMap(element);
+          all_events?.add(ev);
+        });
+        eventList = all_events!;
       }
-      eventList = all_events;
+      events.value = all_events!;
+    } catch (e) {
+      print(e);
     }
   }
 

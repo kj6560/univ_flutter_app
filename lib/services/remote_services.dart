@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/models/EventPartner.dart';
 import 'package:univ_app/models/UserFile.dart';
@@ -14,6 +15,9 @@ import 'package:univ_app/utility/values.dart';
 import '../models/EventFile.dart';
 
 class RemoteServices {
+  static Future<bool> hasInternet() async{
+    return await InternetConnectionChecker().hasConnection;
+  }
   static var client = http.Client();
 
   static Future<List<Sliders>?> fetchSliders() async {
@@ -91,7 +95,7 @@ class RemoteServices {
   static fetchEventPartners(var event_id) async {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
-    String urL = "${Values.eventPartnerUrl}?id=" + event_id;
+    String urL = "${Values.eventPartnerUrl}?event_id=" + event_id;
     var response = await http.get(Uri.parse(urL), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -146,11 +150,12 @@ class RemoteServices {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     String urL = "${Values.logoutUrl}?user_id=$user_id&token=$token";
-    var response = await http.get(Uri.parse(urL), headers: {
+    var response = await http.post(Uri.parse(urL), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     });
+    print(response.body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       var data = jsonDecode(jsonString);
@@ -294,19 +299,21 @@ class RemoteServices {
   static Future<String?> fetchPosts() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      var communityToken = prefs.getString("communityToken");
+      var token = prefs.getString("token");
 
-      http.Response response =
-      await http.post(Uri.parse(Values.fetchPosts),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer $communityToken',
-          },);
-      print(response.statusCode);
+      http.Response response = await http.get(
+        Uri.parse(Values.fetchPosts),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
       if (response.statusCode == 200) {
         return response.body;
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 }

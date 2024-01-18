@@ -4,16 +4,19 @@ import 'package:univ_app/models/category.dart';
 import 'package:univ_app/models/event.dart';
 import 'package:univ_app/models/sliders.dart';
 import 'package:univ_app/services/remote_services.dart';
+import 'package:univ_app/utility/DBHelper.dart';
 import 'package:univ_app/utility/values.dart';
 
 class HomeController extends GetxController {
   var sliders = List<Sliders>.empty().obs;
   var categories = List<Category>.empty().obs;
   var events = List<Event>.empty().obs;
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+
     fetchSliders();
     fetchCategory();
     //fetchEvents();

@@ -20,4 +20,10 @@ class Sliders {
   Map<String, dynamic> toJson() => {
         "image": image,
       };
+
+  factory Sliders.fromMap(Map<String, dynamic> map) {
+    return Sliders(
+      image: map["image"],
+    );
+  }
 }

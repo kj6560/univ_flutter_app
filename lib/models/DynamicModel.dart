@@ -3,7 +3,7 @@ import 'dart:convert';
 List<DynamicModel> dynamicModelFromJson(String str) =>
     List<DynamicModel>.from(json.decode(str).map((x) => DynamicModel.fromJson(x)));
 class DynamicModel {
-  final Map<dynamic, dynamic> data;
+  final Map<String, dynamic> data;
 
   DynamicModel(this.data);
 
