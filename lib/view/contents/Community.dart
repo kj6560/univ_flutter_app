@@ -49,7 +49,10 @@ class _CommunityState extends State<Community>
                     backgroundImage: CachedNetworkImageProvider(
                         '${Values.profilePic}${post.postCreatedByUserIcon}'),
                   ),
-                  title: Text(post.postCreatedByUsername,style: TextStyle(fontWeight: FontWeight.bold),),
+                  title: Text(
+                    post.postCreatedByUsername,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   subtitle: Text(
                     DateFormat('yyyy-MM-dd').format(post.postCreatedAt),
                   ),
@@ -128,15 +131,17 @@ class _CommunityState extends State<Community>
                         style: DefaultTextStyle.of(context).style,
                         children: [
                           TextSpan(
-                            text: likes.length > 0 ? '@${likes.first.likedByUsername}' : '',
+                            text: likes.length > 0
+                                ? '@${likes.first.likedByUsername}'
+                                : '',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
                             text: likes.length > 1
                                 ? ' and ${likes.length - 1} others liked it'
                                 : likes.length == 1
-                                ? ' liked it'
-                                : '',
+                                    ? ' liked it'
+                                    : '',
                           ),
                         ],
                       ),
@@ -149,7 +154,6 @@ class _CommunityState extends State<Community>
                     style: const TextStyle(fontSize: 16),
                   ),
                 ),
-
               ],
             ),
           );
