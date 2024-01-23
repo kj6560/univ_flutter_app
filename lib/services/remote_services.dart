@@ -8,6 +8,7 @@ import 'package:univ_app/models/EventPartner.dart';
 import 'package:univ_app/models/UserFile.dart';
 import 'package:univ_app/models/category.dart';
 import 'package:univ_app/models/event.dart';
+import 'package:univ_app/models/post.dart';
 import 'package:univ_app/models/sliders.dart';
 import 'package:univ_app/models/user.dart';
 import 'package:univ_app/utility/values.dart';
@@ -15,9 +16,10 @@ import 'package:univ_app/utility/values.dart';
 import '../models/EventFile.dart';
 
 class RemoteServices {
-  static Future<bool> hasInternet() async{
+  static Future<bool> hasInternet() async {
     return await InternetConnectionChecker().hasConnection;
   }
+
   static var client = http.Client();
 
   static Future<List<Sliders>?> fetchSliders() async {
@@ -245,6 +247,7 @@ class RemoteServices {
             'phone': phoneNumber,
             'password': password
           }));
+      print(jsonDecode(response.body));
       if (response.statusCode == 200) {
         var responseObj = jsonDecode(response.body);
         if (responseObj['success']) {
@@ -315,5 +318,45 @@ class RemoteServices {
     } catch (e) {
       print(e);
     }
+  }
+
+  static Future<bool> createPost(
+      List<PostMedia> mediaFiles, String caption, int post_type) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      int? id = prefs.getInt("id");
+
+      var data = {
+        "post_created_by": id,
+        "post_created_at": DateTime.now().toIso8601String(),
+        // Convert to ISO8601 string
+        "post_caption": caption,
+        "post_type": post_type
+      };
+
+      var token = prefs.getString("token");
+
+      http.Response response = await http.post(
+        Uri.parse(Values.createPost),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data), // Convert the data map to JSON string
+      );
+
+      if (response.statusCode == 200) {
+        var responseObj = jsonDecode(response.body);
+        if (responseObj.success) {
+          return true;
+        }
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
   }
 }

@@ -90,7 +90,7 @@ class _MyLoginState extends State<MyLogin> {
   Widget build(BuildContext context) {
     return _isLoading
         ? Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Values.primaryColor.withOpacity(0.2),
             child: const Center(
                 child:
                     CircularProgressIndicator())) // Show progress indicator when loading

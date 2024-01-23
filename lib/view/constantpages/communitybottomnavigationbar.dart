@@ -15,6 +15,87 @@ class _MyCommunityBottomNavigationBarState
     extends State<MyCommunityBottomNavigationBar> {
   String profilePictureUrl = '';
   int currentRoute = 0;
+  final List<String> items = ["Add Photos", "Add Videos", "Add Certificates"];
+
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext builder) {
+        return FractionallySizedBox(
+          heightFactor: 0.25,
+          child: Column(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      size: 24,
+                    )),
+              ],
+            ),
+            Divider(
+              height: 20,
+              thickness: 2,
+              color: const Color.fromRGBO(26, 188, 156, 70),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+
+                //_pickImage();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Add Photos", style: TextStyle(fontSize: 16)),
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+
+                //_pickVideo();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Add Videos", style: TextStyle(fontSize: 16)),
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+
+                //_pickCertificate();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Add Certificates", style: TextStyle(fontSize: 16)),
+                  ],
+                ),
+              ),
+            ),
+          ]),
+        );
+      },
+    );
+  }
 
   void _onItemTapped(int index) {
     switch (index) {
@@ -76,16 +157,22 @@ class _MyCommunityBottomNavigationBarState
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.home, size: 20), label: ""),
-        BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.magnifyingGlass, size: 20), label: ""),
-        BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.squarePlus, size: 20), label: ""),
-        BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.film, size: 20), label: ""),
-        BottomNavigationBarItem(icon: CircleAvatar(
+        BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.home, size: 20), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.magnifyingGlass, size: 20), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.squarePlus, size: 20), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.film, size: 20), label: ""),
+        BottomNavigationBarItem(
+            icon: CircleAvatar(
                 radius: 14,
                 foregroundColor: Colors.black,
                 backgroundColor: Colors.white,
                 backgroundImage: CachedNetworkImageProvider(
-                    '${Values.profilePic}$profilePictureUrl')), label: ""),
+                    '${Values.profilePic}$profilePictureUrl')),
+            label: ""),
       ],
       currentIndex: currentRoute,
       type: BottomNavigationBarType.fixed,

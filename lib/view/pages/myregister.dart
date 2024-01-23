@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:univ_app/controllers/registerusercontroller.dart';
+import 'package:univ_app/utility/values.dart';
 
 class MyRegister extends StatefulWidget {
   const MyRegister({super.key});
@@ -28,12 +29,12 @@ class _MyRegisterState extends State<MyRegister> {
   Widget build(BuildContext context) {
     return _isLoading
         ? Container(
-            color: Colors.white.withOpacity(0.2),
-            child: Center(
+            color: Values.primaryColor.withOpacity(0.2),
+            child: const Center(
                 child:
-                    const CircularProgressIndicator())) // Show progress indicator when loading
+                    CircularProgressIndicator())) // Show progress indicator when loading
         : Scaffold(
-            backgroundColor: const Color(0xff3a57e8),
+            backgroundColor: Values.primaryColor,
             body: Align(
               alignment: Alignment.center,
               child: Padding(
@@ -45,9 +46,9 @@ class _MyRegisterState extends State<MyRegister> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: const Text(
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
                           "Sign Up",
                           textAlign: TextAlign.start,
                           overflow: TextOverflow.clip,
@@ -101,7 +102,7 @@ class _MyRegisterState extends State<MyRegister> {
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 12),
                             prefixIcon: const Icon(Icons.person,
-                                color: Color(0xff3a57e8), size: 24),
+                                color: Values.primaryColor, size: 24),
                           ),
                         ),
                       ),
@@ -147,7 +148,7 @@ class _MyRegisterState extends State<MyRegister> {
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 12),
                             prefixIcon: const Icon(Icons.person,
-                                color: Color(0xff3a57e8), size: 24),
+                                color: Values.primaryColor, size: 24),
                           ),
                         ),
                       ),
@@ -193,7 +194,7 @@ class _MyRegisterState extends State<MyRegister> {
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 12),
                             prefixIcon: const Icon(Icons.mail,
-                                color: Color(0xff3a57e8), size: 24),
+                                color: Values.primaryColor, size: 24),
                           ),
                         ),
                       ),
@@ -239,7 +240,7 @@ class _MyRegisterState extends State<MyRegister> {
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 12),
                             prefixIcon: const Icon(Icons.contact_phone,
-                                color: Color(0xff3a57e8), size: 24),
+                                color: Values.primaryColor, size: 24),
                           ),
                         ),
                       ),
@@ -285,24 +286,27 @@ class _MyRegisterState extends State<MyRegister> {
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 12),
                             prefixIcon: const Icon(Icons.lock,
-                                color: Color(0xff3a57e8), size: 24),
+                                color: Values.primaryColor, size: 24),
                           ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: MaterialButton(
-                          onPressed: () {
+                          onPressed: () async {
                             setState(() {
                               _isLoading = true;
                             });
-                            _controller.registerUser(
-                                firstNameController.text.toString(),
-                                lastNameController.text.toString(),
-                                emailController.text.toString(),
-                                numberController.text.toString(),
-                                passwordController.text.toString(),
-                                context);
+
+                            await _controller.registerUser(
+                              firstNameController.text.toString(),
+                              lastNameController.text.toString(),
+                              emailController.text.toString(),
+                              numberController.text.toString(),
+                              passwordController.text.toString(),
+                              context,
+                            );
+
                             setState(() {
                               _isLoading = false;
                             });
@@ -313,6 +317,9 @@ class _MyRegisterState extends State<MyRegister> {
                             borderRadius: BorderRadius.circular(22.0),
                           ),
                           padding: const EdgeInsets.all(16),
+                          textColor: const Color(0xff4d4d4d),
+                          height: 50,
+                          minWidth: MediaQuery.of(context).size.width,
                           child: const Text(
                             "Create Account",
                             style: TextStyle(
@@ -321,13 +328,10 @@ class _MyRegisterState extends State<MyRegister> {
                               fontStyle: FontStyle.normal,
                             ),
                           ),
-                          textColor: const Color(0xff4d4d4d),
-                          height: 50,
-                          minWidth: MediaQuery.of(context).size.width,
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -345,7 +349,7 @@ class _MyRegisterState extends State<MyRegister> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: InkWell(
                                 onTap: () {
                                   Get.offAllNamed("/login");

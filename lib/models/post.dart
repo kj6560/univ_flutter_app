@@ -159,11 +159,13 @@ class PostMedia {
   String mediaName;
   int mediaType;
   int mediaPosition;
+  String? path;
 
   PostMedia({
     required this.mediaName,
     required this.mediaType,
     required this.mediaPosition,
+    this.path
   });
 
   factory PostMedia.fromJson(Map<String, dynamic> json) {

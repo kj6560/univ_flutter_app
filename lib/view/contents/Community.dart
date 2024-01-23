@@ -40,7 +40,7 @@ class _CommunityState extends State<Community>
               borderRadius: BorderRadius.circular(0.0),
             ),
             elevation: 1,
-            margin: const EdgeInsets.only(bottom: 20, top: 2),
+            margin: const EdgeInsets.only(bottom: 0, top: 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

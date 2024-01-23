@@ -240,6 +240,7 @@ class _SocialProfileState extends State<SocialProfile>
         _imageFile!.path,
       ));
 
+
       // Send the request
       var response = await request.send();
 
@@ -438,7 +439,7 @@ class _SocialProfileState extends State<SocialProfile>
                 const EdgeInsets.only(left: 0, top: 10, right: 10, bottom: 0),
             child: _isLoading
                 ? Container(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Values.primaryColor.withOpacity(0.2),
                     child: const Center(
                         child:
                             CircularProgressIndicator())) // Show progress indicator when loading

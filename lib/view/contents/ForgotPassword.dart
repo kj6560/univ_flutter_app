@@ -26,20 +26,20 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     return _isLoading
         ? Container(
             color: Colors.white.withOpacity(0.2),
-            child: Center(
+            child: const Center(
                 child:
-                    const CircularProgressIndicator())) // Show progress indicator when loading
+                    CircularProgressIndicator())) // Show progress indicator when loading
         : Scaffold(
-            backgroundColor: Color(0xffffffff),
+            backgroundColor: const Color(0xffffffff),
             appBar: AppBar(
               elevation: 0,
               centerTitle: false,
               automaticallyImplyLeading: false,
-              backgroundColor: Color(0xffffffff),
-              shape: RoundedRectangleBorder(
+              backgroundColor: const Color(0xffffffff),
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.zero,
               ),
-              title: Text(
+              title: const Text(
                 "Forgot Password",
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
@@ -50,14 +50,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
             ),
             body: Padding(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                       child:
 
@@ -70,7 +70,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         fit: BoxFit.fill,
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                       child: Text(
                         "Forgot Password?",
@@ -84,7 +84,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         ),
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(16),
                       child: Text(
                         "Please write your email to receive a confirmation code to set a new password.",
@@ -103,7 +103,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       obscureText: false,
                       textAlign: TextAlign.start,
                       maxLines: 1,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 14,
@@ -113,52 +113,52 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         disabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4.0),
                           borderSide:
-                              BorderSide(color: Color(0xff000000), width: 1),
+                              const BorderSide(color: Color(0xff000000), width: 1),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4.0),
                           borderSide:
-                              BorderSide(color: Color(0xff000000), width: 1),
+                              const BorderSide(color: Color(0xff000000), width: 1),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4.0),
                           borderSide:
-                              BorderSide(color: Color(0xff000000), width: 1),
+                              const BorderSide(color: Color(0xff000000), width: 1),
                         ),
                         labelText: "Enter Email",
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 16,
                           color: Color(0xff000000),
                         ),
                         hintText: "Enter Your Registered Email",
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 14,
                           color: Color(0xff000000),
                         ),
                         filled: true,
-                        fillColor: Color(0xffffffff),
+                        fillColor: const Color(0xffffffff),
                         isDense: false,
                         contentPadding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                       child: MaterialButton(
                         onPressed: () {
                           _sendOtp(_controller.text.toString());
                         },
-                        color: Color(0xff3a57e8),
+                        color: Values.primaryColor,
                         elevation: 0,
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.zero,
                         ),
-                        padding: EdgeInsets.all(16),
-                        child: Text(
+                        padding: const EdgeInsets.all(16),
+                        child: const Text(
                           "Confirm Mail",
                           style: TextStyle(
                             fontSize: 16,
@@ -166,7 +166,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             fontStyle: FontStyle.normal,
                           ),
                         ),
-                        textColor: Color(0xffffffff),
+                        textColor: const Color(0xffffffff),
                         height: 45,
                         minWidth: MediaQuery.of(context).size.width,
                       ),

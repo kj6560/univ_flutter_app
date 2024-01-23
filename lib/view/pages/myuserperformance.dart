@@ -16,15 +16,12 @@ class MyUserPerformance extends StatefulWidget {
 }
 
 class _MyUserPerformanceState extends State<MyUserPerformance> {
-
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffffffff),
         appBar: PreferredSize(
-
           preferredSize: const Size.fromHeight(55), // Set this height
           child: MyAppBar(),
         ),

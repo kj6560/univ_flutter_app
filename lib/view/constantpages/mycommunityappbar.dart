@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:univ_app/view/pages/mycommunity.dart';
 import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,19 +41,18 @@ class _MyAppBarState extends State<MyCommunityAppBar> {
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.pop(context);
-                Get.offAllNamed(Get.previousRoute);
+                String previous = Get.previousRoute;
+                Get.offAll(() => MyCommunity(), transition: Transition.rightToLeft);
               },
             ),
-          )
+          ),
+          Text("New Post")
         ],
       ),
       actions: [
         // action button
 
-        IconButton(
-          icon: const Icon(Icons.notifications),
-          onPressed: () {},
-        )
+
       ],
     );
   }

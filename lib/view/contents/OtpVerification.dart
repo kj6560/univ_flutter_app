@@ -18,7 +18,7 @@ class _OtpVerificationState extends State<OtpVerification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffffffff),
+      backgroundColor: const Color(0xffffffff),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -30,16 +30,16 @@ class _OtpVerificationState extends State<OtpVerification> {
               children: [
                 Container(
                   alignment: Alignment.topCenter,
-                  margin: EdgeInsets.all(0),
-                  padding: EdgeInsets.all(0),
+                  margin: const EdgeInsets.all(0),
+                  padding: const EdgeInsets.all(0),
                   width: MediaQuery.of(context).size.width,
                   height: 150,
-                  decoration: BoxDecoration(
-                    color: Color(0xff3a57e8),
+                  decoration: const BoxDecoration(
+                    color: Values.primaryColor,
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.zero,
                   ),
-                  child: Padding(
+                  child: const Padding(
                     padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                     child: Text(
                       "Verification",
@@ -54,7 +54,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                     ),
                   ),
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
                   child: Align(
                     alignment: Alignment.center,
@@ -72,7 +72,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                 ),
               ],
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(30),
               child: Text(
                 " We have send you an access code via SMS for Mobile number verifications.",
@@ -86,7 +86,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                 ),
               ),
             ),
-            Text(
+            const Text(
               "Enter Code here",
               textAlign: TextAlign.start,
               overflow: TextOverflow.clip,
@@ -98,22 +98,22 @@ class _OtpVerificationState extends State<OtpVerification> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(10, 16, 10, 50),
+              padding: const EdgeInsets.fromLTRB(10, 16, 10, 50),
               child: OtpTextField(
                 numberOfFields: 6,
                 showFieldAsBox: true,
                 fieldWidth: 50,
                 filled: true,
-                fillColor: Color(0x00000000),
-                enabledBorderColor: Color(0xffaaaaaa),
-                focusedBorderColor: Color(0xff3a57e8),
+                fillColor: const Color(0x00000000),
+                enabledBorderColor: const Color(0xffaaaaaa),
+                focusedBorderColor: const Color(0xff3a57e8),
                 borderWidth: 2,
-                margin: EdgeInsets.all(0),
+                margin: const EdgeInsets.all(0),
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 obscureText: false,
                 borderRadius: BorderRadius.circular(8.0),
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontStyle: FontStyle.normal,
                   fontSize: 20,
@@ -132,7 +132,7 @@ class _OtpVerificationState extends State<OtpVerification> {
               ),
             ),
             Padding(
-                padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                 child: InkWell(
                   onTap: () {
                     print("clicked on resend");
@@ -145,7 +145,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                       fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal,
                       fontSize: 16,
-                      color: Color(0xff3a57e8),
+                      color: Values.primaryColor,
                     ),
                   ),
                 )),

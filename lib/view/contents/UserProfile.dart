@@ -165,7 +165,7 @@ class _UserProfileState extends State<UserProfile> {
                 children: [
                   _isLoading
                       ? Container(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Values.primaryColor.withOpacity(0.2),
                           child: const Center(
                               child:
                                   CircularProgressIndicator())) // Show progress indicator when loading

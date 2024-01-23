@@ -10,15 +10,15 @@ class RegisterUserController extends GetxController {
     super.onInit();
   }
 
-  void registerUser(var firstName, var lastName, var email, var phoneNumber,
+  registerUser(var firstName, var lastName, var email, var phoneNumber,
       var password, var context) async {
     if (!Values.isValidEmail(email)) {
       return showErrorDialog("Invalid email provided", context);
     }
-    if (firstName.isBlank() || lastName.isBlank()) {
+    if (firstName.isEmpty || lastName.isEmpty) {
       return showErrorDialog("Invalid first name or last name", context);
     }
-    if (phoneNumber.isBlank()) {
+    if (phoneNumber.isEmpty) {
       return showErrorDialog("Invalid phone number", context);
     }
 

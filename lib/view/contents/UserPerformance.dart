@@ -30,7 +30,7 @@ class _UserPerformanceState extends State<UserPerformance> {
                     ),
                   );
                 }, childCount: logic.performanceData.length))
-              : SliverToBoxAdapter(
+              : const SliverToBoxAdapter(
                   child: Center(
                     child: Text("Performance data not available"),
                   ),
@@ -52,7 +52,7 @@ class _UserPerformanceState extends State<UserPerformance> {
               children: [
                 Text(
                   key,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
                 Text(value != null ? value : "")
               ],

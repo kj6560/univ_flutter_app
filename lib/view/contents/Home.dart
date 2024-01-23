@@ -224,8 +224,8 @@ class _HomeState extends State<Home> {
                                               padding:
                                                   const EdgeInsets.all(2.0),
                                               child: Text(
-                                                "${DateFormat('d MMM y').format(controller.events[index].eventDate)}",
-                                                style: TextStyle(
+                                                DateFormat('d MMM y').format(controller.events[index].eventDate),
+                                                style: const TextStyle(
                                                   color: Values.primaryColor,
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.bold,

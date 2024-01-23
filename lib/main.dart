@@ -14,6 +14,7 @@ import 'package:univ_app/view/pages/myresetpassword.dart';
 import 'package:univ_app/view/pages/mysocialprofile.dart';
 import 'package:univ_app/view/pages/myuserperformance.dart';
 import 'package:univ_app/view/pages/myuserprofile.dart';
+import 'package:univ_app/view/pages/mypickaction.dart';
 import 'package:univ_app/view/pages/mywelcomepage.dart';
 
 void main() {
@@ -24,6 +25,7 @@ void main() {
       GetPage(name: '/', page: () => const MySudoHome()),
       GetPage(name: '/welcome', page: () => const MyWelcome()),
       GetPage(name: '/home', page: () => const MyHome()),
+      GetPage(name: '/new', page: () => MyPickAction()),
       GetPage(name: '/social_profile', page: () => const MySocialProfile()),
       GetPage(name: '/user_profile', page: () => const MyUserProfile()),
       GetPage(name: '/performance', page: () => const MyUserPerformance()),

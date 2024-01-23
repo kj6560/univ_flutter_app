@@ -20,12 +20,12 @@ class _ResetPasswordState extends State<ResetPassword> {
   Widget build(BuildContext context) {
     return _isLoading
         ? Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Values.primaryColor.withOpacity(0.2),
             child: const Center(
                 child:
                     CircularProgressIndicator())) // Show progress indicator when loading
         : Scaffold(
-            backgroundColor: const Color(0xff3a57e8),
+            backgroundColor: Values.primaryColor,
             body: SizedBox(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
