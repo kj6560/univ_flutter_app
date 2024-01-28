@@ -6,6 +6,9 @@ import 'dart:convert';
 
 User userFromJson(String str) => User.fromJson(json.decode(str));
 
+List<User> usersFromJson(String str) =>
+    List<User>.from(json.decode(str).map((x) => User.fromJson(x)));
+
 String userToJson(User data) => json.encode(data.toJson());
 
 class User {
@@ -13,6 +16,7 @@ class User {
   String firstName;
   String lastName;
   String email;
+  String userName;
   String number;
   int userRole;
   String image;
@@ -34,6 +38,7 @@ class User {
     required this.firstName,
     required this.lastName,
     required this.email,
+    required this.userName,
     required this.number,
     required this.userRole,
     required this.image,
@@ -56,6 +61,7 @@ class User {
         firstName: json["first_name"] ?? "",
         lastName: json["last_name"] ?? "",
         email: json["email"] ?? "",
+        userName: json['user_name'] ?? "",
         number: json["number"] ?? "",
         userRole: json["user_role"] ?? 0,
         image: json["image"] ?? "",
@@ -69,10 +75,10 @@ class User {
         birthday: json["birthday"] != null
             ? DateTime.parse(json["birthday"])
             : DateTime(2017, 9, 7, 17, 30),
-        addressLine1: json["address_line1"],
-        city: json["city"],
-        state: json["state"],
-        pincode: json["pincode"],
+        addressLine1: json["address_line1"] ?? "",
+        city: json["city"] ?? "",
+        state: json["state"] ?? "",
+        pincode: json["pincode"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
@@ -80,6 +86,7 @@ class User {
         "first_name": firstName,
         "last_name": lastName,
         "email": email,
+        "user_name": userName,
         "number": number,
         "user_role": userRole,
         "image": image,

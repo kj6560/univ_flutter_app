@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:univ_app/controllers/userprofilecontroller.dart';
+import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 
 class UserProfile extends StatefulWidget {
@@ -15,24 +16,28 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  String selectedOption = 'Male', selectedMarriedOption = 'Married';
   DateTime selectedDate = DateTime.now(); // Track selected date
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context, var logic) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate, // Initial date set to selectedDate
+      initialDate: DateTime.parse(logic.birthday), // Initial date set to selectedDate
       firstDate: DateTime(1950), // Limit start date
-      lastDate: DateTime(2024), // Limit end date
+      lastDate: DateTime.now()
+          .add(Duration(days: 365 * 10)), // Allow dates up to 10 years from now
     );
     if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked; // Update selectedDate if a date is picked
-      });
+      selectedDate = picked;
+      logic.birthday = selectedDate.toIso8601String();
+      logic.update();
+      // Update selectedDate if a date is picked
     }
   }
 
+  String selectedOption = "";
   UserProfileController _userProfileController =
       Get.put(UserProfileController());
+
+  String selectedMarriedOption = '';
   final _imagePicker = ImagePicker();
   XFile? _imageFile;
   TextEditingController firstNameController = TextEditingController();
@@ -100,7 +105,7 @@ class _UserProfileState extends State<UserProfile> {
           },
         );
       }
-    }else{
+    } else {
       setState(() {
         _isLoading = false;
       });
@@ -151,6 +156,13 @@ class _UserProfileState extends State<UserProfile> {
     // Called when the state object is first created
     // Put initialization logic here
     super.initState();
+    setState(() {
+      selectedOption = _userProfileController.gender == 1 ? 'Male' : 'Female';
+      selectedMarriedOption =
+          _userProfileController.married == 1 ? 'Married' : 'UnMarried';
+    });
+
+    RemoteServices.showSnackBar(context);
   }
 
   @override
@@ -179,11 +191,12 @@ class _UserProfileState extends State<UserProfile> {
                                 _pickProfileImage();
                               },
                               child: CircleAvatar(
-                                  radius: 50,
-                                  foregroundColor: Colors.black,
-                                  backgroundColor: Colors.white,
-                                  backgroundImage: CachedNetworkImageProvider(
-                                      '${Values.profilePic}${logic.image}'),),
+                                radius: 50,
+                                foregroundColor: Colors.black,
+                                backgroundColor: Colors.white,
+                                backgroundImage: CachedNetworkImageProvider(
+                                    '${Values.profilePic}${logic.image}'),
+                              ),
                             ),
                           ),
                         ),
@@ -405,43 +418,32 @@ class _UserProfileState extends State<UserProfile> {
                                         8.0), // Adding rounded corners
                                   ),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       const Padding(
                                         padding: EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text("Maritial Status"),
-                                          ],
-                                        ),
+                                        child: Text("Martial Status"),
                                       ),
-                                      RadioListTile<String>(
+                                      RadioListTile<int>(
                                         title: const Text('Married'),
-                                        value: 'Married',
-                                        // Value for Female option
-                                        groupValue: selectedMarriedOption,
-                                        // Current selected option
+                                        value: 1,
+                                        groupValue: logic.married,
                                         onChanged: (value) {
-                                          setState(() {
-                                            selectedMarriedOption = value!;
-                                          });
+                                          logic.married = value!;
+                                          logic.update();
                                         },
-                                        selected: logic.married == 1,
                                       ),
-                                      RadioListTile<String>(
+                                      RadioListTile<int>(
                                         title: const Text('UnMarried'),
-                                        value: 'UnMarried',
-                                        // Value for Male option
-                                        groupValue: selectedMarriedOption,
-                                        // Current selected option
+                                        value: 2,
+                                        groupValue: logic.married,
                                         onChanged: (value) {
-                                          setState(() {
-                                            selectedMarriedOption = value!;
-                                          });
+                                          // Update the married status in the controller
+                                          logic.married = value!;
+                                          // Trigger a rebuild of the widget
+                                          logic.update();
                                         },
-                                        selected: logic.married == 2,
                                       ),
                                     ],
                                   ),
@@ -458,44 +460,35 @@ class _UserProfileState extends State<UserProfile> {
                                         8.0), // Adding rounded corners
                                   ),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       const Padding(
                                         padding: EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text("Gender"),
-                                          ],
-                                        ),
+                                        child: Text("Gender"),
                                       ),
-                                      RadioListTile<String>(
-                                        title: const Text('Female'),
-                                        value: 'Female',
-
-                                        // Value for Female option
-                                        groupValue: selectedOption,
-                                        // Current selected option
+                                      RadioListTile<int>(
+                                        title: const Text('Male'),
+                                        value: 1,
+                                        groupValue: logic.gender,
                                         onChanged: (value) {
-                                          setState(() {
-                                            selectedOption = value!;
-                                          });
+                                          // Update the gender in the controller
+                                          logic.gender = value!;
+                                          // Trigger a rebuild of the widget
+                                          logic.update();
                                         },
-                                        selected: logic.gender == 2,
                                       ),
-                                      RadioListTile<String>(
-                                          title: const Text('Male'),
-                                          value: 'Male',
-                                          // Value for Male option
-                                          groupValue: selectedOption,
-                                          // Current selected option
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedOption = value!;
-                                            });
-                                          },
-                                          selected: logic.gender == 1),
+                                      RadioListTile<int>(
+                                        title: const Text('Female'),
+                                        value: 2,
+                                        groupValue: logic.gender,
+                                        onChanged: (value) {
+                                          // Update the gender in the controller
+                                          logic.gender = value!;
+                                          // Trigger a rebuild of the widget
+                                          logic.update();
+                                        },
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -548,7 +541,7 @@ class _UserProfileState extends State<UserProfile> {
                                                   const EdgeInsets.all(3.0),
                                               child: ElevatedButton(
                                                 onPressed: () =>
-                                                    _selectDate(context),
+                                                    _selectDate(context,logic),
                                                 child: Text('Select'),
                                               ),
                                             ),

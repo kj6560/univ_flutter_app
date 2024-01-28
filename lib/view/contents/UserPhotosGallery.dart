@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:univ_app/controllers/slidercontroller.dart';
 import 'package:univ_app/controllers/eventcontroller.dart';
 import 'package:univ_app/controllers/userphotoscontroller.dart';
+import 'package:univ_app/models/user.dart';
 import 'package:univ_app/utility/values.dart';
 
 class UserPhotosGallery extends StatefulWidget {
@@ -16,6 +17,7 @@ class _UserPhotosGalleryState extends State<UserPhotosGallery> {
 
   @override
   Widget build(BuildContext context) {
+
     return GetX<UserPhotosController>(
       builder: (logic) {
         return SliverGrid(

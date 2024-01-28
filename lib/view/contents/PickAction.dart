@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:univ_app/controllers/postcontroller.dart';
 import 'package:univ_app/models/post.dart';
+import 'package:univ_app/services/remote_services.dart';
 
 class PickAction extends StatefulWidget {
   @override
@@ -30,6 +31,7 @@ class _PickActionState extends State<PickAction>
   void initState() {
     super.initState();
     _fetchGalleryImages();
+    RemoteServices.showSnackBar(context);
   }
 
   List<Widget> _prepareMediaList(List<XFile> imageFiles) {

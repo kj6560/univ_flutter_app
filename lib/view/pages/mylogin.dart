@@ -33,17 +33,11 @@ class _MyLoginState extends State<MyLogin> {
       if (response.statusCode == 200) {
         final prefs = await SharedPreferences.getInstance();
 
-
-        // String communityToken = await loginToCommunity(email,password,prefs);
-        // prefs.setString("communityToken", communityToken);
-
         var responseObject = json.decode(response.body);
 
         prefs.setString("token", responseObject['token']);
         var userObj = responseObject['user'];
         prefs.setInt("id", userObj['id']);
-
-        prefs.setBool("show_welcome", false);
         prefs.setString("email", userObj['email']);
         prefs.setString("first_name", userObj['first_name']);
         prefs.setString("last_name", userObj['last_name']);
@@ -62,13 +56,10 @@ class _MyLoginState extends State<MyLogin> {
         prefs.setString("city", userObj['city'] ?? "");
         prefs.setString("state", userObj['state'] ?? "");
         prefs.setString("pincode", userObj['pincode'] ?? "");
-        var _token = prefs.getString("token");
         setState(() {
           _isLoading = false;
         });
-        if (_token != null) {
-          Get.offNamed("/home");
-        }
+        Get.offAllNamed("/home");
       }
     } catch (e) {
       print(e.toString());
@@ -93,7 +84,7 @@ class _MyLoginState extends State<MyLogin> {
             color: Values.primaryColor.withOpacity(0.2),
             child: const Center(
                 child:
-                    CircularProgressIndicator())) // Show progress indicator when loading
+                    CircularProgressIndicator()))
         : Scaffold(
             backgroundColor: const Color(0xffe6e6e6),
             body: Stack(
@@ -245,7 +236,7 @@ class _MyLoginState extends State<MyLogin> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 16, 0, 30),
+                            padding: const EdgeInsets.fromLTRB(0, 25, 0, 30),
                             child: Align(
                               alignment: Alignment.centerRight,
                               child: InkWell(
@@ -259,33 +250,36 @@ class _MyLoginState extends State<MyLogin> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontStyle: FontStyle.normal,
-                                    fontSize: 14,
+                                    fontSize: 16,
                                     color: Values.primaryColor,
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          MaterialButton(
-                            onPressed: () {
-                              login(emailController.text.toString(),
-                                  passwordController.text.toString());
-                            },
-                            color: Values.primaryColor,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
-                            padding: const EdgeInsets.all(16),
-                            textColor: const Color(0xffffffff),
-                            height: 40,
-                            minWidth: MediaQuery.of(context).size.width,
-                            child: const Text(
-                              "Login",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: MaterialButton(
+                              onPressed: () {
+                                login(emailController.text.toString(),
+                                    passwordController.text.toString());
+                              },
+                              color: Values.primaryColor,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                              padding: const EdgeInsets.all(16),
+                              textColor: const Color(0xffffffff),
+                              height: 40,
+                              minWidth: MediaQuery.of(context).size.width,
+                              child: const Text(
+                                "Login",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                ),
                               ),
                             ),
                           ),
@@ -297,7 +291,7 @@ class _MyLoginState extends State<MyLogin> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 4, 0),
+                                  padding: EdgeInsets.fromLTRB(0, 2, 8, 0),
                                   child: Text(
                                     "Don't have an account?",
                                     textAlign: TextAlign.start,
@@ -305,7 +299,7 @@ class _MyLoginState extends State<MyLogin> {
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontStyle: FontStyle.normal,
-                                      fontSize: 14,
+                                      fontSize: 16,
                                       color: Color(0xff000000),
                                     ),
                                   ),
@@ -321,7 +315,7 @@ class _MyLoginState extends State<MyLogin> {
                                     style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.normal,
-                                      fontSize: 12,
+                                      fontSize: 18,
                                       color: Color(0xff000000),
                                     ),
                                   ),
@@ -340,20 +334,3 @@ class _MyLoginState extends State<MyLogin> {
   }
 }
 
-Future<String> loginToCommunity(String email,String password, SharedPreferences prefs) async{
-  print(Uri.parse('${Values.communityBaseUrl}/auth/login'));
-  http.Response responseCommunity =
-      await http.post(Uri.parse('${Values.communityBaseUrl}/auth/login'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode({'email': email, 'password': password}));
-
-  if (responseCommunity.statusCode == 200) {
-    print("logged in to community");
-    var responseCommunityObject = json.decode(responseCommunity.body);
-    if(responseCommunityObject['token'] !=null)
-      return responseCommunityObject['token'];
-  }
-  return "";
-}

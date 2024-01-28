@@ -38,10 +38,10 @@ class _MyCommunityBottomNavigationBarState
                     )),
               ],
             ),
-            Divider(
+            const Divider(
               height: 20,
               thickness: 2,
-              color: const Color.fromRGBO(26, 188, 156, 70),
+              color: Color.fromRGBO(26, 188, 156, 70),
             ),
             InkWell(
               onTap: () {
@@ -49,8 +49,8 @@ class _MyCommunityBottomNavigationBarState
 
                 //_pickImage();
               },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -65,8 +65,8 @@ class _MyCommunityBottomNavigationBarState
 
                 //_pickVideo();
               },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -81,8 +81,8 @@ class _MyCommunityBottomNavigationBarState
 
                 //_pickCertificate();
               },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -103,15 +103,18 @@ class _MyCommunityBottomNavigationBarState
         Get.offAllNamed("/home");
         break;
       case 1:
-        Get.offAllNamed("/search");
+        Get.offAllNamed("/community");
         break;
       case 2:
-        Get.offAllNamed("/new");
+        Get.offAllNamed("/search");
         break;
       case 3:
-        Get.offAllNamed("/reels");
+        Get.offAllNamed("/new");
         break;
       case 4:
+        Get.offAllNamed("/reels");
+        break;
+      case 5:
         Get.offAllNamed("/social_profile");
         break;
       default:
@@ -133,21 +136,25 @@ class _MyCommunityBottomNavigationBarState
       setState(() {
         currentRoute = 0;
       });
-    } else if (Get.currentRoute == "/search") {
+    }else if (Get.currentRoute == "/community") {
       setState(() {
         currentRoute = 1;
       });
-    } else if (Get.currentRoute == "/new") {
+    } else if (Get.currentRoute == "/search") {
       setState(() {
         currentRoute = 2;
       });
-    } else if (Get.currentRoute == "/reels") {
+    } else if (Get.currentRoute == "/new") {
       setState(() {
         currentRoute = 3;
       });
     } else if (Get.currentRoute == "/reels") {
       setState(() {
         currentRoute = 4;
+      });
+    } else if (Get.currentRoute == "/reels") {
+      setState(() {
+        currentRoute = 5;
       });
     }
     loadProfilePicture();
@@ -157,13 +164,15 @@ class _MyCommunityBottomNavigationBarState
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.home, size: 20), label: ""),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.icons, size: 20), label: ""),
+        const BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.magnifyingGlass, size: 20), label: ""),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.squarePlus, size: 20), label: ""),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.film, size: 20), label: ""),
         BottomNavigationBarItem(
             icon: CircleAvatar(

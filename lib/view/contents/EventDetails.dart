@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/controllers/eventdetailscontroller.dart';
 import 'package:get/get.dart';
+import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -26,6 +27,7 @@ class _EventDetailsState extends State<EventDetails> {
     setState(() {
       event_id = Get.parameters['event_id'];
     });
+    RemoteServices.showSnackBar(context);
   }
 
   @override

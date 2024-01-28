@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:univ_app/controllers/categorycontroller.dart';
 import 'package:univ_app/controllers/slidercontroller.dart';
 import 'package:univ_app/models/category.dart';
+import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 import 'package:univ_app/controllers/eventcontroller.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -26,6 +27,12 @@ class _HomeState extends State<Home> {
   var _isLoading = false;
   final cache = DefaultCacheManager();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    RemoteServices.showSnackBar(context);
+  }
   @override
   Widget build(BuildContext context) {
     return _isLoading

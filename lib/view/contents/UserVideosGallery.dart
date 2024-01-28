@@ -3,6 +3,7 @@ import 'package:flutter_cache_manager/file.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:univ_app/controllers/uservideoscontroller.dart';
+import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 import 'package:video_player/video_player.dart';
 
@@ -17,6 +18,7 @@ class _UserVideosGalleryState extends State<UserVideosGallery> {
   @override
   void initState() {
     super.initState();
+    RemoteServices.showSnackBar(context);
   }
 
   @override

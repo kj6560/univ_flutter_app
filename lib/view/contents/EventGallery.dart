@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/controllers/eventdetailscontroller.dart';
 import 'package:univ_app/controllers/eventgallerycontroller.dart';
+import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 
 class EventGallery extends StatefulWidget {
@@ -30,6 +31,7 @@ class _EventGalleryState extends State<EventGallery>
   void initState() {
     super.initState();
     _tabController = TabController(length: myTabs.length, vsync: this);
+    RemoteServices.showSnackBar(context);
   }
 
 

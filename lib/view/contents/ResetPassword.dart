@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -42,7 +43,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(16.0),
                           topRight: Radius.circular(16.0)),
-                      border: Border.all(color: const Color(0x4d9e9e9e), width: 1),
+                      border:
+                          Border.all(color: const Color(0x4d9e9e9e), width: 1),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 40, 16, 16),
@@ -162,7 +164,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                             ),
                             TextField(
                               controller: _confirmPasswordController,
-                              obscureText: false,
+                              obscureText: true,
                               textAlign: TextAlign.start,
                               maxLines: 1,
                               style: const TextStyle(
@@ -213,7 +215,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                       _confirmPasswordController.text
                                           .toString());
                                 },
-                                color: const Color(0xff3a57e8),
+                                color: Values.primaryColor,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.0),
@@ -261,7 +263,8 @@ class _ResetPasswordState extends State<ResetPassword> {
     setState(() {
       _isLoading = true;
     });
-    if (password == confirmPassword && Values.isValidPassword(password)) {
+    if (password.contains(confirmPassword) &&
+        Values.isValidPassword(password)) {
       try {
         final prefs = await SharedPreferences.getInstance();
         var savedEmail = prefs.getString("email_for_otp");
@@ -305,7 +308,41 @@ class _ResetPasswordState extends State<ResetPassword> {
         print(e.toString());
       } finally {}
     } else {
-      print("${password} and ${confirmPassword}");
+      if (Values.isValidPassword(password)) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Registration'),
+                content: Text("Passwords donot match. please try again"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            });
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Registration'),
+                content: Text("Invalid password. Password should con"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            });
+      }
     }
   }
 }

@@ -44,18 +44,23 @@ class _CommunityState extends State<Community>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: CachedNetworkImageProvider(
-                        '${Values.profilePic}${post.postCreatedByUserIcon}'),
+                InkWell(
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: CachedNetworkImageProvider(
+                          '${Values.profilePic}${post.postCreatedByUserIcon}'),
+                    ),
+                    title: Text(
+                      post.postCreatedByUsername,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      DateFormat('yyyy-MM-dd').format(post.postCreatedAt),
+                    ),
                   ),
-                  title: Text(
-                    post.postCreatedByUsername,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(
-                    DateFormat('yyyy-MM-dd').format(post.postCreatedAt),
-                  ),
+                  onTap: () {
+                    logic.userGoingToSocialProfile(post.postCreatedBy);
+                  },
                 ),
 
                 // Display all media items

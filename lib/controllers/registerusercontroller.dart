@@ -44,6 +44,8 @@ class RegisterUserController extends GetxController {
           );
         },
       );
+    }else{
+      showErrorDialog("A user with email: $email already exists!! Please login to continue.", context);
     }
   }
 

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -35,7 +37,6 @@ class RemoteServices {
       var jsonString = response.body;
       return slidersFromJson(jsonString);
     } else {
-      //show error message
       return null;
     }
   }
@@ -53,7 +54,6 @@ class RemoteServices {
       var jsonString = response.body;
       return categoryFromJson(jsonString);
     } else {
-      //show error message
       return null;
     }
   }
@@ -113,6 +113,7 @@ class RemoteServices {
   }
 
   static fetchEventFiles(var event_id) async {
+    print(event_id);
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     String urL = "${Values.eventFiles}?event_id=$event_id";
@@ -236,18 +237,18 @@ class RemoteServices {
   static Future<bool?> registerUser(var firstName, var lastName, var email,
       var phoneNumber, var password) async {
     try {
+      var data = jsonEncode({
+        'first_name': firstName,
+        'last_name': lastName,
+        'email': email,
+        'phone': phoneNumber,
+        'password': password
+      });
       http.Response response = await http.post(Uri.parse(Values.register),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
-          body: jsonEncode({
-            'first_name': firstName,
-            'last_name': lastName,
-            'email': email,
-            'phone': phoneNumber,
-            'password': password
-          }));
-      print(jsonDecode(response.body));
+          body: data);
       if (response.statusCode == 200) {
         var responseObj = jsonDecode(response.body);
         if (responseObj['success']) {
@@ -358,5 +359,143 @@ class RemoteServices {
       print(e);
     }
     return false;
+  }
+
+  static void showSnackBar(BuildContext context) async {
+    if (!await RemoteServices.hasInternet()) {
+      const snackBar = SnackBar(
+        content: Text('No Internet!'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+static Future<User?> fetchProfile(int? id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+
+      http.Response response = await http.get(
+        Uri.parse("${Values.fetchProfile}?user_id=$id"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        var resp = jsonDecode(response.body);
+        return User.fromJson(resp['user']);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+  static Future<String?> fetchUsers(String userName) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+
+      http.Response response = await http.get(
+        Uri.parse("${Values.fetchUsers}?user_name=$userName"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        print(response.body);
+        return response.body;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static followUser(int? follower_id, int followed_id) async {
+    try {
+
+      final prefs = await SharedPreferences.getInstance();
+      var data = {
+        "follow_user": followed_id,
+        "followed_by": follower_id,
+      };
+
+      var token = prefs.getString("token");
+
+      http.Response response = await http.post(
+        Uri.parse(Values.followUser),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data), // Convert the data map to JSON string
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  static fetchFollowerData(int followed_id,int current_user_profile) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      int? id = prefs.getInt("id");
+      var data = {
+        "check_user": followed_id,
+        "current_user_id": id,
+        "current_user_profile":current_user_profile
+      };
+      print(data);
+      var token = prefs.getString("token");
+
+      http.Response response = await http.post(
+        Uri.parse(Values.fetchFollowerData),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data), // Convert the data map to JSON string
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+  static Future<String?> fetchUserById(int id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+
+      http.Response response = await http.get(
+        Uri.parse("${Values.fetchUserById}?id=$id"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        print(response.body);
+        return response.body;
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

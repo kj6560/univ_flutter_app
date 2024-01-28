@@ -4,6 +4,8 @@ import 'package:univ_app/models/UserFile.dart';
 import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 
+import '../models/user.dart';
+
 class UserCertificatesController extends GetxController {
   var userFiles = List<UserFile>.empty().obs;
   @override
@@ -14,9 +16,15 @@ class UserCertificatesController extends GetxController {
   }
 
   void fetchUserPhotos() async {
-    final prefs = await SharedPreferences
-        .getInstance();
-    int? id = await prefs.getInt("id");
+    User? data = Get.arguments;
+    int? id = 0;
+    if(data != null){
+      id = data.id;
+    }else{
+      final prefs = await SharedPreferences
+          .getInstance();
+      id = await prefs.getInt("id");
+    }
     var all_photos = await RemoteServices.fetchUserFiles(id, 3);
     if (all_photos != null) {
       userFiles.value = all_photos;

@@ -15,6 +15,7 @@ import 'package:univ_app/view/pages/mysocialprofile.dart';
 import 'package:univ_app/view/pages/myuserperformance.dart';
 import 'package:univ_app/view/pages/myuserprofile.dart';
 import 'package:univ_app/view/pages/mypickaction.dart';
+import 'package:univ_app/view/pages/myusersearch.dart';
 import 'package:univ_app/view/pages/mywelcomepage.dart';
 
 void main() {
@@ -23,7 +24,7 @@ void main() {
     initialRoute: '/',
     getPages: [
       GetPage(name: '/', page: () => const MySudoHome()),
-      GetPage(name: '/welcome', page: () => const MyWelcome()),
+      GetPage(name: '/search', page: () => const MyUserSearch()),
       GetPage(name: '/home', page: () => const MyHome()),
       GetPage(name: '/new', page: () => MyPickAction()),
       GetPage(name: '/social_profile', page: () => const MySocialProfile()),
@@ -61,12 +62,9 @@ class _MySudoHomeState extends State<MySudoHome> {
   void isReady() async {
     final prefs = await SharedPreferences.getInstance();
     var _token = prefs.getString("token");
-    bool? show_welcome =  prefs.getBool("show_welcome");
-    bool? welcome = show_welcome ?? false;
+
     if (_token != null && _token!.isNotEmpty) {
       Get.offAllNamed("/home");
-    } else if(welcome){
-      Get.offAllNamed("/welcome");
     }else{
       Get.offAllNamed("/login");
     }

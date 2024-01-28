@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -19,6 +20,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     // TODO: implement initState
     super.initState();
     checkAttempted();
+    RemoteServices.showSnackBar(context);
   }
 
   @override

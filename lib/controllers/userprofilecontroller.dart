@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'package:univ_app/services/remote_services.dart';
+
 class UserProfileController extends GetxController {
   String email = "";
   String first_name = "";
@@ -28,13 +29,34 @@ class UserProfileController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
-    super.onInit();
     fetchProfileData();
+    super.onInit();
+
   }
 
   void fetchProfileData() async {
-
     final prefs = await SharedPreferences.getInstance();
+    int? id = prefs.getInt("id");
+    var profileData = await RemoteServices.fetchProfile(id);
+
+    if (profileData != null) {
+      prefs.setString("first_name", profileData.firstName);
+      prefs.setString("last_name", profileData.lastName);
+      prefs.setString("about", profileData.about);
+      prefs.setString("number", profileData.number);
+      prefs.setInt("gender", profileData.gender);
+      prefs.setInt("married", profileData.married);
+      prefs.setString("height", profileData.height.toString());
+      prefs.setString("weight", profileData.weight.toString());
+      prefs.setString("age", calculateAge(profileData.birthday).toString());
+      prefs.setString("user_doc", user_doc);
+      String formattedDate = DateFormat('y-MM-d').format(profileData.birthday);
+      prefs.setString("birthday", formattedDate);
+      prefs.setString("address_line1", profileData.addressLine1);
+      prefs.setString("city", profileData.city);
+      prefs.setString("state", profileData.state);
+      prefs.setString("pincode", profileData.pincode);
+    }
     email = prefs.getString("email")!;
     first_name = prefs.getString("first_name")!;
     last_name = prefs.getString("last_name")!;
@@ -61,15 +83,16 @@ class UserProfileController extends GetxController {
       var last_name,
       var about,
       var number,
-      var gender,
-      var married,
+      var _gender,
+      var _married,
       var height,
       var weight,
       var address_line1,
       var city,
       var state,
       var pincode,
-      DateTime dob,var context) async {
+      DateTime dob,
+      var context) async {
     final prefs = await SharedPreferences.getInstance();
     int? user_id = prefs.getInt("id");
     String? email = prefs.getString("email");
@@ -83,7 +106,7 @@ class UserProfileController extends GetxController {
     prefs.setString("weight", weight.toString());
     prefs.setString("age", calculateAge(dob).toString());
     prefs.setString("user_doc", user_doc);
-    String formattedDate = DateFormat('y-MM-d').format(dob);
+    String formattedDate = DateTime.parse(birthday).toIso8601String();
     prefs.setString("birthday", formattedDate);
     prefs.setString("address_line1", address_line1);
     prefs.setString("city", city);
@@ -115,7 +138,7 @@ class UserProfileController extends GetxController {
     // Convert Map to JSON string
     String jsonPayload = jsonEncode(jsonData);
     bool? updated = await RemoteServices.updateProfile(jsonPayload);
-    if(updated! && updated){
+    if (updated! && updated) {
       return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -126,6 +149,7 @@ class UserProfileController extends GetxController {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
+                  Get.offAllNamed("/user_profile");
                 },
                 child: const Text('OK'),
               ),
@@ -133,7 +157,7 @@ class UserProfileController extends GetxController {
           );
         },
       );
-    }else{
+    } else {
       return showDialog(
         context: context,
         builder: (BuildContext context) {

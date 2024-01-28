@@ -3,17 +3,20 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/controllers/socialprofilecontroller.dart';
+import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 import 'package:univ_app/view/contents/UserCertificates.dart';
-import 'package:univ_app/view/contents/UserPerformance.dart';
 import 'package:univ_app/view/contents/UserPhotosGallery.dart';
 import 'package:univ_app/view/contents/UserVideosGallery.dart';
 
 import 'package:image_picker/image_picker.dart';
+
+import '../../models/user.dart';
 
 class SocialProfile extends StatefulWidget {
   @override
@@ -27,10 +30,14 @@ class _SocialProfileState extends State<SocialProfile>
   int _selectedIndex = 0;
   SocialProfileController socialProfileController =
       Get.put(SocialProfileController());
+  late User? user;
+  int current_user_id = 0;
 
   @override
   void initState() {
     // TODO: implement initState
+    setCurrentUser();
+    user = Get.arguments;
     tabController = TabController(length: 3, vsync: this);
     tabController.addListener(() {
       setState(() {
@@ -38,13 +45,21 @@ class _SocialProfileState extends State<SocialProfile>
       });
     });
     super.initState();
+    RemoteServices.showSnackBar(context);
+  }
+
+  setCurrentUser() async {
+    var prefs = await SharedPreferences.getInstance();
+    setState(() {
+      current_user_id = prefs.getInt("id")!;
+    });
   }
 
   Widget _getTabAtIndex() {
     var list = [
       UserPhotosGallery(), // FIRST ITEM
       UserVideosGallery(), // SECOND ITEM
-      UserCertificates(), // THIRD ITEM
+      const UserCertificates(), // THIRD ITEM
     ];
     return list[_selectedIndex];
   }
@@ -239,7 +254,6 @@ class _SocialProfileState extends State<SocialProfile>
         type,
         _imageFile!.path,
       ));
-
 
       // Send the request
       var response = await request.send();
@@ -436,7 +450,7 @@ class _SocialProfileState extends State<SocialProfile>
         SliverToBoxAdapter(
           child: Container(
             margin:
-                const EdgeInsets.only(left: 0, top: 10, right: 10, bottom: 0),
+                const EdgeInsets.only(left: 0, top: 5, right: 10, bottom: 0),
             child: _isLoading
                 ? Container(
                     color: Values.primaryColor.withOpacity(0.2),
@@ -448,11 +462,13 @@ class _SocialProfileState extends State<SocialProfile>
                     children: [
                       IconButton(
                           onPressed: () {
-                            _showBottomSheet(context);
+                            if (user == null) {
+                              _showBottomSheet(context);
+                            }
                           },
                           icon: const Icon(
-                            Icons.add,
-                            size: 30,
+                            FontAwesomeIcons.ellipsisVertical,
+                            size: 18,
                           ))
                     ],
                   ),
@@ -462,128 +478,146 @@ class _SocialProfileState extends State<SocialProfile>
           assignId: true,
           builder: (logic) {
             return SliverToBoxAdapter(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            left: 10, top: 5, right: 10, bottom: 10),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 52,
-                              backgroundColor: Colors.black,
-                              child: InkWell(
-                                onTap: () {
-                                  _pickProfileImage();
-                                },
-                                child: CircleAvatar(
-                                    radius: 50,
-                                    foregroundColor: Colors.black,
-                                    backgroundColor: Colors.white,
-                                    backgroundImage: CachedNetworkImageProvider(
-                                        Values.profilePic + logic.profilePic)),
-                              ),
-                            ),
-                            Container(
-                                margin: const EdgeInsets.only(
-                                    left: 0, top: 5, right: 0, bottom: 0),
-                                child: Column(
-                                  children: [
-                                    Text(logic.profileName,
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold)),
-                                    InkWell(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(
+                              left: 5, top: 5, right: 0, bottom: 0),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 42,
+                                backgroundColor: Colors.black,
+                                child: user == null
+                                    ? InkWell(
                                         onTap: () {
-                                          Get.offAllNamed("/user_profile");
+                                          _pickProfileImage();
                                         },
-                                        child: Text("Edit",style: TextStyle(color:Values.primaryColor ,fontSize: 16),))
-                                  ],
-                                )),
+                                        child: CircleAvatar(
+                                            radius: 40,
+                                            foregroundColor: Colors.black,
+                                            backgroundColor: Colors.white,
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
+                                                    Values.profilePic +
+                                                        logic.profilePic)),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 50,
+                                        foregroundColor: Colors.black,
+                                        backgroundColor: Colors.white,
+                                        backgroundImage:
+                                            CachedNetworkImageProvider(
+                                                Values.profilePic +
+                                                    logic.profilePic)),
+                              ),
+                              Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 0, top: 5, right: 0, bottom: 0),
+                                  child: Column(
+                                    children: [
+                                      Text(logic.profileName,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold)),
+                                      user == null || user!.id == current_user_id
+                                          ? InkWell(
+                                              onTap: () {
+                                                Get.offAllNamed(
+                                                    "/user_profile");
+                                              },
+                                              child: const Text(
+                                                "Edit",
+                                                style: TextStyle(
+                                                    color: Values.primaryColor,
+                                                    fontSize: 16),
+                                              ))
+                                          : const SizedBox(
+                                              height: 1,
+                                            )
+                                    ],
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                //posts
+                                Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 5, top: 0, right: 10, bottom: 0),
+                                    child: Column(
+                                      children: [
+                                        Text("${logic.following}",
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                            )),
+                                        const Text("Posts",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                            )),
+                                      ],
+                                    )),
+                                //following
+                                Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 5, top: 0, right: 10, bottom: 0),
+                                    child: Column(
+                                      children: [
+                                        Text("${logic.following}",
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                            )),
+                                        const Text("Following",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                            )),
+                                      ],
+                                    )),
+                                //followers
+                                Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 5, top: 0, right: 10, bottom: 0),
+                                    child: Column(
+                                      children: [
+                                        Text("${logic.followers}",
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                            )),
+                                        const Text("Followers",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                            )),
+                                      ],
+                                    ))
+                              ],
+                            ),
+                            const SizedBox(height: 1),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                              margin: const EdgeInsets.only(
-                                  left: 5, top: 0, right: 20, bottom: 0),
-                              child: const Column(
-                                children: [
-                                  Text("Following",
-                                      style: TextStyle(
-                                        color: Values.primaryColor,
-                                        fontSize: 18,
-                                      )),
-                                  Text("0",
-                                      style: TextStyle(
-                                        color: Values.primaryColor,
-                                        fontSize: 18,
-                                      )),
-                                ],
-                              )),
-                          Container(
-                              margin: const EdgeInsets.only(
-                                  left: 10, top: 1, right: 20, bottom: 0),
-                              child: const Column(
-                                children: [
-                                  Text("Followers",
-                                      style: TextStyle(
-                                        color: Values.primaryColor,
-                                        fontSize: 18,
-                                      )),
-                                  Text("0",
-                                      style: TextStyle(
-                                        color: Values.primaryColor,
-                                        fontSize: 18,
-                                      )),
-                                ],
-                              ))
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Container(
-                          width: 150,
-                          child: ElevatedButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Logout'),
-                                      content: const Text(
-                                          'Are you sure you want to logout ?'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            logic.logout(); // Close the dialog
-                                          },
-                                          child: const Text('Yes'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('No'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: const Text("LOGOUT"))),
-                    ],
-                  )
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -593,10 +627,9 @@ class _SocialProfileState extends State<SocialProfile>
             builder: (logic) {
               return SliverToBoxAdapter(
                 child: Container(
-                    margin: const EdgeInsets.only(
-                        left: 10, top: 10, right: 8, bottom: 5),
+                    margin: const EdgeInsets.all(10),
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 15.0,right: 8.0),
+                      padding: const EdgeInsets.only(left: 15.0, right: 8.0),
                       child: Text(logic.about,
                           style: const TextStyle(
                             color: Colors.black,
@@ -605,6 +638,52 @@ class _SocialProfileState extends State<SocialProfile>
                     )),
               );
             }),
+        user != null && current_user_id != user!.id
+            ? GetBuilder<SocialProfileController>(builder: (logic) {
+                return SliverToBoxAdapter(
+                  child: Container(
+                    margin: EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        user != null
+                            ? SizedBox(
+                                width: 150,
+                                child: logic.followed != 2
+                                    ? ElevatedButton(
+                                        onPressed: logic.followed != 1
+                                            ? () {
+                                                if (user != null) {
+                                                  logic.followUser(
+                                                      user!.id, context);
+                                                }
+                                              }
+                                            : null,
+                                        child: Text(
+                                          logic.followed == 1
+                                              ? "FOLLOWED"
+                                              : "FOLLOW",
+                                        ))
+                                    : const SizedBox(
+                                        height: 0,
+                                      ))
+                            : const SizedBox(
+                                height: 0,
+                              ),
+                        SizedBox(
+                            width: 150,
+                            child: ElevatedButton(
+                                onPressed: () {}, child: const Text("Message")))
+                      ],
+                    ),
+                  ),
+                );
+              })
+            : SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 0,
+                ),
+              ),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -643,25 +722,25 @@ class _SocialProfileState extends State<SocialProfile>
       isScrollControlled: true,
       builder: (BuildContext builder) {
         return FractionallySizedBox(
-          heightFactor: 0.25,
+          heightFactor: 0.3,
           child: Column(children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                     icon: const Icon(
-                      Icons.close,
-                      size: 24,
+                      FontAwesomeIcons.circleXmark,
+                      size: 30,
                     )),
               ],
             ),
-            Divider(
-              height: 20,
+            const Divider(
+              height: 2,
               thickness: 2,
-              color: const Color.fromRGBO(26, 188, 156, 70),
+              color: Values.primaryColor,
             ),
             InkWell(
               onTap: () {
@@ -671,8 +750,8 @@ class _SocialProfileState extends State<SocialProfile>
                 });
                 _pickImage();
               },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -689,8 +768,8 @@ class _SocialProfileState extends State<SocialProfile>
                 });
                 _pickVideo();
               },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -707,8 +786,8 @@ class _SocialProfileState extends State<SocialProfile>
                 });
                 _pickCertificate();
               },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -717,6 +796,43 @@ class _SocialProfileState extends State<SocialProfile>
                 ),
               ),
             ),
+            user == null
+                ? Container(
+                    width: 150,
+                    child: InkWell(
+                      child: Center(child: const Text("LOGOUT")),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Logout'),
+                              content: const Text(
+                                  'Are you sure you want to logout ?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    socialProfileController
+                                        .logout(); // Close the dialog
+                                  },
+                                  child: const Text('Yes'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('No'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ))
+                : SizedBox(
+                    height: 0,
+                  )
           ]),
         );
       },

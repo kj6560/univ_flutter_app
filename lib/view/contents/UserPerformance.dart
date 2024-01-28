@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:univ_app/controllers/userperformancecontroller.dart';
+import 'package:univ_app/services/remote_services.dart';
 
 class UserPerformance extends StatefulWidget {
   @override
@@ -11,6 +12,12 @@ class _UserPerformanceState extends State<UserPerformance> {
   UserPerformanceController _userPerformanceController =
       Get.put(UserPerformanceController());
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    RemoteServices.showSnackBar(context);
+  }
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UserPerformanceController>(builder: (logic) {

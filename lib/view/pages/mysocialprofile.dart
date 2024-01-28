@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:univ_app/controllers/eventcontroller.dart';
-import 'package:univ_app/controllers/slidercontroller.dart';
+import 'package:flutter/services.dart';
 import 'package:univ_app/view/constantpages/bottomnavigationbar.dart';
-import 'package:univ_app/view/constantpages/myappbar.dart';
 import 'package:univ_app/view/contents/SocialProfile.dart';
 
 class MySocialProfile extends StatefulWidget {

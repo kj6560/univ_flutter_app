@@ -1,6 +1,8 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -8,9 +10,9 @@ import 'dart:convert';
 import 'package:univ_app/models/user.dart';
 
 class Values {
-  static const String siteUrl  = "http://192.168.1.2/public";//"https://univsportatech.com";
-  static const String baseUrl = "http://192.168.1.2/public";//"https://univsportatech.com" ;
-  static const String communityBaseUrl = "http://univsportatech.com:4000";
+  static const String siteUrl = "https://univsportatech.com";
+  static const String baseUrl = "https://univsportatech.com";
+
   static const String appName = "Univ";
   static const String sliderUrl = "$baseUrl/api/sliders";
   static const String sliderImageUrl = "$baseUrl/uploads/event_gallery/images";
@@ -28,6 +30,7 @@ class Values {
   static const String userImageUpload = "$baseUrl/api/userImageUpload";
   static const String uploadUserVideos = "$baseUrl/api/uploadUserVideos";
   static const String setProfile = "$baseUrl/api/setProfile";
+  static const String fetchProfile = "$baseUrl/api/getProfile";
   static const String register = "$baseUrl/api/register";
   static const String profilePicUpload = "$baseUrl/api/uploadProfilePicture";
   static const String logoutUrl = "$baseUrl/api/logout";
@@ -37,12 +40,14 @@ class Values {
 
   //community routes
   static const String fetchPosts = "$baseUrl/api/fetchPosts";
+  static const String fetchUsers = "$baseUrl/api/fetchUsers";
   static const String createPost = "$baseUrl/api/createPost";
-
-
-
+  static const String followUser = "$baseUrl/api/followUser";
+  static const String fetchFollowerData = "$baseUrl/api/followData";
+  static const String fetchUserById = "$baseUrl/api/fetchUserById";
 
   static const Color primaryColor = const Color.fromRGBO(26, 188, 156, 70);
+
   static bool isValidPhoneNumber(String phoneNumber) {
     // Regular expression for a typical 10-digit Indian phone number
     // Modify the regex pattern according to the phone number format you want to validate
@@ -117,12 +122,37 @@ class Values {
     }
     return user; // Return user (nullable) or null if not found
   }
-  static void cacheFile(String url){
+
+  static void cacheFile(String url) {
     final cache = DefaultCacheManager();
-    final cachedImage =
-    cache.getSingleFile(url);
+    final cachedImage = cache.getSingleFile(url);
     if (cachedImage == null) {
       cache.downloadFile(url);
     }
+  }
+
+  static String capitalize(String text) {
+    if (text == null || text.isEmpty) {
+      return text;
+    }
+    return text[0].toUpperCase() + text.substring(1);
+  }
+
+  static void showMsgDialog(
+      String label, String msg, context, Callback callback) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(label),
+            content: Text(msg),
+            actions: <Widget>[
+              TextButton(
+                onPressed: callback,
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        });
   }
 }

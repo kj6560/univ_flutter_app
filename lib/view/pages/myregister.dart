@@ -29,352 +29,395 @@ class _MyRegisterState extends State<MyRegister> {
   Widget build(BuildContext context) {
     return _isLoading
         ? Container(
-            color: Values.primaryColor.withOpacity(0.2),
-            child: const Center(
-                child:
-                    CircularProgressIndicator())) // Show progress indicator when loading
+        color: Values.primaryColor.withOpacity(0.2),
+        child: const Center(
+            child:
+            CircularProgressIndicator())) // Show progress indicator when loading
         : Scaffold(
-            backgroundColor: Values.primaryColor,
-            body: Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
+      backgroundColor: const Color(0xffe6e6e6),
+      body: Stack(
+        alignment: Alignment.topLeft,
+        children: [
+          Container(
+            margin: const EdgeInsets.all(0),
+            padding: const EdgeInsets.all(0),
+            width: MediaQuery.of(context).size.width,
+            height:
+            MediaQuery.of(context).size.height * 0.35000000000000003,
+            decoration: BoxDecoration(
+              color: Values.primaryColor,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.zero,
+              border:
+              Border.all(color: const Color(0x4d9e9e9e), width: 1),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+            padding: const EdgeInsets.all(0),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              color: const Color(0xffffffff),
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(16.0),
+              border:
+              Border.all(color: const Color(0x4d9e9e9e), width: 1),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    const CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Values.primaryColor,
+                      child: Image(
+                        image: AssetImage('assets/logo_white_act.png'),
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.scaleDown,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
+                      child: Align(
+                        alignment: Alignment.center,
                         child: Text(
-                          "Sign Up",
+                          "Create Account",
                           textAlign: TextAlign.start,
                           overflow: TextOverflow.clip,
                           style: TextStyle(
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal,
-                            fontSize: 24,
-                            color: Color(0xffffffff),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          controller: firstNameController,
-                          obscureText: false,
-                          textAlign: TextAlign.start,
-                          maxLines: 1,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                            fontSize: 14,
+                            fontSize: 22,
                             color: Color(0xff000000),
                           ),
-                          decoration: InputDecoration(
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            hintText: "First Name",
-                            hintStyle: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontStyle: FontStyle.normal,
-                              fontSize: 14,
-                              color: Color(0xff000000),
-                            ),
-                            filled: true,
-                            fillColor: const Color(0xfff2f2f3),
-                            isDense: false,
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 12),
-                            prefixIcon: const Icon(Icons.person,
-                                color: Values.primaryColor, size: 24),
-                          ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          controller: lastNameController,
-                          obscureText: false,
-                          textAlign: TextAlign.start,
-                          maxLines: 1,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                            fontSize: 14,
-                            color: Color(0xff000000),
-                          ),
-                          decoration: InputDecoration(
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            hintText: "Last Name",
-                            hintStyle: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontStyle: FontStyle.normal,
-                              fontSize: 14,
-                              color: Color(0xff000000),
-                            ),
-                            filled: true,
-                            fillColor: const Color(0xfff2f2f3),
-                            isDense: false,
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 12),
-                            prefixIcon: const Icon(Icons.person,
-                                color: Values.primaryColor, size: 24),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          controller: emailController,
-                          obscureText: false,
-                          textAlign: TextAlign.start,
-                          maxLines: 1,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                            fontSize: 14,
-                            color: Color(0xff000000),
-                          ),
-                          decoration: InputDecoration(
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            hintText: "Email",
-                            hintStyle: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontStyle: FontStyle.normal,
-                              fontSize: 14,
-                              color: Color(0xff000000),
-                            ),
-                            filled: true,
-                            fillColor: const Color(0xfff2f2f3),
-                            isDense: false,
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 12),
-                            prefixIcon: const Icon(Icons.mail,
-                                color: Values.primaryColor, size: 24),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          controller: numberController,
-                          obscureText: false,
-                          textAlign: TextAlign.start,
-                          maxLines: 1,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                            fontSize: 14,
-                            color: Color(0xff000000),
-                          ),
-                          decoration: InputDecoration(
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            hintText: "Phone Number",
-                            hintStyle: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontStyle: FontStyle.normal,
-                              fontSize: 14,
-                              color: Color(0xff000000),
-                            ),
-                            filled: true,
-                            fillColor: const Color(0xfff2f2f3),
-                            isDense: false,
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 12),
-                            prefixIcon: const Icon(Icons.contact_phone,
-                                color: Values.primaryColor, size: 24),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          controller: passwordController,
-                          obscureText: true,
-                          textAlign: TextAlign.start,
-                          maxLines: 1,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                            fontSize: 14,
-                            color: Color(0xff000000),
-                          ),
-                          decoration: InputDecoration(
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                              borderSide: const BorderSide(
-                                  color: Color(0x00ffffff), width: 1),
-                            ),
-                            hintText: "Password",
-                            hintStyle: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontStyle: FontStyle.normal,
-                              fontSize: 14,
-                              color: Color(0xff000000),
-                            ),
-                            filled: true,
-                            fillColor: const Color(0xfff2f2f3),
-                            isDense: false,
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 12),
-                            prefixIcon: const Icon(Icons.lock,
-                                color: Values.primaryColor, size: 24),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: MaterialButton(
-                          onPressed: () async {
-                            setState(() {
-                              _isLoading = true;
-                            });
+                    ),
 
-                            await _controller.registerUser(
-                              firstNameController.text.toString(),
-                              lastNameController.text.toString(),
-                              emailController.text.toString(),
-                              numberController.text.toString(),
-                              passwordController.text.toString(),
-                              context,
-                            );
-
-                            setState(() {
-                              _isLoading = false;
-                            });
-                          },
-                          color: const Color(0xffffd261),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller: firstNameController,
+                        obscureText: false,
+                        textAlign: TextAlign.start,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14,
+                          color: Color(0xff000000),
+                        ),
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
                           ),
-                          padding: const EdgeInsets.all(16),
-                          textColor: const Color(0xff4d4d4d),
-                          height: 50,
-                          minWidth: MediaQuery.of(context).size.width,
-                          child: const Text(
-                            "Create Account",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
-                            ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          hintText: "First Name",
+                          hintStyle: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14,
+                            color: Color(0xff000000),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xfff2f2f3),
+                          isDense: false,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 12),
+                          prefixIcon: const Icon(Icons.person,
+                              color: Values.primaryColor, size: 24),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller: lastNameController,
+                        obscureText: false,
+                        textAlign: TextAlign.start,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14,
+                          color: Color(0xff000000),
+                        ),
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          hintText: "Last Name",
+                          hintStyle: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14,
+                            color: Color(0xff000000),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xfff2f2f3),
+                          isDense: false,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 12),
+                          prefixIcon: const Icon(Icons.person,
+                              color: Values.primaryColor, size: 24),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller: emailController,
+                        obscureText: false,
+                        textAlign: TextAlign.start,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14,
+                          color: Color(0xff000000),
+                        ),
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          hintText: "Email",
+                          hintStyle: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14,
+                            color: Color(0xff000000),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xfff2f2f3),
+                          isDense: false,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 12),
+                          prefixIcon: const Icon(Icons.mail,
+                              color: Values.primaryColor, size: 24),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller: numberController,
+                        obscureText: false,
+                        textAlign: TextAlign.start,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14,
+                          color: Color(0xff000000),
+                        ),
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          hintText: "Phone Number",
+                          hintStyle: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14,
+                            color: Color(0xff000000),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xfff2f2f3),
+                          isDense: false,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 12),
+                          prefixIcon: const Icon(Icons.contact_phone,
+                              color: Values.primaryColor, size: 24),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller: passwordController,
+                        obscureText: true,
+                        textAlign: TextAlign.start,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14,
+                          color: Color(0xff000000),
+                        ),
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                            borderSide: const BorderSide(
+                                color: Color(0x00ffffff), width: 1),
+                          ),
+                          hintText: "Password",
+                          hintStyle: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14,
+                            color: Color(0xff000000),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xfff2f2f3),
+                          isDense: false,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 12),
+                          prefixIcon: const Icon(Icons.lock,
+                              color: Values.primaryColor, size: 24),
+                        ),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: MaterialButton(
+                        onPressed: () async {
+                          setState(() {
+                            _isLoading = true;
+                          });
+
+                          await _controller.registerUser(
+                            firstNameController.text.toString(),
+                            lastNameController.text.toString(),
+                            emailController.text.toString(),
+                            numberController.text.toString(),
+                            passwordController.text.toString(),
+                            context,
+                          );
+
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        },
+                        color: Values.primaryColor,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        padding: const EdgeInsets.all(16),
+                        textColor: const Color(0xffffffff),
+                        height: 40,
+                        minWidth: MediaQuery.of(context).size.width,
+                        child: const Text(
+                          "Create",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 18, 0, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(0, 2, 8, 0),
+                            child: Text(
                               "Already have an account?",
                               textAlign: TextAlign.start,
                               overflow: TextOverflow.clip,
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.normal,
-                                fontSize: 14,
-                                color: Color(0xffe2dcdc),
+                                fontSize: 16,
+                                color: Color(0xff000000),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                              child: InkWell(
-                                onTap: () {
-                                  Get.offAllNamed("/login");
-                                },
-                                child: const Text(
-                                  "SignIn",
-                                  textAlign: TextAlign.start,
-                                  overflow: TextOverflow.clip,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 14,
-                                    color: Color(0xffffffff),
-                                  ),
-                                ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Get.offAllNamed("/login");
+                            },
+                            child: const Text(
+                              "Login",
+                              textAlign: TextAlign.start,
+                              overflow: TextOverflow.clip,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 18,
+                                color: Color(0xff000000),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          );
+          ),
+        ],
+      ),
+    );
   }
 }
