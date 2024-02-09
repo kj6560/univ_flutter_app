@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:univ_app/controllers/postcontroller.dart';
 import 'package:univ_app/models/post.dart';
 import 'package:univ_app/services/remote_services.dart';
+import 'package:univ_app/utility/values.dart';
 
 class PickAction extends StatefulWidget {
   @override
@@ -59,7 +60,7 @@ class _PickActionState extends State<PickAction>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Post Type",
+                  "Post Type (Currently on Photo based posts are supported!)",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 3.0),
@@ -68,24 +69,45 @@ class _PickActionState extends State<PickAction>
                     for (String option in options)
                       Row(
                         children: [
-                          Radio(
-                            value: option,
-                            groupValue: selectedPostType,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedPostType = value as String;
-                              });
+                          option != ""
+                              ? AbsorbPointer(
+                                  child: Radio(
+                                    value: option,
+                                    groupValue: selectedPostType,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedPostType = value as String;
+                                      });
 
-                              if(selectedPostType == "Post"){
-                                post_type = 1;
-                              }else if(selectedPostType == "Video"){
-                                post_type = 2;
-                              }else if(selectedPostType == "Story"){
-                                post_type  = 3;
-                              }
-                              _fetchGalleryImages();
-                            },
-                          ),
+                                      if (selectedPostType == "Post") {
+                                        post_type = 1;
+                                      } else if (selectedPostType == "Video") {
+                                        post_type = 2;
+                                      } else if (selectedPostType == "Story") {
+                                        post_type = 3;
+                                      }
+                                      _fetchGalleryImages();
+                                    },
+                                  ),
+                                )
+                              : Radio(
+                                  value: option,
+                                  groupValue: selectedPostType,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedPostType = value as String;
+                                    });
+
+                                    if (selectedPostType == "Post") {
+                                      post_type = 1;
+                                    } else if (selectedPostType == "Video") {
+                                      post_type = 2;
+                                    } else if (selectedPostType == "Story") {
+                                      post_type = 3;
+                                    }
+                                    _fetchGalleryImages();
+                                  },
+                                ),
                           Text(option),
                         ],
                       ),
@@ -98,7 +120,7 @@ class _PickActionState extends State<PickAction>
         ),
         SliverGrid(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 1,
+            crossAxisCount: 2,
             crossAxisSpacing: 0.0,
             mainAxisSpacing: 0.0,
           ),
@@ -137,15 +159,21 @@ class _PickActionState extends State<PickAction>
                 padding: const EdgeInsets.only(right: 8.0, bottom: 10),
                 child: ElevatedButton(
                     onPressed: () {
-
                       List<PostMedia> mediaFiles = [];
-                      int i=0;
-                      _imageFile.map((imageFile) => (){
-                        PostMedia pm = PostMedia(mediaName: imageFile.path, mediaType: 1, mediaPosition: ++i,path:imageFile.path);
+                      int i = 0;
+                      for (XFile? imageFile in _imageFile) {
+                        PostMedia pm = PostMedia(
+                            mediaName: imageFile!.path,
+                            mediaType: 1,
+                            mediaPosition: ++i,
+                            path: imageFile.path);
                         mediaFiles.add(pm);
-                      });
-                      PostController.createPost(mediaFiles, postCaptionController.text,post_type);
-                    }, child: const Text("Create Post")),
+                      }
+
+                      PostController.createPost(mediaFiles,
+                          postCaptionController.text, post_type, context);
+                    },
+                    child: const Text("Create Post")),
               )
             ],
           ),

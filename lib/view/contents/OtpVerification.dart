@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/utility/values.dart';
 
+import '../../services/remote_services.dart';
+
 class OtpVerification extends StatefulWidget {
   @override
   State<OtpVerification> createState() => _OtpVerificationState();
@@ -14,6 +16,13 @@ class OtpVerification extends StatefulWidget {
 
 class _OtpVerificationState extends State<OtpVerification> {
   TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    RemoteServices.showSnackBar(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,54 +129,58 @@ class _OtpVerificationState extends State<OtpVerification> {
                   color: Color(0xff000000),
                 ),
                 onCodeChanged: (String code) {
-                  if(code.length == 6){
-                    _verifyOtp(code);
+                  if (code.length == 6) {
+                    _verifyOtp(code, context);
                   }
                 },
                 onSubmit: (String verificationCode) {
-                  if(verificationCode.length == 6){
-                    _verifyOtp(verificationCode);
+                  if (verificationCode.length == 6) {
+                    _verifyOtp(verificationCode, context);
                   }
                 },
               ),
             ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-                child: InkWell(
-                  onTap: () {
-                    print("clicked on resend");
-                  },
-                  child: const Text(
-                    "Resend Code",
-                    textAlign: TextAlign.start,
-                    overflow: TextOverflow.clip,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.normal,
-                      fontSize: 16,
-                      color: Values.primaryColor,
-                    ),
-                  ),
-                )),
+            // Padding(
+            //     padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+            //     child: InkWell(
+            //       onTap: () {
+            //         print("clicked on resend");
+            //       },
+            //       child: const Text(
+            //         "Resend Code",
+            //         textAlign: TextAlign.start,
+            //         overflow: TextOverflow.clip,
+            //         style: TextStyle(
+            //           fontWeight: FontWeight.w700,
+            //           fontStyle: FontStyle.normal,
+            //           fontSize: 16,
+            //           color: Values.primaryColor,
+            //         ),
+            //       ),
+            //     )),
           ],
         ),
       ),
     );
   }
 
-  void _verifyOtp(String otp) async {
+  void _verifyOtp(String otp, var context) async {
     try {
-
-        final prefs = await SharedPreferences.getInstance();
-        var savedEmail = prefs.getString("email_for_otp");
-        var savedOtp =  prefs.getString("otp_for_verification");
-        if(savedOtp!.contains(otp)){
-          prefs.setBool("show_reset", true);
-          Get.toNamed('/reset_password');
-        }
-
+      final prefs = await SharedPreferences.getInstance();
+      var savedOtp = prefs.getString("otp_for_verification");
+      if (savedOtp!.contains(otp)) {
+        prefs.setBool("show_reset", true);
+        Get.toNamed('/reset_password');
+      } else {
+        Values.showMsgDialog(
+            "OTP Verification",
+            "OTP mismatch found ... Please check the otp received and try again",
+            context, () {
+          Navigator.of(context).pop();
+        });
+      }
     } catch (e) {
-      print(e.toString());
+      Values.showInternetErrorDialog("OTP Verification",e, context);
     } finally {}
   }
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:univ_app/controllers/categorycontroller.dart';
@@ -35,6 +36,7 @@ class _HomeState extends State<Home> {
   }
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     return _isLoading
         ? Container(
             color: Colors.transparent,
@@ -53,24 +55,24 @@ class _HomeState extends State<Home> {
                           builder: (BuildContext context) {
                             return Container(
                               width: MediaQuery.of(context).size.width,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 1.0),
-                              decoration:
-                                  const BoxDecoration(color: Colors.white),
+                              margin: const EdgeInsets.symmetric(horizontal: 1.0),
+                              decoration: const BoxDecoration(color: Colors.white),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: CachedNetworkImage(
-                                  height: MediaQuery.of(context).size.width,
-                                  fit: BoxFit.cover,
-                                  imageUrl:
-                                      '${Values.sliderImageUrl}/${slider.image}',
-                                  placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 3.0,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0), // Optional: add border radius
+                                  child: CachedNetworkImage(
+                                    height: 200,
+                                    width: MediaQuery.of(context).size.width,
+                                    fit: BoxFit.cover,
+                                    imageUrl: '${Values.sliderImageUrl}/${slider.image}',
+                                    placeholder: (context, url) => const Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 3.0,
+                                      ),
                                     ),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
                                   ),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
                                 ),
                               ),
                             );
@@ -79,21 +81,20 @@ class _HomeState extends State<Home> {
                       }).toList(),
                       options: CarouselOptions(
                         height: 200,
-                        aspectRatio: 16 / 9,
                         viewportFraction: 1.0,
                         initialPage: 0,
                         enableInfiniteScroll: true,
                         reverse: false,
                         autoPlay: true,
                         autoPlayInterval: const Duration(seconds: 3),
-                        autoPlayAnimationDuration:
-                            const Duration(milliseconds: 1000),
+                        autoPlayAnimationDuration: const Duration(milliseconds: 1000),
                         autoPlayCurve: Curves.fastOutSlowIn,
                         enlargeCenterPage: true,
-                        enlargeFactor: 0.2,
+                        enlargeFactor: 1.0,
                         scrollDirection: Axis.horizontal,
                       ),
-                    ),
+                    )
+                    ,
                   );
                 },
               ),

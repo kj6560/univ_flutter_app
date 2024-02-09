@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:univ_app/controllers/appbarcontroller.dart';
 import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +26,8 @@ class _MyAppBarState extends State<MyAppBar> {
   bool disposed = false;
   String profilePictureUrl = '';
   var showBack = false;
+  var topQuote = "";
+  AppbarController appbarController = Get.put(AppbarController());
 
   @override
   void dispose() {
@@ -43,6 +46,7 @@ class _MyAppBarState extends State<MyAppBar> {
     }
     checkGps();
     loadProfilePicture();
+    loadTopQuote();
   }
 
   checkGps() async {
@@ -88,7 +92,7 @@ class _MyAppBarState extends State<MyAppBar> {
 
     RemoteServices.fetchTemperature(lat, long);
 
-    LocationSettings locationSettings = LocationSettings(
+    LocationSettings locationSettings = const LocationSettings(
       accuracy: LocationAccuracy.high, //accuracy of the location data
       distanceFilter: 5, //minimum distance (measured in meters) a
       //device must move horizontally before an update event is generated;
@@ -129,14 +133,14 @@ class _MyAppBarState extends State<MyAppBar> {
         children: [
           showBack
               ? InkWell(
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context);
-                Get.offAllNamed(Get.previousRoute);
-              },
-            ),
-          )
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Get.offAllNamed(Get.previousRoute);
+                    },
+                  ),
+                )
               : Container(),
           SizedBox(
             height: kToolbarHeight,
@@ -168,12 +172,13 @@ class _MyAppBarState extends State<MyAppBar> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "A great day to run",
-                  style: TextStyle(fontSize: 14),
+                  topQuote.length > 25?topQuote.substring(0,20)+"\n"+topQuote.substring(20,topQuote.length):topQuote,
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.normal),
                 ),
                 Text(
                   city ?? '',
-                  style: TextStyle(fontSize: 14),
+                  style: const TextStyle(fontSize: 14),
                 )
               ],
             ),
@@ -185,7 +190,7 @@ class _MyAppBarState extends State<MyAppBar> {
         Center(
           child: Text(
             "${temp!} °C",
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: const TextStyle(color: Colors.white, fontSize: 14),
           ),
         ),
         IconButton(
@@ -196,5 +201,15 @@ class _MyAppBarState extends State<MyAppBar> {
     );
   }
 
-
+  void loadTopQuote() async {
+    var resp = await RemoteServices.fetchTopQuote();
+    if (resp != null) {
+      if (resp.length > 30) {
+        resp = "${resp.substring(0, 30)}\n${resp.substring(31, resp.length)}";
+      }
+      setState(() {
+        topQuote = resp!;
+      });
+    }
+  }
 }

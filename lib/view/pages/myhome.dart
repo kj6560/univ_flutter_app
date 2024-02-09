@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/controllers/eventcontroller.dart';
@@ -28,11 +29,19 @@ class _MyHomeState extends State<MyHome> {
 
   @override
   Widget build(BuildContext context) {
+    // Set the system UI overlay style
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // Transparent status bar
+      statusBarIconBrightness: Brightness.dark, // Dark icons on the status bar
+      systemNavigationBarColor: Colors.blue, // Color of the system navigation bar (taskbar)
+      systemNavigationBarIconBrightness: Brightness.light, // Dark icons on the system navigation bar
+    ));
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffffffff),
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(55), // Set this height
+          preferredSize: const Size.fromHeight(55),
           child: MyAppBar(),
         ),
         body: Home(),

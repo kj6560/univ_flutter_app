@@ -8,6 +8,7 @@ import 'package:univ_app/view/pages/myeventregistration.dart';
 import 'package:univ_app/view/pages/myforgotpassword.dart';
 import 'package:univ_app/view/pages/myhome.dart';
 import 'package:univ_app/view/pages/mylogin.dart';
+import 'package:univ_app/view/pages/mymessenger.dart';
 import 'package:univ_app/view/pages/myotpverification.dart';
 import 'package:univ_app/view/pages/myregister.dart';
 import 'package:univ_app/view/pages/myresetpassword.dart';
@@ -25,6 +26,7 @@ void main() {
     getPages: [
       GetPage(name: '/', page: () => const MySudoHome()),
       GetPage(name: '/search', page: () => const MyUserSearch()),
+      GetPage(name: '/messenger', page: () => const MyMessenger()),
       GetPage(name: '/home', page: () => const MyHome()),
       GetPage(name: '/new', page: () => MyPickAction()),
       GetPage(name: '/social_profile', page: () => const MySocialProfile()),

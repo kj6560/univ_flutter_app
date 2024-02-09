@@ -74,7 +74,7 @@ class User {
         userDoc: json["user_doc"] ?? "",
         birthday: json["birthday"] != null
             ? DateTime.parse(json["birthday"])
-            : DateTime(2017, 9, 7, 17, 30),
+            : DateTime.now(),
         addressLine1: json["address_line1"] ?? "",
         city: json["city"] ?? "",
         state: json["state"] ?? "",

@@ -87,10 +87,13 @@ class _EventDetailsState extends State<EventDetails> {
                     child: Container(
                         child: Row(
                       children: [
-                        Center(child: Text(logic.eventDate)),
+                        Center(child: Text(logic.eventDate,style: const TextStyle(color: Values.primaryColor))),
                         Padding(
                             padding: const EdgeInsets.only(left: 60, right: 10),
-                            child: Text(logic.eventLocation))
+                            child: Text(logic.eventLocation.length > 30
+                                ? "${logic.eventLocation.substring(0, 30)}\n${logic.eventLocation.substring(
+                                        30, logic.eventLocation.length)}"
+                                : logic.eventLocation,style: const TextStyle(color: Values.primaryColor),),)
                       ],
                     )),
                   ),
@@ -125,9 +128,9 @@ class _EventDetailsState extends State<EventDetails> {
             builder: (logic) {
               return Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: const Center(
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(
                         child: Text(
                       "Our Honurable Partners",
                       style: TextStyle(
@@ -209,13 +212,15 @@ class _EventDetailsState extends State<EventDetails> {
       ),
     ));
   }
+
   Future<int?> getEventId() async {
     final prefs = await SharedPreferences.getInstance();
     int? _event_id = prefs.getInt("event_id");
-    if(_event_id != 0){
+    if (_event_id != 0) {
       return _event_id;
     }
   }
+
   void registerForEvent() async {
     setState(() {
       _isLoading = true;

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
@@ -10,8 +11,8 @@ import 'dart:convert';
 import 'package:univ_app/models/user.dart';
 
 class Values {
-  static const String siteUrl = "https://univsportatech.com";
-  static const String baseUrl = "https://univsportatech.com";
+  static const String siteUrl = "http://192.168.182.26/public";//https://univsportatech.com";
+  static const String baseUrl = "http://192.168.182.26/public";//"https://univsportatech.com";
 
   static const String appName = "Univ";
   static const String sliderUrl = "$baseUrl/api/sliders";
@@ -21,6 +22,7 @@ class Values {
   static const String userPerformanceUrl = "$baseUrl/api/userPerformance";
   static const String eventImageUrl = "$baseUrl/uploads/events/images/";
   static const String profilePic = "$baseUrl/uploads/profile/profileImage/";
+  static const String postMediaUrl = "$baseUrl/uploads/post_media/";
   static const String eventPartnerUrl = "$baseUrl/api/eventPartners";
   static const String eventPartnerPic = "$baseUrl/images/";
   static const String eventFiles = "$baseUrl/api/eventFiles";
@@ -31,6 +33,7 @@ class Values {
   static const String uploadUserVideos = "$baseUrl/api/uploadUserVideos";
   static const String setProfile = "$baseUrl/api/setProfile";
   static const String fetchProfile = "$baseUrl/api/getProfile";
+  static const String fetchTopQuote = "$baseUrl/api/getTopQuote";
   static const String register = "$baseUrl/api/register";
   static const String profilePicUpload = "$baseUrl/api/uploadProfilePicture";
   static const String logoutUrl = "$baseUrl/api/logout";
@@ -42,11 +45,22 @@ class Values {
   static const String fetchPosts = "$baseUrl/api/fetchPosts";
   static const String fetchUsers = "$baseUrl/api/fetchUsers";
   static const String createPost = "$baseUrl/api/createPost";
+  static const String deletePost = "$baseUrl/api/deletePost";
+  static const String uploadPostMedia = "$baseUrl/api/uploadPostMedia";
   static const String followUser = "$baseUrl/api/followUser";
+  static const String unFollowUser = "$baseUrl/api/unFollowUser";
   static const String fetchFollowerData = "$baseUrl/api/followData";
   static const String fetchUserById = "$baseUrl/api/fetchUserById";
 
   static const Color primaryColor = const Color.fromRGBO(26, 188, 156, 70);
+
+  static const String passwordPolicy = """
+1. the password contains at least one uppercase letter (A-Z).
+2. the password contains at least one lowercase letter (a-z).
+3. the password contains at least one digit (0-9).
+4. the password contains at least one special character from the provided set (!@#\$&*~).
+5. the password is at least 8 characters long.
+  """;
 
   static bool isValidPhoneNumber(String phoneNumber) {
     // Regular expression for a typical 10-digit Indian phone number
@@ -57,15 +71,15 @@ class Values {
   }
 
   static bool isValidEmail(String email) {
-    // Regular expression for basic email validation
-    RegExp regExp = RegExp(
-      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-      caseSensitive: false,
-      multiLine: false,
-    );
-
-    return regExp.hasMatch(email);
+    return EmailValidator.validate(email);
   }
+
+
+
+
+
+
+
 
   static bool isValidPassword(String password) {
     String pattern =
@@ -154,5 +168,16 @@ class Values {
             ],
           );
         });
+  }
+
+  static void showInternetErrorDialog(String from,var e, var context) {
+    if (e
+        .toString()
+        .contains("ClientException with SocketException: Failed host lookup")) {
+      Values.showMsgDialog(from, "Bad or no internet connection", context,
+          () {
+        Navigator.pop(context);
+      });
+    }
   }
 }

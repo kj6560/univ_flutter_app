@@ -526,7 +526,8 @@ class _SocialProfileState extends State<SocialProfile>
                                               color: Colors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold)),
-                                      user == null || user!.id == current_user_id
+                                      user == null ||
+                                              user!.id == current_user_id
                                           ? InkWell(
                                               onTap: () {
                                                 Get.offAllNamed(
@@ -561,7 +562,7 @@ class _SocialProfileState extends State<SocialProfile>
                                         left: 5, top: 0, right: 10, bottom: 0),
                                     child: Column(
                                       children: [
-                                        Text("${logic.following}",
+                                        Text("${logic.posts}",
                                             style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -642,34 +643,17 @@ class _SocialProfileState extends State<SocialProfile>
             ? GetBuilder<SocialProfileController>(builder: (logic) {
                 return SliverToBoxAdapter(
                   child: Container(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        user != null
-                            ? SizedBox(
-                                width: 150,
-                                child: logic.followed != 2
-                                    ? ElevatedButton(
-                                        onPressed: logic.followed != 1
-                                            ? () {
-                                                if (user != null) {
-                                                  logic.followUser(
-                                                      user!.id, context);
-                                                }
-                                              }
-                                            : null,
-                                        child: Text(
-                                          logic.followed == 1
-                                              ? "FOLLOWED"
-                                              : "FOLLOW",
-                                        ))
-                                    : const SizedBox(
-                                        height: 0,
-                                      ))
-                            : const SizedBox(
-                                height: 0,
-                              ),
+                        ElevatedButton(
+                            onPressed: () {
+                              showFollowModal(logic, context);
+                            },
+                            child: Text(
+                              logic.followed == 1 ? "FOLLOWED" : "FOLLOW",
+                            )),
                         SizedBox(
                             width: 150,
                             child: ElevatedButton(
@@ -679,7 +663,7 @@ class _SocialProfileState extends State<SocialProfile>
                   ),
                 );
               })
-            : SliverToBoxAdapter(
+            : const SliverToBoxAdapter(
                 child: SizedBox(
                   height: 0,
                 ),
@@ -798,9 +782,10 @@ class _SocialProfileState extends State<SocialProfile>
             ),
             user == null
                 ? Container(
+                    margin: const EdgeInsets.all(8),
                     width: 150,
                     child: InkWell(
-                      child: Center(child: const Text("LOGOUT")),
+                      child: const Center(child: Text("LOGOUT")),
                       onTap: () {
                         Navigator.of(context).pop();
                         showDialog(
@@ -830,9 +815,72 @@ class _SocialProfileState extends State<SocialProfile>
                         );
                       },
                     ))
-                : SizedBox(
+                : const SizedBox(
                     height: 0,
                   )
+          ]),
+        );
+      },
+    );
+  }
+
+  void showFollowModal(SocialProfileController logic, BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext builder) {
+        return FractionallySizedBox(
+          heightFactor: 0.3,
+          child: Column(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(
+                      FontAwesomeIcons.circleXmark,
+                      size: 30,
+                    )),
+              ],
+            ),
+            const Divider(
+              height: 2,
+              thickness: 2,
+              color: Values.primaryColor,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _isLoading = true;
+                });
+                if (user != null) {
+                  if(logic.followed != 1){
+                    logic.followUser(user!.id, context);
+                  }else{
+                    logic.unfollowUser(user!.id, context);
+                  }
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: logic.followed != 1
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Follow ${logic.profileName}", style: TextStyle(fontSize: 16)),
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("UnFollow ${logic.profileName}", style: TextStyle(fontSize: 16)),
+                        ],
+                      ),
+              ),
+            ),
           ]),
         );
       },

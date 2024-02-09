@@ -1,3 +1,4 @@
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/services/remote_services.dart';
@@ -13,6 +14,7 @@ class SocialProfileController extends GetxController {
   var following = 0;
   var followers = 0;
   var followed = 0;
+  var posts = 0;
   var check_user = 0;
 
   @override
@@ -82,7 +84,7 @@ class SocialProfileController extends GetxController {
       Values.showMsgDialog(
           "Followed", "You are now catching up with ${user.firstName}", context,
           () {
-        Get.offAllNamed("/social_profile",arguments: user);
+        Get.offAllNamed("/social_profile", arguments: user);
       });
     } else {
       Values.showMsgDialog("Failed", response['message'], context, () {
@@ -95,13 +97,35 @@ class SocialProfileController extends GetxController {
     User? user = Get.arguments;
     int followed_id = user != null ? user.id : 0;
     int current_user_profile = followed_id != 0 ? 0 : 1;
-    var response = await RemoteServices.fetchFollowerData(followed_id,current_user_profile);
+    print("current_user_profile $current_user_profile");
+    var response = await RemoteServices.fetchFollowerData(
+        followed_id, current_user_profile);
 
     if (response != null) {
-      followers = response['total_followers'];
-      following = response['total_following'];
-      followed = response['is_following'];
+      followers = response['followers'] ?? 0;
+      following = response['following'] ?? 0;
+      followed = response['is_following'] ?? 0;
+      posts = response['posts'] ?? 0;
     }
     update();
+  }
+
+  void unfollowUser(int id, var context) async {
+    final prefs = await SharedPreferences.getInstance();
+    int? follower_id = prefs.getInt("id");
+    User? user = Get.arguments;
+    int followed_id = user!.id;
+    var response = await RemoteServices.unFollowUser(follower_id, followed_id);
+    if (response['success'] != null) {
+      Values.showMsgDialog(
+          "Followed", "You have unfollowed ${user.firstName}", context,
+          () {
+        Get.offAllNamed("/social_profile", arguments: user);
+      });
+    } else {
+      Values.showMsgDialog("Failed", response['message'], context, () {
+        Get.offAllNamed("/search");
+      });
+    }
   }
 }

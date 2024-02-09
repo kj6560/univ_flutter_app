@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -13,13 +14,13 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   var _isLoading = false;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    checkAttempted();
     RemoteServices.showSnackBar(context);
   }
 
@@ -59,17 +60,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                      child:
-
-                          ///***If you have exported images you must have to copy those images in assets/images directory.
-                          Image(
-                        image: NetworkImage(
-                            "https://pbs.twimg.com/media/Dq6yj5QXQAAmLOQ.jpg"),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            "https://pbs.twimg.com/media/Dq6yj5QXQAAmLOQ.jpg",
                         height: 250,
                         width: 250,
                         fit: BoxFit.fill,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     ),
                     const Padding(
@@ -89,7 +90,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     const Padding(
                       padding: EdgeInsets.all(16),
                       child: Text(
-                        "Please write your email to receive a confirmation code to set a new password.",
+                        "Please enter your email to receive a confirmation code for setting up a new password.",
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.clip,
                         style: TextStyle(
@@ -114,18 +115,18 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       decoration: InputDecoration(
                         disabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4.0),
-                          borderSide:
-                              const BorderSide(color: Color(0xff000000), width: 1),
+                          borderSide: const BorderSide(
+                              color: Color(0xff000000), width: 1),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4.0),
-                          borderSide:
-                              const BorderSide(color: Color(0xff000000), width: 1),
+                          borderSide: const BorderSide(
+                              color: Color(0xff000000), width: 1),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4.0),
-                          borderSide:
-                              const BorderSide(color: Color(0xff000000), width: 1),
+                          borderSide: const BorderSide(
+                              color: Color(0xff000000), width: 1),
                         ),
                         labelText: "Enter Email",
                         labelStyle: const TextStyle(
@@ -144,15 +145,22 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         filled: true,
                         fillColor: const Color(0xffffffff),
                         isDense: false,
-                        contentPadding:
-                            const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 12),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                       child: MaterialButton(
                         onPressed: () {
-                          _sendOtp(_controller.text.toString());
+                          if(Values.isValidEmail(_controller.text.toString())){
+                            _sendOtp(_controller.text.toString(), context);
+                          }else{
+                            Values.showMsgDialog("Forgot Password", "Invalid email", context, () {
+                              Navigator.of(context).pop();
+                            });
+                          }
+
                         },
                         color: Values.primaryColor,
                         elevation: 0,
@@ -160,6 +168,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           borderRadius: BorderRadius.zero,
                         ),
                         padding: const EdgeInsets.all(16),
+                        textColor: const Color(0xffffffff),
+                        height: 45,
+                        minWidth: MediaQuery.of(context).size.width,
                         child: const Text(
                           "Confirm Mail",
                           style: TextStyle(
@@ -168,9 +179,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             fontStyle: FontStyle.normal,
                           ),
                         ),
-                        textColor: const Color(0xffffffff),
-                        height: 45,
-                        minWidth: MediaQuery.of(context).size.width,
                       ),
                     ),
                   ],
@@ -180,31 +188,39 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           );
   }
 
-  void _sendOtp(String email) async {
+  void _sendOtp(String email, var context) async {
     try {
       setState(() {
         _isLoading = true;
       });
-      http.Response response = await http.post(Uri.parse('${Values.sendOtp}'),
+      http.Response response = await http.post(Uri.parse(Values.sendOtp),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode({'email': email}));
+      var responseObject = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        var responseObject = jsonDecode(response.body);
+
         final prefs = await SharedPreferences.getInstance();
-        prefs.setString("email_for_otp", email);
         prefs.setString(
             "otp_for_verification", responseObject['otp'].toString());
         setState(() {
           _isLoading = false;
         });
         Get.toNamed('/verify_otp');
+      }else{
+        setState(() {
+          _isLoading = false;
+        });
+        Values.showMsgDialog("Forgot Password", responseObject['msg'], context, () {
+          Navigator.of(context).pop();
+        });
       }
     } catch (e) {
-      print(e.toString());
-    } finally {}
+      setState(() {
+        _isLoading = false;
+      });
+      Values.showInternetErrorDialog("Forgot Password",e, context);
+    }
   }
-
-  void checkAttempted() async {}
 }

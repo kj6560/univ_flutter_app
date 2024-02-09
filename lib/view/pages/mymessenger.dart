@@ -9,15 +9,16 @@ import 'package:univ_app/view/constantpages/communitybottomnavigationbar.dart';
 import 'package:univ_app/view/constantpages/myappbar.dart';
 import 'package:univ_app/view/constantpages/mycommunityappbar.dart';
 import 'package:univ_app/view/contents/Community.dart';
+import 'package:univ_app/view/contents/Messenger.dart';
 
-class MyCommunity extends StatefulWidget {
-  const MyCommunity({super.key});
+class MyMessenger extends StatefulWidget {
+  const MyMessenger({super.key});
 
   @override
-  State<MyCommunity> createState() => _MyCommunityState();
+  State<MyMessenger> createState() => _MyMessengerState();
 }
 
-class _MyCommunityState extends State<MyCommunity> {
+class _MyMessengerState extends State<MyMessenger> {
   TextEditingController editingController = TextEditingController();
 
   @override
@@ -27,7 +28,7 @@ class _MyCommunityState extends State<MyCommunity> {
     // ));
     return SafeArea(
       child: Scaffold(
-        body: Community(),
+        body: Messenger(),
         bottomNavigationBar: MyCommunityBottomNavigationBar(),
       ),
     );

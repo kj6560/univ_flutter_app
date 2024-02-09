@@ -80,14 +80,12 @@ class _MyAppBarProfileState extends State<MyAppBarProfile> {
 
     StreamSubscription<Position> positionStream = Geolocator.getPositionStream(
         locationSettings: locationSettings).listen((Position position) async {
-      print(position.longitude); //Output: 80.24599079
-      print(position.latitude); //Output: 29.6593457
 
       long = position.longitude;
       lat = position.latitude;
 
       var tempData = await RemoteServices.fetchTemperature(lat, long);
-      print(tempData);
+
       if(tempData !=null){
         setState(() {
           temp = tempData['current']['temp_c'];

@@ -36,7 +36,7 @@ class EventFile {
         eventId: json["event_id"],
         image: json["image"],
         imagePriority: json["image_priority"],
-        eventVideo: json["event_video"],
+        eventVideo: json["event_video"] ?? "",
         videoPriority: json["video_priority"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),

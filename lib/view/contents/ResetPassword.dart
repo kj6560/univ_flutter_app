@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -13,9 +14,17 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   var _isLoading = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    RemoteServices.showSnackBar(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +41,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               width: MediaQuery.of(context).size.width,
               child: Stack(
                 alignment: Alignment.topLeft,
+
                 children: [
                   Container(
                     margin: const EdgeInsets.fromLTRB(0, 150, 0, 0),
@@ -80,7 +90,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                               ),
                             ),
                             const Text(
-                              "Create your new password",
+                              "Create your new password as per our password policy: ",
                               textAlign: TextAlign.start,
                               overflow: TextOverflow.clip,
                               style: TextStyle(
@@ -90,8 +100,25 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 color: Color(0xff000000),
                               ),
                             ),
+                            Container(
+                              margin: EdgeInsets.only(top: 5),
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey, // Choose your border color
+                                  width: 1.0, // Choose your border width
+                                ),
+                                borderRadius: BorderRadius.circular(8), // Optional: for rounded corners
+                              ),
+                              child: const Text(
+                                Values.passwordPolicy,
+                                style: TextStyle(
+                                  // Add any additional styles for the text here
+                                ),
+                              ),
+                            ),
                             const Padding(
-                              padding: EdgeInsets.fromLTRB(0, 30, 0, 16),
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 16),
                               child: Text(
                                 "Create  New Password",
                                 textAlign: TextAlign.start,
@@ -209,11 +236,11 @@ class _ResetPasswordState extends State<ResetPassword> {
                               padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                               child: MaterialButton(
                                 onPressed: () {
-                                  print("object");
                                   _resetPassword(
                                       _passwordController.text.toString(),
                                       _confirmPasswordController.text
-                                          .toString());
+                                          .toString(),
+                                      context);
                                 },
                                 color: Values.primaryColor,
                                 elevation: 0,
@@ -221,6 +248,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 padding: const EdgeInsets.all(16),
+                                textColor: const Color(0xffffffff),
+                                height: 45,
+                                minWidth: MediaQuery.of(context).size.width,
                                 child: const Text(
                                   "Reset Password",
                                   style: TextStyle(
@@ -229,9 +259,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                                     fontStyle: FontStyle.normal,
                                   ),
                                 ),
-                                textColor: const Color(0xffffffff),
-                                height: 45,
-                                minWidth: MediaQuery.of(context).size.width,
                               ),
                             ),
                           ],
@@ -248,9 +275,14 @@ class _ResetPasswordState extends State<ResetPassword> {
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                       ),
-                      child: Image.network(
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvm8ciTcatzbqVYzzE6wLvIEBM3aCtRSviplxKnkUTkWHB1Fi907Cxbnm5FAX-ufKu-4M&usqp=CAU",
-                          fit: BoxFit.cover),
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvm8ciTcatzbqVYzzE6wLvIEBM3aCtRSviplxKnkUTkWHB1Fi907Cxbnm5FAX-ufKu-4M&usqp=CAU",
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                      ),
                     ),
                   ),
                 ],
@@ -259,7 +291,8 @@ class _ResetPasswordState extends State<ResetPassword> {
           );
   }
 
-  void _resetPassword(String password, String confirmPassword) async {
+  void _resetPassword(
+      String password, String confirmPassword, var context) async {
     setState(() {
       _isLoading = true;
     });
@@ -270,7 +303,7 @@ class _ResetPasswordState extends State<ResetPassword> {
         var savedEmail = prefs.getString("email_for_otp");
         var savedOtp = prefs.getString("otp_for_verification");
         http.Response response = await http.post(
-            Uri.parse('${Values.resetPassword}'),
+            Uri.parse(Values.resetPassword),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
@@ -284,64 +317,35 @@ class _ResetPasswordState extends State<ResetPassword> {
           setState(() {
             _isLoading = false;
           });
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Password Reset'),
-                content: const Text("Password reset successful."),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
-
-                      Get.toNamed('/login');
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
+          Values.showMsgDialog(
+              "Password Reset",
+              "Password Reset Successful. Please login to continue",
+              context, () {
+            Navigator.pop(context);
+            Get.offAllNamed("/login");
+          });
         }
       } catch (e) {
-        print(e.toString());
-      } finally {}
+        setState(() {
+          _isLoading = false;
+        });
+        Values.showInternetErrorDialog("Reset Password",e, context);
+      }
     } else {
+      setState(() {
+        _isLoading = false;
+      });
+
       if (Values.isValidPassword(password)) {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Registration'),
-                content: Text("Passwords donot match. please try again"),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            });
+        Values.showMsgDialog(
+            "Reset Password", "Passwords Do not Match", context, () {
+          Navigator.of(context).pop();
+        });
       } else {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Registration'),
-                content: Text("Invalid password. Password should con"),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            });
+        Values.showMsgDialog("Invalid passwords",
+            "Plz create a password as per our password policy", context, () {
+          Navigator.of(context).pop();
+        });
       }
     }
   }

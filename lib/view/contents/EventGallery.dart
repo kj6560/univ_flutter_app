@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:univ_app/controllers/eventdetailscontroller.dart';
 import 'package:univ_app/controllers/eventgallerycontroller.dart';
 import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
@@ -97,8 +95,11 @@ class _EventGalleryState extends State<EventGallery>
                     ),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Text(logic.eventLocation.string,
-                          style: TextStyle(
+                      child: Text(logic.eventLocation.string.length > 30
+                          ? "${logic.eventLocation.string.substring(0, 30)}\n${logic.eventLocation.string.substring(
+                          30, logic.eventLocation.string.length)}"
+                          : logic.eventLocation.string,
+                          style: const TextStyle(
                               color: Colors.green,
                               fontSize: 16,
                               fontWeight: FontWeight.bold)),

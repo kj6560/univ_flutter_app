@@ -24,6 +24,23 @@ class RemoteServices {
 
   static var client = http.Client();
 
+  static Future<Map<String, dynamic>?> login(
+      String email, String password) async {
+    final response = await http.post(
+      Uri.parse('${Values.baseUrl}/api/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({'email': email, 'password': password}),
+    );
+
+    final Map<String, dynamic> responseObject = json.decode(response.body);
+    if (responseObject != null) {
+      return responseObject;
+    }
+    return null;
+  }
+
   static Future<List<Sliders>?> fetchSliders() async {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
@@ -79,7 +96,7 @@ class RemoteServices {
   static fetchEventDetail(var event_id) async {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
-    String urL = "${Values.eventsUrl}?id=" + event_id;
+    String urL = "${Values.eventsUrl}?event_id=" + event_id;
     var response = await http.get(Uri.parse(urL), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -113,7 +130,6 @@ class RemoteServices {
   }
 
   static fetchEventFiles(var event_id) async {
-    print(event_id);
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     String urL = "${Values.eventFiles}?event_id=$event_id";
@@ -321,7 +337,7 @@ class RemoteServices {
     }
   }
 
-  static Future<bool> createPost(
+  static Future<int> createPost(
       List<PostMedia> mediaFiles, String caption, int post_type) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -349,14 +365,45 @@ class RemoteServices {
 
       if (response.statusCode == 200) {
         var responseObj = jsonDecode(response.body);
-        if (responseObj.success) {
-          return true;
-        }
+        return responseObj['post_id'];
       } else {
         print('Request failed with status: ${response.statusCode}');
       }
     } catch (e) {
       print(e);
+    }
+    return 0;
+  }
+
+  static Future<bool> deletePost(int post_id) async {
+    try {
+
+      final prefs = await SharedPreferences.getInstance();
+
+      String? token = prefs.getString("token");
+      Uri url = Uri.parse("${Values.deletePost}?post_id=$post_id");
+      print(url);
+      // Send the request
+      http.Response response = await http.get(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        var resp = json.decode(response.body);
+
+        if (resp['success']) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    } catch (error) {
+      print('Error: $error');
+      return false;
     }
     return false;
   }
@@ -370,7 +417,7 @@ class RemoteServices {
     }
   }
 
-static Future<User?> fetchProfile(int? id) async {
+  static Future<User?> fetchProfile(int? id) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
@@ -391,6 +438,7 @@ static Future<User?> fetchProfile(int? id) async {
       print(e);
     }
   }
+
   static Future<String?> fetchUsers(String userName) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -415,7 +463,6 @@ static Future<User?> fetchProfile(int? id) async {
 
   static followUser(int? follower_id, int followed_id) async {
     try {
-
       final prefs = await SharedPreferences.getInstance();
       var data = {
         "follow_user": followed_id,
@@ -445,14 +492,14 @@ static Future<User?> fetchProfile(int? id) async {
     return false;
   }
 
-  static fetchFollowerData(int followed_id,int current_user_profile) async {
+  static fetchFollowerData(int followed_id, int current_user_profile) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       int? id = prefs.getInt("id");
       var data = {
         "check_user": followed_id,
         "current_user_id": id,
-        "current_user_profile":current_user_profile
+        "current_user_profile": current_user_profile
       };
       print(data);
       var token = prefs.getString("token");
@@ -466,7 +513,7 @@ static Future<User?> fetchProfile(int? id) async {
         },
         body: jsonEncode(data), // Convert the data map to JSON string
       );
-
+      print(response.body);
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
@@ -477,7 +524,8 @@ static Future<User?> fetchProfile(int? id) async {
     }
     return false;
   }
-  static Future<String?> fetchUserById(int id) async {
+
+  static Future<String?> fetchUserById(int id, var context) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
@@ -495,7 +543,98 @@ static Future<User?> fetchProfile(int? id) async {
         return response.body;
       }
     } catch (e) {
+      Values.showInternetErrorDialog("Forgot Password", e, context);
+    }
+  }
+
+  static Future<bool> uploadPostMedia(
+      List<PostMedia> mediaFiles, int post_type, int post_id) async {
+    final prefs = await SharedPreferences.getInstance();
+    int? id = prefs.getInt("id");
+    String? token = prefs.getString("token");
+    Uri url = Uri.parse("${Values.uploadPostMedia}?user_id=${id}");
+    var request = http.MultipartRequest('POST', url);
+    request.headers['Authorization'] = 'Bearer $token';
+    print("total files to uplaod: ${mediaFiles.length}");
+    for (var element in mediaFiles) {
+      var path =
+          element.path ?? ""; // Use the null-aware operator to handle null path
+      print("$path");
+
+      // Use 'await' here to ensure the asynchronous operation completes before moving to the next iteration
+      request.files.add(await http.MultipartFile.fromPath("media[]", path));
+    }
+    request.fields["post_id"] = post_id.toString();
+    request.fields['media_created_by'] = id.toString();
+    try {
+      // Send the request
+      var response = await request.send();
+      // Handle the response
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      print('Error: $error');
+      return false;
+    }
+  }
+
+  static Future<String?> fetchTopQuote() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+
+      http.Response response = await http.get(
+        Uri.parse(Values.fetchTopQuote),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        var respObj = jsonDecode(response.body);
+        if (!respObj['error']) {
+          return respObj['message'];
+        } else {
+          return "It's a great day to run";
+        }
+      }
+    } catch (e) {
+      return "It's a great day to run";
+    }
+  }
+
+  static unFollowUser(int? follower_id, int followed_id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var data = {
+        "unfollow_user": followed_id,
+        "unfollowed_by": follower_id,
+      };
+
+      var token = prefs.getString("token");
+      print(Uri.parse(Values.unFollowUser));
+      http.Response response = await http.post(
+        Uri.parse(Values.unFollowUser),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data), // Convert the data map to JSON string
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
       print(e);
     }
+    return false;
   }
 }

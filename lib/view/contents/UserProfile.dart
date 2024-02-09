@@ -170,6 +170,7 @@ class _UserProfileState extends State<UserProfile> {
     return GetBuilder<UserProfileController>(
       assignId: true,
       builder: (logic) {
+        print(selectedDate.toString());
         return CustomScrollView(
           slivers: <Widget>[
             SliverToBoxAdapter(
@@ -546,7 +547,7 @@ class _UserProfileState extends State<UserProfile> {
                                               ),
                                             ),
                                             Text(
-                                              'Date Of Birth: ${logic.birthday != null && logic.birthday != "" ? logic.birthday.substring(0, 10) : selectedDate.toString().substring(0, 10)}',
+                                              'Date Of Birth: ${logic.birthday != null && logic.birthday != "" ? logic.birthday.toString().substring(0, 10) : selectedDate.toString().substring(0, 10)}',
                                               style: TextStyle(fontSize: 14),
                                             ),
                                           ],
