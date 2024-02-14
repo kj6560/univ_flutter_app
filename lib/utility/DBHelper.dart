@@ -12,7 +12,7 @@ class DBHelper {
   factory DBHelper() => instance;
 
   static String noteTable = "univ";
-  final _version = 5;
+  final _version = 6;
   Database? _db;
 
   Future<Database?> get db async {

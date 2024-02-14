@@ -1,7 +1,5 @@
 # univ_app
 
-A new Flutter project.
-
 This Flutter application is to be used with the website https://univsportatech.com 
 This application has the following features:
 

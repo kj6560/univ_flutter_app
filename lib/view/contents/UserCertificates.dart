@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/controllers/slidercontroller.dart';
 import 'package:univ_app/controllers/eventcontroller.dart';
 import 'package:univ_app/controllers/usercertificatescontroller.dart';
-import 'package:univ_app/controllers/userphotoscontroller.dart';
+import 'package:univ_app/controllers/userpostscontroller.dart';
 import 'package:univ_app/utility/values.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;

@@ -11,8 +11,8 @@ import 'package:univ_app/controllers/socialprofilecontroller.dart';
 import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 import 'package:univ_app/view/contents/UserCertificates.dart';
-import 'package:univ_app/view/contents/UserPhotosGallery.dart';
-import 'package:univ_app/view/contents/UserVideosGallery.dart';
+import 'package:univ_app/view/contents/UserPostsGallery.dart';
+import 'package:univ_app/view/contents/UserReelsGallery.dart';
 
 import 'package:image_picker/image_picker.dart';
 
@@ -57,8 +57,8 @@ class _SocialProfileState extends State<SocialProfile>
 
   Widget _getTabAtIndex() {
     var list = [
-      UserPhotosGallery(), // FIRST ITEM
-      UserVideosGallery(), // SECOND ITEM
+      UserPostsGallery(), // FIRST ITEM
+      UserReelsGallery(), // SECOND ITEM
       const UserCertificates(), // THIRD ITEM
     ];
     return list[_selectedIndex];
@@ -677,10 +677,10 @@ class _SocialProfileState extends State<SocialProfile>
                   controller: tabController,
                   tabs: const [
                     Tab(
-                      text: 'Photo',
+                      text: 'Posts',
                     ),
                     Tab(
-                      text: 'Video',
+                      text: 'Reels',
                     ),
                     Tab(
                       text: 'Certificates',
@@ -698,7 +698,7 @@ class _SocialProfileState extends State<SocialProfile>
     );
   }
 
-  final List<String> items = ["Add Photos", "Add Videos", "Add Certificates"];
+  final List<String> items = ["Add Certificates"];
 
   void _showBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -725,42 +725,6 @@ class _SocialProfileState extends State<SocialProfile>
               height: 2,
               thickness: 2,
               color: Values.primaryColor,
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-                setState(() {
-                  _isLoading = true;
-                });
-                _pickImage();
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Add Photos", style: TextStyle(fontSize: 16)),
-                  ],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-                setState(() {
-                  _isLoading = true;
-                });
-                _pickVideo();
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Add Videos", style: TextStyle(fontSize: 16)),
-                  ],
-                ),
-              ),
             ),
             InkWell(
               onTap: () {
@@ -857,9 +821,9 @@ class _SocialProfileState extends State<SocialProfile>
                   _isLoading = true;
                 });
                 if (user != null) {
-                  if(logic.followed != 1){
+                  if (logic.followed != 1) {
                     logic.followUser(user!.id, context);
-                  }else{
+                  } else {
                     logic.unfollowUser(user!.id, context);
                   }
                 }
@@ -870,13 +834,15 @@ class _SocialProfileState extends State<SocialProfile>
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Follow ${logic.profileName}", style: TextStyle(fontSize: 16)),
+                          Text("Follow ${logic.profileName}",
+                              style: TextStyle(fontSize: 16)),
                         ],
                       )
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("UnFollow ${logic.profileName}", style: TextStyle(fontSize: 16)),
+                          Text("UnFollow ${logic.profileName}",
+                              style: TextStyle(fontSize: 16)),
                         ],
                       ),
               ),

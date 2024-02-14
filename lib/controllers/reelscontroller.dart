@@ -12,7 +12,7 @@ import '../models/user.dart';
 import '../utility/DBHelper.dart';
 import '../utility/values.dart';
 
-class CommunityController extends GetxController {
+class ReelsController extends GetxController {
   var posts = List<Posts>.empty().obs;
   var current_user_id = 0.obs;
 
@@ -32,9 +32,9 @@ class CommunityController extends GetxController {
 
   void fetchPosts() async {
     var prefs = await SharedPreferences.getInstance();
+
     current_user_id.value = prefs.getInt("id")!;
-    var allPosts = await RemoteServices.fetchPosts(current_user_id.value);
-    print(allPosts);
+    var allPosts = await RemoteServices.fetchReels(current_user_id.value);
     if (allPosts != null) {
       var response = postFromJson(allPosts);
       posts.value = response;

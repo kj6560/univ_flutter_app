@@ -41,7 +41,7 @@ class _LoginState extends State<Login> {
       builder: (controller) {
         return controller.isLoading
             ? Container(
-            color: Values.primaryColor.withOpacity(0.2),
+            color: Values.primaryColor.withOpacity(0.3),
             child: const Center(
                 child: CircularProgressIndicator()))
             : Scaffold(
@@ -227,6 +227,7 @@ class _LoginState extends State<Login> {
                           padding: const EdgeInsets.all(8.0),
                           child: MaterialButton(
                             onPressed: () {
+                              print("clicked login");
                               controller.login(
                                 emailController.text.toString(),
                                 passwordController.text.toString(),

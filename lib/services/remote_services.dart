@@ -26,12 +26,14 @@ class RemoteServices {
 
   static Future<Map<String, dynamic>?> login(
       String email, String password) async {
+    var mBody = jsonEncode({'email': email, 'password': password});
+    print(mBody);
     final response = await http.post(
       Uri.parse('${Values.baseUrl}/api/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode({'email': email, 'password': password}),
+      body: mBody,
     );
 
     final Map<String, dynamic> responseObject = json.decode(response.body);
@@ -316,13 +318,35 @@ class RemoteServices {
     } finally {}
   }
 
-  static Future<String?> fetchPosts() async {
+  static Future<String?> fetchPosts(int current_user_id) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
 
       http.Response response = await http.get(
-        Uri.parse(Values.fetchPosts),
+        Uri.parse(Values.fetchPosts + "?user_id=$current_user_id"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return response.body;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<String?> fetchReels(int current_user_id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+
+      http.Response response = await http.get(
+        Uri.parse(
+            Values.fetchPosts + "?user_id=${current_user_id}&post_type=2"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',
@@ -366,8 +390,6 @@ class RemoteServices {
       if (response.statusCode == 200) {
         var responseObj = jsonDecode(response.body);
         return responseObj['post_id'];
-      } else {
-        print('Request failed with status: ${response.statusCode}');
       }
     } catch (e) {
       print(e);
@@ -377,12 +399,11 @@ class RemoteServices {
 
   static Future<bool> deletePost(int post_id) async {
     try {
-
       final prefs = await SharedPreferences.getInstance();
 
       String? token = prefs.getString("token");
       Uri url = Uri.parse("${Values.deletePost}?post_id=$post_id");
-      print(url);
+
       // Send the request
       http.Response response = await http.get(
         url,
@@ -453,7 +474,6 @@ class RemoteServices {
         },
       );
       if (response.statusCode == 200) {
-        print(response.body);
         return response.body;
       }
     } catch (e) {
@@ -483,8 +503,6 @@ class RemoteServices {
 
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
-      } else {
-        print('Request failed with status: ${response.statusCode}');
       }
     } catch (e) {
       print(e);
@@ -501,7 +519,7 @@ class RemoteServices {
         "current_user_id": id,
         "current_user_profile": current_user_profile
       };
-      print(data);
+
       var token = prefs.getString("token");
 
       http.Response response = await http.post(
@@ -513,7 +531,7 @@ class RemoteServices {
         },
         body: jsonEncode(data), // Convert the data map to JSON string
       );
-      print(response.body);
+
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
@@ -539,7 +557,6 @@ class RemoteServices {
         },
       );
       if (response.statusCode == 200) {
-        print(response.body);
         return response.body;
       }
     } catch (e) {
@@ -555,11 +572,9 @@ class RemoteServices {
     Uri url = Uri.parse("${Values.uploadPostMedia}?user_id=${id}");
     var request = http.MultipartRequest('POST', url);
     request.headers['Authorization'] = 'Bearer $token';
-    print("total files to uplaod: ${mediaFiles.length}");
     for (var element in mediaFiles) {
       var path =
           element.path ?? ""; // Use the null-aware operator to handle null path
-      print("$path");
 
       // Use 'await' here to ensure the asynchronous operation completes before moving to the next iteration
       request.files.add(await http.MultipartFile.fromPath("media[]", path));
@@ -626,7 +641,6 @@ class RemoteServices {
         },
         body: jsonEncode(data), // Convert the data map to JSON string
       );
-      print(response.body);
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
@@ -636,5 +650,215 @@ class RemoteServices {
       print(e);
     }
     return false;
+  }
+
+  static fetchComments(int post_id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var data = {"post_id": post_id};
+      var token = prefs.getString("token");
+      http.Response response = await http.post(
+        Uri.parse(Values.fetchComments),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data), // Convert the data map to JSON string
+      );
+
+      if (response.statusCode == 200) {
+        return response.body;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static postComment(postId, comment) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      int? id = prefs.getInt("id");
+      var data = {
+        "post_id": postId,
+        "user_id": id,
+        "comment": comment,
+        "is_parent": 1,
+        "parent_id": 0
+      };
+      var token = prefs.getString("token");
+      http.Response response = await http.post(
+        Uri.parse(Values.commentPost),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data), // Convert the data map to JSON string
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static postLike(postId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      int? id = prefs.getInt("id");
+      var data = {
+        "post_id": postId,
+        "user_id": id,
+      };
+      var token = prefs.getString("token");
+      http.Response response = await http.post(
+        Uri.parse(Values.likePost),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data), // Convert the data map to JSON string
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static postUnlike(postId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      int? id = prefs.getInt("id");
+      var data = {
+        "post_id": postId,
+        "user_id": id,
+      };
+      var token = prefs.getString("token");
+      http.Response response = await http.post(
+        Uri.parse(Values.unlikePost),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data), // Convert the data map to JSON string
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static bookmarkPost(postId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      int? id = prefs.getInt("id");
+      var data = {
+        "bookmark_post_id": postId,
+        "bookmark_by": id,
+      };
+      var token = prefs.getString("token");
+      http.Response response = await http.post(
+        Uri.parse(Values.bookmarkPost),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data), // Convert the data map to JSON string
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static unBookmarkPost(postId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      int? id = prefs.getInt("id");
+      var data = {
+        "bookmark_post_id": postId,
+        "bookmark_by": id,
+      };
+      var token = prefs.getString("token");
+      http.Response response = await http.post(
+        Uri.parse(Values.unBookmarkPost),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data), // Convert the data map to JSON string
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static fetchUserPost(int user_id, int post_type) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var data = {"user_id": user_id, "post_type": post_type};
+      var token = prefs.getString("token");
+      http.Response response = await http.post(
+        Uri.parse(Values.fetchUserPost),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data), // Convert the data map to JSON string
+      );
+
+      if (response.statusCode == 200) {
+        return response.body;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static fetchPostsById(int postId, int post_type, int user_id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var data = {
+        "user_id": user_id,
+        "post_type": post_type,
+        "post_id": postId
+      };
+      var token = prefs.getString("token");
+      http.Response response = await http.post(
+        Uri.parse(Values.fetchPostsById),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data), // Convert the data map to JSON string
+      );
+
+      if (response.statusCode == 200) {
+        return response.body;
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

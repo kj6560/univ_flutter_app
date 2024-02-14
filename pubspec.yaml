@@ -30,6 +30,7 @@ dependencies:
   sqflite: ^2.3.0
   internet_connection_checker: ^1.0.0+1
   permission_handler: ^11.2.0
+  flare_flutter:
 
 
   cupertino_icons: ^1.0.2

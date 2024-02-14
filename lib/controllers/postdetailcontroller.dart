@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite.dart';
 
 import 'package:univ_app/models/post.dart';
 import 'package:univ_app/services/remote_services.dart';
@@ -12,13 +11,27 @@ import '../models/user.dart';
 import '../utility/DBHelper.dart';
 import '../utility/values.dart';
 
-class CommunityController extends GetxController {
+class PostDetailController extends GetxController {
   var posts = List<Posts>.empty().obs;
+  var post_id = 0.obs;
+  var post_type = 0.obs;
   var current_user_id = 0.obs;
+
+  var id = 0.obs;
+  var postCreatedBy = 0.obs;
+  var postCreatedByUsername = "".obs;
+  var postCreatedByUserIcon = "".obs;
+  var postCreatedAt = DateTime.now().obs;
+  var postCaption = "".obs;
+  var likedByCurrentUser = false.obs;
+  var isBookmarked = 0.obs;
+  var postType = 1.obs;
+  var totalLikes = 0.obs;
+  var totalComments = 0.obs;
+  var postMedia = List<PostMedia>.empty().obs;
 
   setCurrentUser() async {
     var prefs = await SharedPreferences.getInstance();
-
     current_user_id.value = prefs.getInt("id")!;
   }
 
@@ -27,17 +40,32 @@ class CommunityController extends GetxController {
     setCurrentUser();
     // TODO: implement onInit
     super.onInit();
-    fetchPosts();
+    var pageArgs = Get.arguments;
+    post_id.value = pageArgs["post_id"];
+    post_type.value = pageArgs["post_type"];
+    fetchPostById();
   }
 
-  void fetchPosts() async {
+  void fetchPostById() async {
     var prefs = await SharedPreferences.getInstance();
     current_user_id.value = prefs.getInt("id")!;
-    var allPosts = await RemoteServices.fetchPosts(current_user_id.value);
-    print(allPosts);
+    var allPosts = await RemoteServices.fetchPostsById(
+        post_id.value, current_user_id.value, post_type.value);
     if (allPosts != null) {
-      var response = postFromJson(allPosts);
-      posts.value = response;
+      Posts response = Posts.fromJson(jsonDecode(allPosts));
+      id.value = response.id;
+      postCreatedBy.value = response.postCreatedBy;
+      postCreatedByUsername.value = response.postCreatedByUsername;
+      postCreatedByUserIcon.value = response.postCreatedByUserIcon;
+      postCreatedAt.value = response.postCreatedAt;
+      postCaption.value = response.postCaption;
+      likedByCurrentUser.value = response.likedByCurrentUser;
+      isBookmarked.value = response.isBookmarked;
+      postType.value = response.postType;
+      totalLikes.value = response.totalLikes;
+      totalComments.value = response.totalComments;
+      postMedia.value = response.postMedia;
+      print("fetched data");
     }
   }
 
@@ -95,7 +123,7 @@ class CommunityController extends GetxController {
     } else {
       postUnlike(postId);
     }
-    posts.singleWhere((element) => element.id == postId).likedByCurrentUser =
+    likedByCurrentUser.value =
         isLiked;
     posts.refresh();
   }

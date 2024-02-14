@@ -1,17 +1,19 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univ_app/controllers/socialprofilecontroller.dart';
 import 'package:univ_app/models/UserFile.dart';
+import 'package:univ_app/models/UserPost.dart';
+import 'package:univ_app/models/post.dart';
+import 'package:univ_app/models/user.dart';
 import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 
-import '../models/UserPost.dart';
-import '../models/user.dart';
-
-class UserVideosController extends GetxController {
+class UserPostsController extends GetxController {
   var userPosts = List<UserPost>.empty().obs;
   int postType;
-
-  UserVideosController({required this.postType});
+  SocialProfileController socialProfileController =
+  Get.put(SocialProfileController());
+  UserPostsController({required this.postType});
 
   @override
   void onInit() {
@@ -21,7 +23,6 @@ class UserVideosController extends GetxController {
   }
 
   void fetchUserPost() async {
-    print("post type: ${this.postType}");
     User? data = Get.arguments;
     int? id = 0;
     if (data != null) {
@@ -33,16 +34,25 @@ class UserVideosController extends GetxController {
 
     var allPosts = await RemoteServices.fetchUserPost(id!, this.postType);
     if (allPosts != null) {
-      userPosts.value = userPostFromJson(allPosts);
-      for (var post in userPosts.value) {
-        if (this.postType == 1) {
+      var userposts = userPostFromJson(allPosts);
+      for (var post in userposts) {
+        var media = post.postMedia;
+        if (media.contains(",")) {
           var imageAr = post.postMedia.split(",");
+          post.postMedia = imageAr[0];
           Values.cacheFile(Values.postMediaUrl + imageAr[0]);
         } else {
           Values.cacheFile(Values.postMediaUrl + post.postMedia);
         }
       }
+      userPosts.value = userposts;
     }
   }
 
+  Future<bool> deletePost(int post_id) async {
+    var deleted = await RemoteServices.deletePost(post_id);
+    userPosts.refresh();
+    socialProfileController.refresh();
+    return deleted;
+  }
 }

@@ -18,9 +18,9 @@ class PostController extends GetxController {
         await RemoteServices.createPost(mediaFiles, caption, post_type);
     print("created post id: $post_id");
     if (post_id != 0) {
+      print("Total files to upload: ${mediaFiles.length}");
       var media_uploaded =
           await RemoteServices.uploadPostMedia(mediaFiles, post_type, post_id);
-
       if (media_uploaded) {
         Values.showMsgDialog(
             "New Post", "You have successfully created a new post!!", context,
@@ -29,11 +29,12 @@ class PostController extends GetxController {
           Get.offAllNamed("/community");
         });
       } else {
-        print("reached here");
         var post_deleted = await RemoteServices.deletePost(post_type);
         if (post_deleted) {
-          Values.showMsgDialog("New Post", "Media type not supported or some other error occured while uploading media!!", context,
-              () {
+          Values.showMsgDialog(
+              "New Post",
+              "Media type not supported or some other error occured while uploading media!!",
+              context, () {
             Navigator.of(context).pop();
           });
         }

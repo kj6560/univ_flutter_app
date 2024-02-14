@@ -10,6 +10,8 @@ import 'package:univ_app/view/pages/myhome.dart';
 import 'package:univ_app/view/pages/mylogin.dart';
 import 'package:univ_app/view/pages/mymessenger.dart';
 import 'package:univ_app/view/pages/myotpverification.dart';
+import 'package:univ_app/view/pages/mypostdetail.dart';
+import 'package:univ_app/view/pages/myreels.dart';
 import 'package:univ_app/view/pages/myregister.dart';
 import 'package:univ_app/view/pages/myresetpassword.dart';
 import 'package:univ_app/view/pages/mysocialprofile.dart';
@@ -25,22 +27,93 @@ void main() {
     initialRoute: '/',
     getPages: [
       GetPage(name: '/', page: () => const MySudoHome()),
-      GetPage(name: '/search', page: () => const MyUserSearch()),
-      GetPage(name: '/messenger', page: () => const MyMessenger()),
-      GetPage(name: '/home', page: () => const MyHome()),
-      GetPage(name: '/new', page: () => MyPickAction()),
-      GetPage(name: '/social_profile', page: () => const MySocialProfile()),
-      GetPage(name: '/user_profile', page: () => const MyUserProfile()),
-      GetPage(name: '/performance', page: () => const MyUserPerformance()),
-      GetPage(name: '/event_details', page: () => const MyEventDetails()),
-      GetPage(name: '/event_gallery', page: () => const MyEventGallery()),
-      GetPage(name: '/event_registration', page: () => const MyEventRegistration()),
-      GetPage(name: '/community', page: () => const MyCommunity()),
-      GetPage(name: '/register', page: () => const MyRegister()),
-      GetPage(name: '/login', page: () => const MyLogin()),
-      GetPage(name: '/forgot_password', page: () => const MyForgotPassword()),
-      GetPage(name: '/verify_otp', page: () => const MyOtpVerification()),
-      GetPage(name: '/reset_password', page: () => const MyResetPassword()),
+      GetPage(
+          name: '/search',
+          page: () => const MyUserSearch(),
+          transition: Transition.downToUp,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/post_detail',
+          page: () => MyPostDetail(),
+          transition: Transition.leftToRight,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/messenger',
+          page: () => const MyMessenger(),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/home',
+          page: () => const MyHome(),
+          transition: Transition.downToUp,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/new',
+          page: () => MyPickAction(),
+          transition: Transition.downToUp,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/social_profile',
+          page: () => const MySocialProfile(),
+          transition: Transition.downToUp,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/user_profile',
+          page: () => const MyUserProfile(),
+          transition: Transition.leftToRight,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/performance',
+          page: () => const MyUserPerformance(),
+          transition: Transition.downToUp,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/event_details',
+          page: () => const MyEventDetails(),
+          transition: Transition.leftToRight,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/event_gallery',
+          page: () => const MyEventGallery(),
+          transition: Transition.downToUp,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/event_registration', page: () => const MyEventRegistration()),
+      GetPage(
+          name: '/community',
+          page: () => MyCommunity(),
+          transition: Transition.downToUp,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/reels',
+          page: () => MyReels(),
+          transition: Transition.downToUp,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/register',
+          page: () => const MyRegister(),
+          transition: Transition.downToUp,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/login',
+          page: () => const MyLogin(),
+          transition: Transition.downToUp,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/forgot_password',
+          page: () => const MyForgotPassword(),
+          transition: Transition.downToUp,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/verify_otp',
+          page: () => const MyOtpVerification(),
+          transition: Transition.downToUp,
+          transitionDuration: Duration(milliseconds: 500)),
+      GetPage(
+          name: '/reset_password',
+          page: () => const MyResetPassword(),
+          transition: Transition.downToUp,
+          transitionDuration: Duration(milliseconds: 500)),
     ],
     home: MySudoHome(),
   ));
@@ -67,7 +140,7 @@ class _MySudoHomeState extends State<MySudoHome> {
 
     if (_token != null && _token!.isNotEmpty) {
       Get.offAllNamed("/home");
-    }else{
+    } else {
       Get.offAllNamed("/login");
     }
   }

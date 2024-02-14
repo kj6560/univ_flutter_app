@@ -11,8 +11,8 @@ import 'dart:convert';
 import 'package:univ_app/models/user.dart';
 
 class Values {
-  static const String siteUrl = "http://192.168.182.26/public";//https://univsportatech.com";
-  static const String baseUrl = "http://192.168.182.26/public";//"https://univsportatech.com";
+  static const String siteUrl = "https://univsportatech.com";
+  static const String baseUrl = "https://univsportatech.com";
 
   static const String appName = "Univ";
   static const String sliderUrl = "$baseUrl/api/sliders";
@@ -51,6 +51,14 @@ class Values {
   static const String unFollowUser = "$baseUrl/api/unFollowUser";
   static const String fetchFollowerData = "$baseUrl/api/followData";
   static const String fetchUserById = "$baseUrl/api/fetchUserById";
+  static const String fetchComments = "$baseUrl/api/fetchComments";
+  static const String commentPost = "$baseUrl/api/commentPost";
+  static const String likePost = "$baseUrl/api/likePost";
+  static const String unlikePost = "$baseUrl/api/unlikePost";
+  static const String bookmarkPost = "$baseUrl/api/bookmarkPost";
+  static const String unBookmarkPost = "$baseUrl/api/unBookmarkPost";
+  static const String fetchUserPost = "$baseUrl/api/fetchUserPost";
+  static const String fetchPostsById = "$baseUrl/api/fetchPostsById";
 
   static const Color primaryColor = const Color.fromRGBO(26, 188, 156, 70);
 
@@ -73,13 +81,6 @@ class Values {
   static bool isValidEmail(String email) {
     return EmailValidator.validate(email);
   }
-
-
-
-
-
-
-
 
   static bool isValidPassword(String password) {
     String pattern =
@@ -170,12 +171,11 @@ class Values {
         });
   }
 
-  static void showInternetErrorDialog(String from,var e, var context) {
+  static void showInternetErrorDialog(String from, var e, var context) {
     if (e
         .toString()
         .contains("ClientException with SocketException: Failed host lookup")) {
-      Values.showMsgDialog(from, "Bad or no internet connection", context,
-          () {
+      Values.showMsgDialog(from, "Bad or no internet connection", context, () {
         Navigator.pop(context);
       });
     }

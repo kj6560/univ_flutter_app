@@ -12,37 +12,15 @@ import 'package:univ_app/view/constantpages/communitybottomnavigationbar.dart';
 import 'package:univ_app/view/constantpages/myappbar.dart';
 import 'package:univ_app/view/constantpages/mycommunityappbar.dart';
 import 'package:univ_app/view/contents/Community.dart';
+import 'package:univ_app/view/contents/PostDetail.dart';
+import 'package:univ_app/view/contents/SocialProfile.dart';
 
-class MyCommunity extends StatelessWidget {
+class MyPostDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: false,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60), // Set this height
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Text(
-                  "Community",
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(FontAwesomeIcons.facebookMessenger)),
-              )
-            ],
-          ),
-        ),
-      ),
-      body: Community(),
+      body: PostDetail(),
       bottomNavigationBar: MyCommunityBottomNavigationBar(),
     );
   }
