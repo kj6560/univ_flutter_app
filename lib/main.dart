@@ -19,7 +19,6 @@ import 'package:univ_app/view/pages/myuserperformance.dart';
 import 'package:univ_app/view/pages/myuserprofile.dart';
 import 'package:univ_app/view/pages/mypickaction.dart';
 import 'package:univ_app/view/pages/myusersearch.dart';
-import 'package:univ_app/view/pages/mywelcomepage.dart';
 
 void main() {
   runApp(GetMaterialApp(
