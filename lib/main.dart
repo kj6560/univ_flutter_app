@@ -44,7 +44,7 @@ void main() {
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/home',
-          page: () => const MyHome(),
+          page: () => MyHome(),
           transition: Transition.downToUp,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
