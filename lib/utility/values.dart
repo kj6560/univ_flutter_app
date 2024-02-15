@@ -59,6 +59,7 @@ class Values {
   static const String unBookmarkPost = "$baseUrl/api/unBookmarkPost";
   static const String fetchUserPost = "$baseUrl/api/fetchUserPost";
   static const String fetchPostsById = "$baseUrl/api/fetchPostsById";
+  static const String archiveUserFile = "$baseUrl/api/archiveUserFile";
 
   static const Color primaryColor = const Color.fromRGBO(26, 188, 156, 70);
 

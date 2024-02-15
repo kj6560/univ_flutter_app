@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:univ_app/controllers/slidercontroller.dart';
 import 'package:univ_app/controllers/eventcontroller.dart';
+import 'package:univ_app/controllers/socialprofilecontroller.dart';
 import 'package:univ_app/controllers/userpostscontroller.dart';
 import 'package:univ_app/models/user.dart';
 import 'package:univ_app/utility/values.dart';
@@ -11,6 +12,11 @@ import 'package:univ_app/utility/values.dart';
 class UserPostsGallery extends StatelessWidget {
   UserPostsController userPostsController =
       Get.put(UserPostsController(postType: 1));
+  SocialProfileController socialProfileController;
+  bool isCurrentUser;
+
+  UserPostsGallery(
+      {required this.socialProfileController, required this.isCurrentUser});
 
   @override
   Widget build(BuildContext context) {
@@ -54,28 +60,91 @@ class UserPostsGallery extends StatelessWidget {
                                 const Icon(Icons.error), // Error widget
                           )),
                     ),
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        child: IconButton(
-                            onPressed: () {
-                              logic.deletePost(logic.userPosts[index].id);
-                            },
-                            icon: const Icon(
-                              FontAwesomeIcons.ellipsisVertical,
-                              size: 20,
-                              color: Colors.white,
-                            )),
-                      ),
-                    )
+                    this.isCurrentUser
+                        ? Positioned(
+                            right: 0,
+                            top: 0,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                              child: IconButton(
+                                  onPressed: () {
+                                    showPostModal(logic.userPosts[index].id,
+                                        context, logic);
+                                  },
+                                  icon: const Icon(
+                                    FontAwesomeIcons.ellipsisVertical,
+                                    size: 20,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          )
+                        : SizedBox(
+                            height: 1,
+                          )
                   ],
                 ),
               );
             },
             childCount: logic.userPosts.length,
           ),
+        );
+      },
+    );
+  }
+
+  void showPostModal(
+      int post_id, BuildContext context, UserPostsController logic) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext builder) {
+        return FractionallySizedBox(
+          heightFactor: 0.3,
+          child: Column(children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(
+                      FontAwesomeIcons.circleXmark,
+                      size: 30,
+                    )),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Text("Post Options",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                )
+              ],
+            ),
+            const Divider(
+              height: 2,
+              thickness: 2,
+              color: Values.primaryColor,
+            ),
+            InkWell(
+                onTap: () {
+                  logic.deletePost(post_id);
+                  logic.userPosts.refresh();
+                  socialProfileController.posts =
+                      socialProfileController.posts - 1;
+                  socialProfileController.refresh();
+                  Navigator.of(context).pop();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: const Center(
+                    child: Text(
+                      "Archive Post",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                )),
+          ]),
         );
       },
     );

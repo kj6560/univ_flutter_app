@@ -32,11 +32,19 @@ class ReelsController extends GetxController {
 
   void fetchPosts() async {
     var prefs = await SharedPreferences.getInstance();
-
+    var topReelId = Get.arguments;
     current_user_id.value = prefs.getInt("id")!;
     var allPosts = await RemoteServices.fetchReels(current_user_id.value);
     if (allPosts != null) {
       var response = postFromJson(allPosts);
+      if (topReelId != null) {
+        var topReel =
+            response.singleWhere((element) => element.id == topReelId);
+        var topReelIndex = response.indexOf(topReel);
+        response.insert(0, topReel);
+        response.removeAt(topReelIndex);
+        response.sort();
+      }
       posts.value = response;
     }
   }

@@ -21,7 +21,6 @@ class UserVideosController extends GetxController {
   }
 
   void fetchUserPost() async {
-    print("post type: ${this.postType}");
     User? data = Get.arguments;
     int? id = 0;
     if (data != null) {
@@ -45,4 +44,10 @@ class UserVideosController extends GetxController {
     }
   }
 
+  Future<bool> deletePost(int post_id) async {
+    var deleted = await RemoteServices.deletePost(post_id);
+    userPosts.remove(userPosts.singleWhere((element) => element.id == post_id));
+    userPosts.refresh();
+    return deleted;
+  }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/models/EventPartner.dart';
@@ -165,6 +166,39 @@ class RemoteServices {
       //show error message
       return null;
     }
+  }
+
+  static archiveUserFile(int id, int user_id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      String? token = prefs.getString("token");
+      Uri url = Uri.parse("${Values.archiveUserFile}?file_id=$id&user_id=$user_id");
+
+      // Send the request
+      http.Response response = await http.get(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        var resp = json.decode(response.body);
+
+        if (resp['success']) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    } catch (error) {
+      print('Error: $error');
+      return false;
+    }
+    return false;
   }
 
   static logoutUser(var user_id) async {
@@ -436,6 +470,37 @@ class RemoteServices {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  static Future<bool> uploadCertificate(String type, XFile? imageFile) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      int? id = await prefs.getInt("id");
+      String? _token = await prefs.getString("token");
+      if (imageFile == null) {
+        return false;
+      }
+
+      Uri url = Uri.parse("${Values.userImageUpload}?user_id=${id}&type=3");
+      var request = http.MultipartRequest('POST', url);
+      request.headers['Authorization'] = 'Bearer $_token';
+      // Add the file to the request
+      request.files.add(await http.MultipartFile.fromPath(
+        type,
+        imageFile!.path,
+      ));
+      // Send the request
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        // Handle the error
+        return false;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
   }
 
   static Future<User?> fetchProfile(int? id) async {

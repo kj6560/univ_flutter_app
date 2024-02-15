@@ -11,8 +11,7 @@ import 'package:univ_app/utility/values.dart';
 class UserPostsController extends GetxController {
   var userPosts = List<UserPost>.empty().obs;
   int postType;
-  SocialProfileController socialProfileController =
-  Get.put(SocialProfileController());
+
   UserPostsController({required this.postType});
 
   @override
@@ -51,8 +50,8 @@ class UserPostsController extends GetxController {
 
   Future<bool> deletePost(int post_id) async {
     var deleted = await RemoteServices.deletePost(post_id);
+    userPosts.remove(userPosts.singleWhere((element) => element.id == post_id));
     userPosts.refresh();
-    socialProfileController.refresh();
     return deleted;
   }
 }

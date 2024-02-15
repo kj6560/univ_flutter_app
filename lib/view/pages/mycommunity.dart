@@ -28,16 +28,16 @@ class MyCommunity extends StatelessWidget {
                 padding: const EdgeInsets.all(18.0),
                 child: Text(
                   "Community",
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(FontAwesomeIcons.facebookMessenger)),
-              )
+                  onPressed: () {},
+                  icon: Icon(FontAwesomeIcons.facebookMessenger),
+                ),
+              ),
             ],
           ),
         ),

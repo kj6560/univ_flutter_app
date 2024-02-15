@@ -211,142 +211,141 @@ class _PostDetailState extends State<PostDetail>
     final commentTextController = TextEditingController();
 
     showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext builder) {
-        double screenHeight = MediaQuery.of(context).size.height;
-
-        return Container(
-          height: screenHeight * 0.75,
-          child: Column(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(
-                      FontAwesomeIcons.circleXmark,
-                      size: 30,
-                    ),
-                  ),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Comments(${controller.totalComments.value})",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: const Icon(
+                        FontAwesomeIcons.circleXmark,
+                        size: 30,
                       ),
                     ),
-                  )
-                ],
-              ),
-              const Divider(
-                height: 2,
-                thickness: 2,
-                color: Values.primaryColor,
-              ),
-              Expanded(
-                child: Obx(() {
-                  return ListView.builder(
-                    itemCount: commentsController.comments.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        leading: CircleAvatar(
-                          child: Image.network(
-                            "${Values.profilePic}${commentsController.comments[index].commentatorProfileImage}",
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Comments(${controller.posts.length > 0?controller.posts.singleWhere((element) => element.id == post_id).totalComments:0})",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                const Divider(
+                  height: 2,
+                  thickness: 2,
+                  color: Values.primaryColor,
+                ),
+                Expanded(
+                  child: Obx(() {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: commentsController.comments.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          leading: CircleAvatar(
+                            child: Image.network(
+                              "${Values.profilePic}${commentsController.comments[index].commentatorProfileImage}",
+                            ),
                           ),
-                        ),
-                        title: Text(
-                          "${commentsController.comments[index].commentByUsername}",
-                        ),
-                        subtitle: Text(
-                          "${commentsController.comments[index].comment}",
-                        ),
-                      );
-                    },
-                  );
-                }),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(38.0),
-                child: SizedBox(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: commentTextController,
-                          obscureText: false,
-                          textAlign: TextAlign.left,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                            fontSize: 14,
-                            color: Color(0xff000000),
+                          title: Text(
+                            "${commentsController.comments[index].commentByUsername}",
                           ),
-                          decoration: InputDecoration(
-                            disabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(4.0),
-                              borderSide: const BorderSide(
-                                color: Color(0xff000000),
-                                width: 1,
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(4.0),
-                              borderSide: const BorderSide(
-                                color: Color(0xff000000),
-                                width: 1,
-                              ),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(4.0),
-                              borderSide: const BorderSide(
-                                color: Color(0xff000000),
-                                width: 1,
-                              ),
-                            ),
-                            hintText: "write comment",
-                            hintStyle: const TextStyle(
+                          subtitle: Text(
+                            "${commentsController.comments[index].comment}",
+                          ),
+                        );
+                      },
+                    );
+                  }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(38.0),
+                  child: SizedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: commentTextController,
+                            obscureText: false,
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.normal,
                               fontSize: 14,
-                              color: Color(0xff494646),
+                              color: Color(0xff000000),
                             ),
-                            filled: true,
-                            fillColor: Colors.transparent,
-                            isDense: false,
-                            contentPadding: const EdgeInsets.all(0),
+                            decoration: InputDecoration(
+                              disabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(4.0),
+                                borderSide: const BorderSide(
+                                  color: Color(0xff000000),
+                                  width: 1,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(4.0),
+                                borderSide: const BorderSide(
+                                  color: Color(0xff000000),
+                                  width: 1,
+                                ),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(4.0),
+                                borderSide: const BorderSide(
+                                  color: Color(0xff000000),
+                                  width: 1,
+                                ),
+                              ),
+                              hintText: "write comment",
+                              hintStyle: const TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 14,
+                                color: Color(0xff494646),
+                              ),
+                              filled: true,
+                              fillColor: Colors.transparent,
+                              isDense: false,
+                              contentPadding: const EdgeInsets.all(0),
+                            ),
                           ),
                         ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          String commentText = commentTextController.text;
-                          var commentAdded =
-                              await commentsController.postComment(commentText);
-                          if (commentAdded) {
-                            commentTextController.clear();
-                            controller.posts
-                                .singleWhere((element) => element.id == post_id)
-                                .totalComments += 1;
-                            controller.posts.refresh();
-                          }
-                        },
-                        child: Text("post"),
-                      ),
-                    ],
+                        ElevatedButton(
+                          onPressed: () async {
+                            String commentText = commentTextController.text;
+                            var commentAdded = await commentsController
+                                .postComment(commentText);
+                            if (commentAdded) {
+                              commentTextController.clear();
+                              controller.posts
+                                  .singleWhere(
+                                      (element) => element.id == post_id)
+                                  .totalComments += 1;
+                              controller.posts.refresh();
+                            }
+                          },
+                          child: Text("post"),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
-          ),
-        );
-      },
-    );
+                )
+              ],
+            )));
   }
 }

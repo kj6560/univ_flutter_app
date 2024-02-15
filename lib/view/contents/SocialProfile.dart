@@ -57,9 +57,14 @@ class _SocialProfileState extends State<SocialProfile>
 
   Widget _getTabAtIndex() {
     var list = [
-      UserPostsGallery(), // FIRST ITEM
-      UserReelsGallery(), // SECOND ITEM
-      const UserCertificates(), // THIRD ITEM
+      UserPostsGallery(socialProfileController: socialProfileController,isCurrentUser: user == null ||
+          user!.id == current_user_id ?true:false,),
+      // FIRST ITEM
+      UserReelsGallery(socialProfileController: socialProfileController,isCurrentUser: user == null ||
+      user!.id == current_user_id ?true:false,),
+      // SECOND ITEM
+      UserCertificates(),
+      // THIRD ITEM
     ];
     return list[_selectedIndex];
   }
