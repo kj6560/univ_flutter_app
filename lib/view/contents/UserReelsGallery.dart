@@ -6,7 +6,6 @@ import 'package:univ_app/utility/values.dart';
 
 import '../../controllers/socialprofilecontroller.dart';
 import 'ProfileVideoPlayerScreen.dart';
-import 'VideoPlayerScreen.dart';
 
 class UserReelsGallery extends StatelessWidget {
   UserVideosController userReelsController =
@@ -24,7 +23,7 @@ class UserReelsGallery extends StatelessWidget {
       builder: (logic) {
         return SliverGrid(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Adjust the number of columns as needed
+            crossAxisCount: 2,
           ),
           delegate: SliverChildBuilderDelegate(
             addRepaintBoundaries: true,

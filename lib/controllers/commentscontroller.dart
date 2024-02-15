@@ -10,7 +10,7 @@ import '../utility/values.dart';
 class CommentsController extends GetxController {
   var comments = List<Comment>.empty().obs;
   var post_id = 0.obs;
-
+  var total_comments = 0.obs;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -25,6 +25,7 @@ class CommentsController extends GetxController {
       Values.cacheFile(
           "${Values.profilePic}${comment.commentatorProfileImage}");
     }
+    total_comments.value = commentsRecieved.length;
     return comments.value = commentsRecieved;
   }
 
@@ -51,7 +52,9 @@ class CommentsController extends GetxController {
               ? DateTime.parse(commentReceived['created_at'])
               : DateTime(2017, 9, 7, 17, 30),
         ));
+        total_comments.value = total_comments.value + 1;
         comments.refresh();
+        total_comments.refresh();
         return true;
       }
     } else {
