@@ -666,6 +666,44 @@ class RemoteServices {
     }
   }
 
+  static Future<bool> uploadVideoFile(int post_id, String path) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      int? id = await prefs.getInt("id");
+      String? _token = await prefs.getString("token");
+      if (path == null) {
+        // No file selected, handle this as needed
+        return false;
+      }
+
+      Uri url = Uri.parse("${Values.uploadUserVideos}?user_id=${id}");
+      print(path);
+      var request = http.MultipartRequest('POST', url);
+      request.headers['Authorization'] = 'Bearer $_token';
+      // Add the file to the request
+      request.files.add(await http.MultipartFile.fromPath(
+        "video_file",
+        path,
+      ));
+      request.fields["post_id"] = post_id.toString();
+      request.fields['media_created_by'] = id.toString();
+      // Send the request
+      var response = await request.send();
+      String responseBody = await utf8.decodeStream(response.stream);
+      print(responseBody);
+      if (response.statusCode == 200) {
+        // File uploaded successfully
+        return true;
+      } else {
+        // Handle the error
+        return false;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
+
   static Future<String?> fetchTopQuote() async {
     try {
       final prefs = await SharedPreferences.getInstance();
