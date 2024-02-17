@@ -17,12 +17,9 @@ class _EventGalleryState extends State<EventGallery>
     Tab(text: 'Tab 2'),
     Tab(text: 'Tab 3'),
   ];
-  EventGalleryController eventGalleryController = Get.put(EventGalleryController());
-  final List<Widget> tabViews = [
-    Center(child: Text('Tab 1 content')),
-    Center(child: Text('Tab 2 content')),
-    Center(child: Text('Tab 3 content')),
-  ];
+  EventGalleryController eventGalleryController =
+      Get.put(EventGalleryController());
+
   late TabController _tabController;
 
   @override
@@ -31,7 +28,6 @@ class _EventGalleryState extends State<EventGallery>
     _tabController = TabController(length: myTabs.length, vsync: this);
     RemoteServices.showSnackBar(context);
   }
-
 
   @override
   void dispose() {
@@ -59,27 +55,29 @@ class _EventGalleryState extends State<EventGallery>
                     ),
                     // Placeholder widget
                     errorWidget: (context, url, error) =>
-                    const Icon(Icons.error), // Error widget
+                        const Icon(Icons.error), // Error widget
                   )),
             ),
           ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(3.0),
-              child: Container(
-                color: Colors.grey,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(logic.eventName.string),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.share))
-                    ]),
+              child: Expanded(
+                child: Container(
+                  color: Colors.grey,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(logic.eventName.string),
+                        IconButton(onPressed: () {}, icon: Icon(Icons.share))
+                      ]),
+                ),
               ),
             ),
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(3.0),
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -89,20 +87,19 @@ class _EventGalleryState extends State<EventGallery>
                         logic.eventDate.string,
                         style: TextStyle(
                             color: Colors.green,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(logic.eventLocation.string.length > 30
-                          ? "${logic.eventLocation.string.substring(0, 30)}\n${logic.eventLocation.string.substring(
-                          30, logic.eventLocation.string.length)}"
-                          : logic.eventLocation.string,
-                          style: const TextStyle(
-                              color: Colors.green,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold)),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(logic.eventLocation.string,
+                            style: const TextStyle(
+                                color: Colors.green,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold)),
+                      ),
                     )
                   ]),
             ),
@@ -113,15 +110,13 @@ class _EventGalleryState extends State<EventGallery>
               child: Container(
                 color: Colors.grey,
                 height: 60,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Gallery",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      )
-                    ]),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text(
+                    "Gallery",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  )
+                ]),
               ),
             ),
           ),
@@ -132,7 +127,7 @@ class _EventGalleryState extends State<EventGallery>
                 mainAxisSpacing: 1.0,
                 crossAxisSpacing: 1.0),
             delegate: SliverChildBuilderDelegate(
-                  (context, index) {
+              (context, index) {
                 return Padding(
                     padding: const EdgeInsets.all(1.0),
                     child: Container(
@@ -144,12 +139,17 @@ class _EventGalleryState extends State<EventGallery>
                               backgroundColor: Colors.transparent,
                               insetPadding: EdgeInsets.all(1),
                               content: ConstrainedBox(
-                                constraints: BoxConstraints(maxWidth: 400, maxHeight: 400),
+                                constraints: BoxConstraints(
+                                    maxWidth: 400, maxHeight: 400),
                                 child: CachedNetworkImage(
-                                  fit: BoxFit.contain, // Adjust the fit based on your requirement
-                                  imageUrl: Values.eventGallery + logic.event_files_list[index].image,
-                                  placeholder: (context, url) => CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) => Icon(Icons.error),
+                                  fit: BoxFit.contain,
+                                  // Adjust the fit based on your requirement
+                                  imageUrl: Values.eventGallery +
+                                      logic.event_files_list[index].image,
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
                                 ),
                               ),
                             ),
@@ -163,12 +163,11 @@ class _EventGalleryState extends State<EventGallery>
                               logic.event_files_list[index].image,
                           // URL of the image
                           placeholder: (context, url) => const Center(
-                            child:
-                            CircularProgressIndicator(strokeWidth: 3.0),
+                            child: CircularProgressIndicator(strokeWidth: 3.0),
                           ),
                           // Placeholder widget
                           errorWidget: (context, url, error) =>
-                          const Icon(Icons.error), // Error widget
+                              const Icon(Icons.error), // Error widget
                         ),
                       ),
                     ));

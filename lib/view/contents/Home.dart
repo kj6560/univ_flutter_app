@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,6 +34,7 @@ class _HomeState extends State<Home> {
   }
   @override
   Widget build(BuildContext context) {
+
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     return _isLoading
         ? Container(
@@ -56,7 +55,6 @@ class _HomeState extends State<Home> {
                             return Container(
                               width: MediaQuery.of(context).size.width,
                               margin: const EdgeInsets.symmetric(horizontal: 1.0),
-                              decoration: const BoxDecoration(color: Colors.white),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(

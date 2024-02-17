@@ -3,24 +3,19 @@ import 'package:flutter/services.dart';
 import 'package:univ_app/view/constantpages/bottomnavigationbar.dart';
 import 'package:univ_app/view/contents/SocialProfile.dart';
 
-class MySocialProfile extends StatefulWidget {
-  const MySocialProfile({super.key});
-
-  @override
-  State<MySocialProfile> createState() => _MySocialProfileState();
-}
-
-class _MySocialProfileState extends State<MySocialProfile> {
-
-
+class MySocialProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xffffffff),
-        body: SocialProfile(),
-        bottomNavigationBar: MyBottomNavigationBar(),
+    return Scaffold(
+      extendBodyBehindAppBar: false,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(1.0),
+        child: Container(
+          color: Colors.white,
+        ),
       ),
+      body: SocialProfile(),
+      bottomNavigationBar: MyBottomNavigationBar(),
     );
   }
 }

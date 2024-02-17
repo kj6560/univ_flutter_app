@@ -84,18 +84,17 @@ class _EventDetailsState extends State<EventDetails> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                        child: Row(
-                      children: [
-                        Center(child: Text(logic.eventDate,style: const TextStyle(color: Values.primaryColor))),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 60, right: 10),
-                            child: Text(logic.eventLocation.length > 30
-                                ? "${logic.eventLocation.substring(0, 30)}\n${logic.eventLocation.substring(
-                                        30, logic.eventLocation.length)}"
-                                : logic.eventLocation,style: const TextStyle(color: Values.primaryColor),),)
-                      ],
-                    )),
+                    child: Expanded(
+                      child: Row(
+                        children: [
+                          Center(child: Text(logic.eventDate,style: const TextStyle(color: Values.primaryColor))),
+                          Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(logic.eventLocation
+                                  ,style: const TextStyle(color: Values.primaryColor),),)
+                        ],
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

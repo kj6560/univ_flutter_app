@@ -7,7 +7,6 @@ import 'package:univ_app/view/pages/mycommunity.dart';
 
 import '../../controllers/commentscontroller.dart';
 import '../../utility/values.dart';
-import 'Community.dart';
 import 'VideoPlayerScreen.dart';
 
 class Reels extends StatelessWidget {

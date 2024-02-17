@@ -4,6 +4,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -22,7 +23,7 @@ class Values {
   static const String userPerformanceUrl = "$baseUrl/api/userPerformance";
   static const String eventImageUrl = "$baseUrl/uploads/events/images/";
   static const String profilePic = "$baseUrl/uploads/profile/profileImage/";
-  static const String postMediaUrl = "$baseUrl/uploads/post_media/";
+  static const String postMediaUrl = "$baseUrl/uploads/users/docs/images/";
   static const String eventPartnerUrl = "$baseUrl/api/eventPartners";
   static const String eventPartnerPic = "$baseUrl/images/";
   static const String eventFiles = "$baseUrl/api/eventFiles";
@@ -179,6 +180,13 @@ class Values {
       Values.showMsgDialog(from, "Bad or no internet connection", context, () {
         Navigator.pop(context);
       });
+    }
+  }
+  static Future<void> checkAndRequestPermissions() async{
+    if(await Permission.camera.request().isGranted && await Permission.storage.request().isGranted){
+      print("permission hai");
+    }else{
+      print("nahi hai permission");
     }
   }
 }

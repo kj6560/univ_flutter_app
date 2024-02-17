@@ -12,27 +12,13 @@ import 'package:univ_app/view/constantpages/mycommunityusersearchappbar.dart';
 import 'package:univ_app/view/contents/PickAction.dart';
 import 'package:univ_app/view/contents/UserSearch.dart';
 
-class MyUserSearch extends StatefulWidget {
-  const MyUserSearch({super.key});
-
-  @override
-  State<MyUserSearch> createState() => _MyUserSearchState();
-}
-
-class _MyUserSearchState extends State<MyUserSearch> {
-  TextEditingController editingController = TextEditingController();
-
+class MyUserSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    //   statusBarColor: Colors.white, // Set the status bar color here
-    // ));
-    return SafeArea(
-      child: Scaffold(
-
-        body: const UserSearch(),
-        bottomNavigationBar: MyCommunityBottomNavigationBar(),
-      ),
+    return Scaffold(
+      extendBodyBehindAppBar: false,
+      body: UserSearch(),
+      bottomNavigationBar: MyCommunityBottomNavigationBar(),
     );
   }
 }

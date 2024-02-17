@@ -99,8 +99,8 @@ class _MyAppBarState extends State<MyAppBar> {
     );
 
     StreamSubscription<Position> positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position position) async {
+    Geolocator.getPositionStream(locationSettings: locationSettings)
+        .listen((Position position) async {
       if (!disposed) {
         long = position.longitude;
         lat = position.latitude;
@@ -133,14 +133,14 @@ class _MyAppBarState extends State<MyAppBar> {
         children: [
           showBack
               ? InkWell(
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Get.offAllNamed(Get.previousRoute);
-                    },
-                  ),
-                )
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+                Get.offAllNamed(Get.previousRoute);
+              },
+            ),
+          )
               : Container(),
           SizedBox(
             height: kToolbarHeight,

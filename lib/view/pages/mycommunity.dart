@@ -19,29 +19,28 @@ class MyCommunity extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: false,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60), // Set this height
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Text(
-                  "Community",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          preferredSize: const Size.fromHeight(1.0),
+          child: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(18.0),
+                  child: Text(
+                    "Community",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(FontAwesomeIcons.facebookMessenger),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(FontAwesomeIcons.facebookMessenger),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
+              ],
+            ),
+          )),
       body: Community(),
       bottomNavigationBar: MyCommunityBottomNavigationBar(),
     );

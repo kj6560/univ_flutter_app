@@ -28,7 +28,7 @@ void main() {
       GetPage(name: '/', page: () => const MySudoHome()),
       GetPage(
           name: '/search',
-          page: () => const MyUserSearch(),
+          page: () => MyUserSearch(),
           transition: Transition.downToUp,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
@@ -53,27 +53,27 @@ void main() {
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/social_profile',
-          page: () => const MySocialProfile(),
+          page: () => MySocialProfile(),
           transition: Transition.downToUp,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/user_profile',
-          page: () => const MyUserProfile(),
+          page: () => MyUserProfile(),
           transition: Transition.leftToRight,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/performance',
-          page: () => const MyUserPerformance(),
+          page: () => MyUserPerformance(),
           transition: Transition.downToUp,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/event_details',
-          page: () => const MyEventDetails(),
+          page: () => MyEventDetails(),
           transition: Transition.leftToRight,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/event_gallery',
-          page: () => const MyEventGallery(),
+          page: () => MyEventGallery(),
           transition: Transition.downToUp,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(

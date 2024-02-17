@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:univ_app/models/post.dart';
 import 'package:univ_app/services/remote_services.dart';
 
 import '../utility/values.dart';
 
 class PostController extends GetxController {
+  var selectedPostType = ''.obs;
+  var imageFile = [].obs;
+  var videoLink=XFile('').obs;
+  var post_type = 1.obs;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -21,6 +26,7 @@ class PostController extends GetxController {
       print("Total files to upload: ${mediaFiles.length}");
       var media_uploaded =
           await RemoteServices.uploadPostMedia(mediaFiles, post_type, post_id);
+      print("media uploaded: ${media_uploaded}");
       if (media_uploaded) {
         Values.showMsgDialog(
             "New Post", "You have successfully created a new post!!", context,
@@ -30,6 +36,7 @@ class PostController extends GetxController {
         });
       } else {
         var post_deleted = await RemoteServices.deletePost(post_type);
+        print("post deleted: ${post_deleted}");
         if (post_deleted) {
           Values.showMsgDialog(
               "New Post",

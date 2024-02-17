@@ -173,7 +173,8 @@ class RemoteServices {
       final prefs = await SharedPreferences.getInstance();
 
       String? token = prefs.getString("token");
-      Uri url = Uri.parse("${Values.archiveUserFile}?file_id=$id&user_id=$user_id");
+      Uri url =
+          Uri.parse("${Values.archiveUserFile}?file_id=$id&user_id=$user_id");
 
       // Send the request
       http.Response response = await http.get(
@@ -366,6 +367,7 @@ class RemoteServices {
         },
       );
       if (response.statusCode == 200) {
+        print(response.body);
         return response.body;
       }
     } catch (e) {
@@ -400,7 +402,7 @@ class RemoteServices {
     try {
       final prefs = await SharedPreferences.getInstance();
       int? id = prefs.getInt("id");
-
+      Values.checkAndRequestPermissions();
       var data = {
         "post_created_by": id,
         "post_created_at": DateTime.now().toIso8601String(),
@@ -640,7 +642,7 @@ class RemoteServices {
     for (var element in mediaFiles) {
       var path =
           element.path ?? ""; // Use the null-aware operator to handle null path
-
+      print(path);
       // Use 'await' here to ensure the asynchronous operation completes before moving to the next iteration
       request.files.add(await http.MultipartFile.fromPath("media[]", path));
     }
@@ -651,6 +653,9 @@ class RemoteServices {
       var response = await request.send();
       // Handle the response
       if (response.statusCode == 200) {
+        await for (var chunk in response.stream) {
+          print(utf8.decode(chunk));
+        }
         return true;
       } else {
         return false;

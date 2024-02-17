@@ -20,6 +20,12 @@ class MyPostDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: false,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(1.0),
+        child: Container(
+          color: Colors.white,
+        ),
+      ),
       body: PostDetail(),
       bottomNavigationBar: MyCommunityBottomNavigationBar(),
     );

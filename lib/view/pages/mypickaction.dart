@@ -10,30 +10,14 @@ import 'package:univ_app/view/constantpages/myappbar.dart';
 import 'package:univ_app/view/constantpages/mycommunityappbar.dart';
 import 'package:univ_app/view/contents/PickAction.dart';
 
-class MyPickAction extends StatefulWidget {
-  const MyPickAction({super.key});
-
-  @override
-  State<MyPickAction> createState() => _MyPickActionState();
-}
-
-class _MyPickActionState extends State<MyPickAction> {
-  TextEditingController editingController = TextEditingController();
-
+class MyPickAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    //   statusBarColor: Colors.white, // Set the status bar color here
-    // ));
-    return SafeArea(
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(55), // Set this height
-          child: MyCommunityAppBar(),
-        ),
-        body: PickAction(),
-        bottomNavigationBar: MyCommunityBottomNavigationBar(),
-      ),
+    return Scaffold(
+      extendBodyBehindAppBar: false,
+      body: PickAction(),
+      bottomNavigationBar: MyCommunityBottomNavigationBar(),
     );
   }
 }
+
