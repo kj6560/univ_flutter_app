@@ -29,12 +29,12 @@ void main() {
       GetPage(
           name: '/search',
           page: () => MyUserSearch(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/post_detail',
           page: () => MyPostDetail(),
-          transition: Transition.leftToRight,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/messenger',
@@ -44,74 +44,74 @@ void main() {
       GetPage(
           name: '/home',
           page: () => MyHome(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/new',
           page: () => MyPickAction(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/social_profile',
           page: () => MySocialProfile(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/user_profile',
           page: () => MyUserProfile(),
-          transition: Transition.leftToRight,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/performance',
           page: () => MyUserPerformance(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/event_details',
           page: () => MyEventDetails(),
-          transition: Transition.leftToRight,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/event_gallery',
           page: () => MyEventGallery(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/event_registration', page: () => const MyEventRegistration()),
       GetPage(
           name: '/community',
           page: () => MyCommunity(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/reels',
           page: () => MyReels(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/register',
           page: () => const MyRegister(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/login',
           page: () => const MyLogin(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/forgot_password',
           page: () => const MyForgotPassword(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/verify_otp',
           page: () => const MyOtpVerification(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
       GetPage(
           name: '/reset_password',
           page: () => const MyResetPassword(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 500)),
     ],
     home: MySudoHome(),

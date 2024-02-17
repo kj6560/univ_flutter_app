@@ -18,7 +18,6 @@ class ReelsController extends GetxController {
 
   setCurrentUser() async {
     var prefs = await SharedPreferences.getInstance();
-
     current_user_id.value = prefs.getInt("id")!;
   }
 
@@ -43,7 +42,6 @@ class ReelsController extends GetxController {
         var topReelIndex = response.indexOf(topReel);
         response.insert(0, topReel);
         response.removeAt(topReelIndex);
-        response.sort();
       }
       posts.value = response;
     }

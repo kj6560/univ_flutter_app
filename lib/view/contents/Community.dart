@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,230 +13,274 @@ import 'package:univ_app/models/post.dart';
 import 'package:univ_app/utility/values.dart';
 import 'package:univ_app/view/contents/VideoPlayerScreen.dart';
 
-class Community extends StatelessWidget{
+class Community extends StatelessWidget {
   final CommunityController controller = Get.put(CommunityController());
   final commentsController = Get.put(CommentsController());
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            itemCount: controller.posts.length,
-            // Specify the number of items in the list
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                margin: const EdgeInsets.only(bottom: 3),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 1,
-                    margin: const EdgeInsets.only(bottom: 0, top: 0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        InkWell(
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage: CachedNetworkImageProvider(
-                                '${Values.profilePic}${controller.posts[index].postCreatedByUserIcon}',
-                              ),
-                            ),
-                            title: Text(
-                              controller.posts[index].postCreatedByUsername,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text(
-                              DateFormat('yyyy-MM-dd').format(
-                                  controller.posts[index].postCreatedAt),
-                            ),
-                          ),
-                          onTap: () {
-                            controller.userGoingToSocialProfile(
-                                controller.posts[index].postCreatedBy,
-                                context);
-                          },
+          children: [
+            Platform.isAndroid
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(18.0),
+                        child: Text(
+                          "Community",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        (controller.posts[index].postMedia.isNotEmpty &&
-                            controller.posts[index].postType == 1)
-                            ? Column(
+                      ),
+                    ],
+                  )
+                : SizedBox(
+                    height: 1,
+                  ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: controller.posts.length,
+                // Specify the number of items in the list
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 3),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 1,
+                        margin: const EdgeInsets.only(bottom: 0, top: 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              width:
-                              MediaQuery.of(context).size.width,
-                              height: 350,
-                              child: PageView.builder(
-                                itemCount: controller
-                                    .posts[index].postMedia.length,
-                                itemBuilder: (context, mediaIndex) {
-                                  return AspectRatio(
-                                    aspectRatio: 4 / 3,
-                                    child: CachedNetworkImage(
-                                      imageUrl:
-                                      '${Values.postMediaUrl}${controller.posts[index].postMedia[mediaIndex].mediaName}',
-                                      fit: BoxFit.cover,
-                                      alignment: Alignment.center,
-                                      errorWidget:
-                                          (context, url, error) =>
-                                          Icon(Icons.error),
-                                    ),
-                                  );
-                                },
-                                onPageChanged: (index) {},
-                              ),
-                            ),
-                          ],
-                        )
-                            : Container(
-                          height: 300,
-                          width: 480,
-                          child: VideoPlayerScreen(
-                              videoUrl:
-                              "${Values.postMediaUrl}${controller.posts[index].postMedia[0].mediaName}"),
-                        ),
-                        SizedBox(
-                          height: 50,
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  InkWell(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: controller.posts[index]
-                                          .likedByCurrentUser
-                                          ? Icon(
-                                        FontAwesomeIcons.solidHeart,
-                                        color: Colors.red,
+                            Stack(
+                              children: [
+                                (controller.posts[index].postMedia.isNotEmpty &&
+                                        controller.posts[index].postType == 1)
+                                    ? Column(
+                                        children: [
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 350,
+                                            child: PageView.builder(
+                                              itemCount: controller.posts[index]
+                                                  .postMedia.length,
+                                              itemBuilder:
+                                                  (context, mediaIndex) {
+                                                return AspectRatio(
+                                                  aspectRatio: 4 / 3,
+                                                  child: CachedNetworkImage(
+                                                    imageUrl:
+                                                        '${Values.postMediaUrl}${controller.posts[index].postMedia[mediaIndex].mediaName}',
+                                                    fit: BoxFit.cover,
+                                                    alignment: Alignment.center,
+                                                    errorWidget:
+                                                        (context, url, error) =>
+                                                            Icon(Icons.error),
+                                                  ),
+                                                );
+                                              },
+                                              onPageChanged: (index) {},
+                                            ),
+                                          ),
+                                        ],
                                       )
-                                          : Icon(
-                                        FontAwesomeIcons.heart,
-                                        color: Colors.red,
+                                    : Container(
+                                        height: 300,
+                                        width: 480,
+                                        child: Stack(
+                                          fit: StackFit.expand,
+                                          children: [
+                                            VideoPlayerScreen(
+                                                videoUrl:
+                                                    "${Values.postMediaUrl}${controller.posts[index].postMedia[0].mediaName}"),
+                                            Positioned(
+                                              bottom: 2,
+                                              right: 2,
+                                              child: ElevatedButton(
+                                                  onPressed: () {
+                                                    Get.offAllNamed("/reels",
+                                                        arguments: controller
+                                                            .posts[index].id);
+                                                  },
+                                                  child: Text("Open In Reels")),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                InkWell(
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                        '${Values.profilePic}${controller.posts[index].postCreatedByUserIcon}',
                                       ),
                                     ),
-                                    onTap: () {
-                                      if (controller.posts[index]
-                                          .likedByCurrentUser) {
-                                        controller.posts[index].totalLikes =
-                                            controller.posts[index]
-                                                .totalLikes -
-                                                1;
-                                        controller.processLikes(
-                                            controller.posts[index].id,
-                                            false);
-                                      } else {
-                                        controller.posts[index].totalLikes =
-                                            controller.posts[index]
-                                                .totalLikes +
-                                                1;
-                                        controller.processLikes(
-                                            controller.posts[index].id,
-                                            true);
-                                      }
-                                    },
-                                  ),
-                                  InkWell(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Icon(FontAwesomeIcons.comment),
+                                    title: Text(
+                                      controller
+                                          .posts[index].postCreatedByUsername,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
                                     ),
-                                    onTap: () {
-                                      // showCommentModel(
-                                      //     controller.posts[index].id,
-                                      //     context);
-                                      showCommentWindow(
-                                          controller.posts[index].id,context);
-                                    },
+                                    subtitle: Text(
+                                      DateFormat('yyyy-MM-dd').format(controller
+                                          .posts[index].postCreatedAt),
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child:
-                                    Icon(FontAwesomeIcons.paperPlane),
-                                  ),
-                                ],
-                              ),
-                              controller.posts[index].postCreatedBy !=
-                                  controller.current_user_id.value
-                                  ? InkWell(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: controller.posts[index]
-                                      .isBookmarked !=
-                                      1
-                                      ? Icon(
-                                      FontAwesomeIcons.bookmark)
-                                      : Icon(
-                                    FontAwesomeIcons
-                                        .solidBookmark,
-                                    color: Colors.red,
-                                  ),
+                                  onTap: () {
+                                    controller.userGoingToSocialProfile(
+                                        controller.posts[index].postCreatedBy,
+                                        context);
+                                  },
                                 ),
-                                onTap: () async {
-                                  if (controller.posts[index]
-                                      .isBookmarked !=
-                                      1) {
-                                    if (await controller.bookmarkPost(
-                                        controller.posts[index].id)) {
-                                    } else {}
-                                  } else {
-                                    if (await controller
-                                        .unBookmarkPost(controller
-                                        .posts[index].id)) {
-                                    } else {}
-                                  }
-                                },
-                              )
-                                  : SizedBox(
-                                height: 1,
-                              )
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Row(
+                              ],
+                            ),
+                            SizedBox(
+                              height: 50,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                      "${controller.posts[index].totalLikes} likes")
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: controller.posts[index]
+                                                  .likedByCurrentUser
+                                              ? Icon(
+                                                  FontAwesomeIcons.solidHeart,
+                                                  color: Colors.red,
+                                                )
+                                              : Icon(
+                                                  FontAwesomeIcons.heart,
+                                                  color: Colors.red,
+                                                ),
+                                        ),
+                                        onTap: () {
+                                          if (controller.posts[index]
+                                              .likedByCurrentUser) {
+                                            controller.posts[index].totalLikes =
+                                                controller.posts[index]
+                                                        .totalLikes -
+                                                    1;
+                                            controller.processLikes(
+                                                controller.posts[index].id,
+                                                false);
+                                          } else {
+                                            controller.posts[index].totalLikes =
+                                                controller.posts[index]
+                                                        .totalLikes +
+                                                    1;
+                                            controller.processLikes(
+                                                controller.posts[index].id,
+                                                true);
+                                          }
+                                        },
+                                      ),
+                                      InkWell(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Icon(FontAwesomeIcons.comment),
+                                        ),
+                                        onTap: () {
+                                          // showCommentModel(
+                                          //     controller.posts[index].id,
+                                          //     context);
+                                          showCommentWindow(
+                                              controller.posts[index].id,
+                                              context);
+                                        },
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child:
+                                            Icon(FontAwesomeIcons.paperPlane),
+                                      ),
+                                    ],
+                                  ),
+                                  controller.posts[index].postCreatedBy !=
+                                          controller.current_user_id.value
+                                      ? InkWell(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: controller.posts[index]
+                                                        .isBookmarked !=
+                                                    1
+                                                ? Icon(
+                                                    FontAwesomeIcons.bookmark)
+                                                : Icon(
+                                                    FontAwesomeIcons
+                                                        .solidBookmark,
+                                                    color: Colors.red,
+                                                  ),
+                                          ),
+                                          onTap: () async {
+                                            if (controller.posts[index]
+                                                    .isBookmarked !=
+                                                1) {
+                                              if (await controller.bookmarkPost(
+                                                  controller.posts[index].id)) {
+                                              } else {}
+                                            } else {
+                                              if (await controller
+                                                  .unBookmarkPost(controller
+                                                      .posts[index].id)) {
+                                              } else {}
+                                            }
+                                          },
+                                        )
+                                      : SizedBox(
+                                          height: 1,
+                                        )
                                 ],
                               ),
-                              Row(
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
                                 children: [
-                                  Text(
-                                      "${controller.posts[index].totalComments} comments")
+                                  Row(
+                                    children: [
+                                      Text(
+                                          "${controller.posts[index].totalLikes} likes")
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                          "${controller.posts[index].totalComments} comments")
+                                    ],
+                                  )
                                 ],
-                              )
-                            ],
-                          ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                "${controller.posts[index].postCaption}",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "${controller.posts[index].postCaption}",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    ));
+                  );
+                },
+              ),
+            ),
+          ],
+        ));
   }
 
-  void showCommentWindow(int post_id,var context) {
+  void showCommentWindow(int post_id, var context) {
     if (commentsController.comments.length > 0) {
       commentsController.comments.clear();
     }
@@ -249,9 +295,8 @@ class Community extends StatelessWidget{
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Container(
-              height: MediaQuery.of(context).size.height*0.75,
+              height: MediaQuery.of(context).size.height * 0.75,
               child: Column(
-
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -385,4 +430,3 @@ class Community extends StatelessWidget{
             )));
   }
 }
-

@@ -59,6 +59,7 @@ class Reels extends StatelessWidget {
                             child: Column(
                               children: [
                                 Column(children: [
+                                  //likes
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
@@ -69,7 +70,7 @@ class Reels extends StatelessWidget {
                                               ? const Icon(
                                                   FontAwesomeIcons.solidHeart,
                                                   color: Colors.red,
-                                                  size: 35,
+                                                  size: 25,
                                                 )
                                               : const Icon(
                                                   FontAwesomeIcons.heart,
@@ -106,15 +107,18 @@ class Reels extends StatelessWidget {
                                       ],
                                     ),
                                   ),
+
+                                  //comment
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       children: [
+
                                         InkWell(
                                           child: const Icon(
                                             FontAwesomeIcons.comment,
                                             color: Colors.white,
-                                            size: 35,
+                                            size: 25,
                                           ),
                                           onTap: () {
                                             showCommentWindow(
@@ -130,6 +134,8 @@ class Reels extends StatelessWidget {
                                       ],
                                     ),
                                   ),
+
+                                  //share
                                   const Padding(
                                     padding: EdgeInsets.all(8.0),
                                     child: Column(
@@ -137,11 +143,13 @@ class Reels extends StatelessWidget {
                                         Icon(
                                           FontAwesomeIcons.paperPlane,
                                           color: Colors.white,
-                                          size: 35,
+                                          size: 25,
                                         ),
                                       ],
                                     ),
                                   ),
+
+                                  //bookmark
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
@@ -190,6 +198,8 @@ class Reels extends StatelessWidget {
                                       ],
                                     ),
                                   ),
+
+                                  //reel options
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -197,7 +207,7 @@ class Reels extends StatelessWidget {
                                         onPressed: () {},
                                         icon: const Icon(
                                           FontAwesomeIcons.ellipsisVertical,
-                                          size: 30,
+                                          size: 25,
                                           color: Colors.white,
                                         )),
                                   )
@@ -241,7 +251,6 @@ class Reels extends StatelessWidget {
     commentsController.setPostId(post_id);
     commentsController.fetchComments();
     final commentTextController = TextEditingController();
-
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,

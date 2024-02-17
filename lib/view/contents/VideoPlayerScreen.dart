@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:video_player/video_player.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final String videoUrl;
@@ -58,48 +59,59 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return is_loading
-        ? const Padding(
-            padding: EdgeInsets.all(138.0),
-            child: CircularProgressIndicator(
-              strokeWidth: 2.0, // Adjust the strokeWidth here
-            ),
-          )
-        : FutureBuilder(
-            future: _initializeVideoPlayerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return SizedBox(
-                  height: 160,
-                  width: 160,
-                  child: AspectRatio(
-                    aspectRatio: _controller.value.aspectRatio,
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          if (_controller.value.isPlaying) {
-                            _controller.pause();
-                          } else {
-                            _controller.play();
-                          }
-                        });
-                      },
-                      child: Container(
-                        height: 160,
-                        width: 160,
-                        child: VideoPlayer(_controller),
+    return VisibilityDetector(
+      key: Key(widget.videoUrl),
+      // provide a unique key to avoid widget recycling issues
+      onVisibilityChanged: (VisibilityInfo info) {
+        if (info.visibleFraction == 1.0) {
+          _controller.play();
+        } else {
+          _controller.pause();
+        }
+      },
+      child: is_loading
+          ? const Padding(
+              padding: EdgeInsets.all(100.0),
+              child: CircularProgressIndicator(
+                strokeWidth: 2.0, // Adjust the strokeWidth here
+              ),
+            )
+          : FutureBuilder(
+              future: _initializeVideoPlayerFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return SizedBox(
+                    height: 160,
+                    width: 160,
+                    child: AspectRatio(
+                      aspectRatio: _controller.value.aspectRatio,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            if (_controller.value.isPlaying) {
+                              _controller.pause();
+                            } else {
+                              _controller.play();
+                            }
+                          });
+                        },
+                        child: Container(
+                          height: 160,
+                          width: 160,
+                          child: VideoPlayer(_controller),
+                        ),
                       ),
                     ),
-                  ),
-                );
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.0, // Adjust the strokeWidth here
-                  ),
-                );
-              }
-            },
-          );
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.0, // Adjust the strokeWidth here
+                    ),
+                  );
+                }
+              },
+            ),
+    );
   }
 }

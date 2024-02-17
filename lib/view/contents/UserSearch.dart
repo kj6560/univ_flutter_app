@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -26,7 +28,7 @@ class _UserSearchState extends State<UserSearch> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 55),
+      margin: !Platform.isAndroid ? EdgeInsets.only(top: 55):EdgeInsets.only(top: 10),
       child: CustomScrollView(
         slivers: <Widget>[
           SliverToBoxAdapter(
