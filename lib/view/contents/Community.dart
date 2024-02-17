@@ -103,8 +103,8 @@ class Community extends StatelessWidget {
                                               child: ElevatedButton(
                                                   onPressed: () {
                                                     Get.offAllNamed("/reels",
-                                                        arguments: controller
-                                                            .posts[index].id);
+                                                        arguments: {"post_id":controller
+                                                            .posts[index].id,"index":index});
                                                   },
                                                   child: Text("Open In Reels")),
                                             )

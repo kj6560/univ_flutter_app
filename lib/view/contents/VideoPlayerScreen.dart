@@ -63,7 +63,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       key: Key(widget.videoUrl),
       // provide a unique key to avoid widget recycling issues
       onVisibilityChanged: (VisibilityInfo info) {
-        if (info.visibleFraction == 1.0) {
+        if (info.visibleFraction == 0.3) {
           _controller.play();
         } else {
           _controller.pause();

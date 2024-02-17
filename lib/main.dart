@@ -29,90 +29,73 @@ void main() {
       GetPage(
           name: '/search',
           page: () => MyUserSearch(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/post_detail',
           page: () => MyPostDetail(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/messenger',
           page: () => const MyMessenger(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/home',
           page: () => MyHome(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/new',
           page: () => MyPickAction(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/social_profile',
           page: () => MySocialProfile(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/user_profile',
           page: () => MyUserProfile(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/performance',
           page: () => MyUserPerformance(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/event_details',
           page: () => MyEventDetails(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/event_gallery',
           page: () => MyEventGallery(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/event_registration', page: () => const MyEventRegistration()),
       GetPage(
           name: '/community',
           page: () => MyCommunity(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/reels',
           page: () => MyReels(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/register',
           page: () => const MyRegister(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/login',
           page: () => const MyLogin(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/forgot_password',
           page: () => const MyForgotPassword(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/verify_otp',
           page: () => const MyOtpVerification(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,),
       GetPage(
           name: '/reset_password',
           page: () => const MyResetPassword(),
-          transition: Transition.rightToLeft,
-          transitionDuration: Duration(milliseconds: 500)),
+          transition: Transition.rightToLeft,)
     ],
     home: MySudoHome(),
   ));
