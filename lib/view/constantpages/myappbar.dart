@@ -66,12 +66,7 @@ class _MyAppBarState extends State<MyAppBar> {
       } else {
         haspermission = true;
       }
-
       if (haspermission) {
-        setState(() {
-          //refresh the UI
-        });
-
         getLocation();
       }
     } else {
@@ -89,7 +84,7 @@ class _MyAppBarState extends State<MyAppBar> {
 
     long = position.longitude;
     lat = position.latitude;
-
+    //print("lat: $lat,lon: $long");
     RemoteServices.fetchTemperature(lat, long);
 
     LocationSettings locationSettings = const LocationSettings(
@@ -98,7 +93,6 @@ class _MyAppBarState extends State<MyAppBar> {
       //device must move horizontally before an update event is generated;
     );
 
-    StreamSubscription<Position> positionStream =
     Geolocator.getPositionStream(locationSettings: locationSettings)
         .listen((Position position) async {
       if (!disposed) {
@@ -133,14 +127,14 @@ class _MyAppBarState extends State<MyAppBar> {
         children: [
           showBack
               ? InkWell(
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context);
-                Get.offAllNamed(Get.previousRoute);
-              },
-            ),
-          )
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Get.offAllNamed(Get.previousRoute);
+                    },
+                  ),
+                )
               : Container(),
           SizedBox(
             height: kToolbarHeight,
@@ -172,7 +166,11 @@ class _MyAppBarState extends State<MyAppBar> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  topQuote.length > 25?topQuote.substring(0,20)+"\n"+topQuote.substring(20,topQuote.length):topQuote,
+                  topQuote.length > 25
+                      ? topQuote.substring(0, 20) +
+                          "\n" +
+                          topQuote.substring(20, topQuote.length)
+                      : topQuote,
                   style: const TextStyle(
                       fontSize: 14, fontWeight: FontWeight.normal),
                 ),
