@@ -9,7 +9,7 @@ class MyReels extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: Reels(
-        index: Get.arguments["index"] ?? 0,
+        index: Get.arguments !=null && Get.arguments["index"] !=0 ? Get.arguments["index"] : 0,
       ),
       bottomNavigationBar: MyCommunityBottomNavigationBar(),
     );

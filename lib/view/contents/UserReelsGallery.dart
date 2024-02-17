@@ -42,7 +42,8 @@ class UserReelsGallery extends StatelessWidget {
                         child: ProfileVideoPlayerScreen(videoUrl: videoUrl),
                         onTap: () {
                           Get.offAllNamed("/reels",
-                              arguments: logic.userPosts[index].id);
+                              arguments: {"post_id":logic
+                                  .userPosts[index].id,"index":index});
                         },
                       ),
                     ),

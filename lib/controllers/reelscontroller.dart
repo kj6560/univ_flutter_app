@@ -31,16 +31,18 @@ class ReelsController extends GetxController {
 
   void fetchPosts() async {
     var prefs = await SharedPreferences.getInstance();
-    var topReelId = Get.arguments["post_id"];
+
     current_user_id.value = prefs.getInt("id")!;
     var allPosts = await RemoteServices.fetchReels(current_user_id.value);
 
     if (allPosts != null) {
       var response = postFromJson(allPosts);
-
+      var topReelId =
+          Get.arguments != null ? Get.arguments["post_id"] : response[0].id;
       if (topReelId != null) {
         // Find the top reel and move it to the top of the list
-        var topReel = response.singleWhere((element) => element.id == topReelId);
+        var topReel =
+            response.singleWhere((element) => element.id == topReelId);
         response.remove(topReel);
         response.insert(0, topReel);
       }
@@ -51,7 +53,6 @@ class ReelsController extends GetxController {
       posts.value = response;
     }
   }
-
 
   void userGoingToSocialProfile(int postCreatedBy, var context) async {
     try {

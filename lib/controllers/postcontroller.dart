@@ -18,33 +18,35 @@ class PostController extends GetxController {
         await RemoteServices.createPost(mediaFiles, caption, post_type);
 
     if (post_id != 0) {
-      var media_uploaded = false;
       if (post_type == 1) {
-        media_uploaded = await RemoteServices.uploadPostMedia(
+        var media_uploaded = await RemoteServices.uploadPostMedia(
             mediaFiles, post_type, post_id);
+        statusCheck(media_uploaded, context, post_id);
       } else {
-        print("uploading video");
-        media_uploaded =
+        var media_uploaded =
             await RemoteServices.uploadVideoFile(post_id, mediaFiles[0].path!);
+        statusCheck(media_uploaded, context, post_id);
       }
+    }
+  }
 
-      if (media_uploaded) {
+  static statusCheck(var uploadResponse, var context, int post_id) async {
+    if (uploadResponse["success"]) {
+      Values.showMsgDialog(
+          "New Post", "You have successfully created a new post!!", context,
+          () {
+        Navigator.of(context).pop();
+        Get.offAllNamed("/community");
+      });
+    } else {
+      var post_deleted = await RemoteServices.deletePost(post_id,permanently: true);
+      if (post_deleted) {
         Values.showMsgDialog(
-            "New Post", "You have successfully created a new post!!", context,
-            () {
+            "New Post",
+            uploadResponse["message"],
+            context, () {
           Navigator.of(context).pop();
-          Get.offAllNamed("/community");
         });
-      } else {
-        var post_deleted = await RemoteServices.deletePost(post_type);
-        if (post_deleted) {
-          Values.showMsgDialog(
-              "New Post",
-              "Media type not supported or some other error occured while uploading media!!",
-              context, () {
-            Navigator.of(context).pop();
-          });
-        }
       }
     }
   }

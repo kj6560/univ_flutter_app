@@ -433,13 +433,14 @@ class RemoteServices {
     return 0;
   }
 
-  static Future<bool> deletePost(int post_id) async {
+  static Future<bool> deletePost(int post_id,
+      {bool permanently = false}) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
       String? token = prefs.getString("token");
-      Uri url = Uri.parse("${Values.deletePost}?post_id=$post_id");
-
+      Uri url = Uri.parse("${Values.deletePost}?post_id=$post_id&permanently=$permanently");
+      print(url);
       // Send the request
       http.Response response = await http.get(
         url,
@@ -631,7 +632,7 @@ class RemoteServices {
     }
   }
 
-  static Future<bool> uploadPostMedia(
+  static Future<Object> uploadPostMedia(
       List<PostMedia> mediaFiles, int post_type, int post_id) async {
     final prefs = await SharedPreferences.getInstance();
     int? id = prefs.getInt("id");
@@ -651,22 +652,20 @@ class RemoteServices {
     try {
       // Send the request
       var response = await request.send();
-      // Handle the response
-      if (response.statusCode == 200) {
-        await for (var chunk in response.stream) {
-          print(utf8.decode(chunk));
-        }
-        return true;
-      } else {
-        return false;
-      }
+      String responseBody = await utf8.decodeStream(response.stream);
+      var parsedResponse = jsonDecode(responseBody);
+      var rsp = {
+        "success": parsedResponse["status"] == 200 ? true : false,
+        "message": parsedResponse["message"]
+      };
+      return rsp;
     } catch (error) {
       print('Error: $error');
       return false;
     }
   }
 
-  static Future<bool> uploadVideoFile(int post_id, String path) async {
+  static Future<Object> uploadVideoFile(int post_id, String path) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       int? id = await prefs.getInt("id");
@@ -690,14 +689,12 @@ class RemoteServices {
       // Send the request
       var response = await request.send();
       String responseBody = await utf8.decodeStream(response.stream);
-      print(responseBody);
-      if (response.statusCode == 200) {
-        // File uploaded successfully
-        return true;
-      } else {
-        // Handle the error
-        return false;
-      }
+      var parsedResponse = jsonDecode(responseBody);
+      var rsp = {
+        "success": parsedResponse["status"] == 200 ? true : false,
+        "message": parsedResponse["message"]
+      };
+      return rsp;
     } catch (e) {
       print(e.toString());
     }

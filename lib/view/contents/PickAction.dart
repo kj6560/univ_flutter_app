@@ -43,7 +43,6 @@ class _PickActionState extends State<PickAction>
     }
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -87,36 +86,35 @@ class _PickActionState extends State<PickAction>
                         children: [
                           option != ""
                               ? Radio(
-                            value: option,
-                            groupValue: selectedPostType,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedPostType = value as String;
-                              });
-                              if (selectedPostType == "Post") {
-                                post_type = 1;
-                              } else if (selectedPostType == "Video") {
-                                post_type = 2;
-                              }
-                              _fetchGalleryImages();
-                            },
-                          )
+                                  value: option,
+                                  groupValue: selectedPostType,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedPostType = value as String;
+                                    });
+                                    if (selectedPostType == "Post") {
+                                      post_type = 1;
+                                    } else if (selectedPostType == "Video") {
+                                      post_type = 2;
+                                    }
+                                    _fetchGalleryImages();
+                                  },
+                                )
                               : Radio(
-                            value: option,
-                            groupValue: selectedPostType,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedPostType = value as String;
-                              });
-
-                              if (selectedPostType == "Post") {
-                                post_type = 1;
-                              } else if (selectedPostType == "Video") {
-                                post_type = 2;
-                              }
-                              _fetchGalleryImages();
-                            },
-                          ),
+                                  value: option,
+                                  groupValue: selectedPostType,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedPostType = value as String;
+                                    });
+                                    if (selectedPostType == "Post") {
+                                      post_type = 1;
+                                    } else if (selectedPostType == "Video") {
+                                      post_type = 2;
+                                    }
+                                    _fetchGalleryImages();
+                                  },
+                                ),
                           Text(option),
                         ],
                       ),
@@ -129,22 +127,26 @@ class _PickActionState extends State<PickAction>
         ),
         post_type == 1
             ? SliverGrid(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 0.0,
-            mainAxisSpacing: 0.0,
-          ),
-          delegate: SliverChildListDelegate(
-            _prepareMediaList(_imageFile),
-          ),
-        )
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 0.0,
+                  mainAxisSpacing: 0.0,
+                ),
+                delegate: SliverChildListDelegate(
+                  _prepareMediaList(_imageFile),
+                ),
+              )
             : SliverToBoxAdapter(
-          child: Container(
-            height: 300,
-            color: Colors.grey,
-            child: videoLink !=null?LocalVideoPlayerScreen(videoUrl: videoLink!.path):SizedBox(height: 1,),
-          ),
-        ),
+                child: Container(
+                  height: 300,
+                  color: Colors.grey,
+                  child: videoLink != null
+                      ? LocalVideoPlayerScreen(videoUrl: videoLink!.path)
+                      : SizedBox(
+                          height: 1,
+                        ),
+                ),
+              ),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -178,7 +180,7 @@ class _PickActionState extends State<PickAction>
                     onPressed: () {
                       List<PostMedia> mediaFiles = [];
                       if (post_type == 1) {
-                        int i=0;
+                        int i = 0;
                         for (XFile imageFile in _imageFile) {
                           PostMedia pm = PostMedia(
                             mediaName: imageFile.path,
@@ -197,7 +199,8 @@ class _PickActionState extends State<PickAction>
                         );
                         mediaFiles.add(pm);
                       }
-                      PostController.createPost(mediaFiles, postCaptionController.text, post_type, context);
+                      PostController.createPost(mediaFiles,
+                          postCaptionController.text, post_type, context);
                     },
                     child: const Text("Create Post")),
               )

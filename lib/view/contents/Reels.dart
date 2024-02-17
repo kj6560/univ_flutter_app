@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:univ_app/controllers/reelscontroller.dart';
-import 'package:univ_app/view/contents/ReelsPlayerScreen.dart';
 import 'package:univ_app/view/pages/mycommunity.dart';
 
 import '../../controllers/commentscontroller.dart';
@@ -44,247 +43,305 @@ class _ReelsState extends State<Reels> {
     return Obx(() => Column(
           children: [
             Expanded(
-              child: PageView.builder(
-                scrollDirection: Axis.vertical,
-                controller: _pageController,
-                itemCount: controller.posts.length,
-                onPageChanged: (index) {
-                  currentPage = index;
-                },
-                itemBuilder: (context, index) {
-                  return Stack(
-                    children: [
-                      VideoPlayerWidget(
-                        key: Key(
-                            "${Values.postMediaUrl}${controller.posts[index].postMedia[0].mediaName}"),
-                        reelUrl:
-                            "${Values.postMediaUrl}${controller.posts[index].postMedia[0].mediaName}",
-                      ),
-                      Positioned(
-                        top: 10,
-                        left: 10,
-                        child: InkWell(
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Get.offAll(() => MyCommunity(),
-                                  transition: Transition.rightToLeft);
-                            },
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 50,
-                        right: 0,
-                        child: Column(
-                          children: [
-                            Column(children: [
-                              //likes
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    InkWell(
-                                      child: controller
-                                              .posts[index].likedByCurrentUser
-                                          ? const Icon(
-                                              FontAwesomeIcons.solidHeart,
-                                              color: Colors.red,
-                                              size: 25,
-                                            )
-                                          : const Icon(
-                                              FontAwesomeIcons.heart,
-                                              color: Colors.white,
-                                              size: 35,
+              child: controller.posts.length > 0
+                  ? PageView.builder(
+                      scrollDirection: Axis.vertical,
+                      controller: _pageController,
+                      itemCount: controller.posts.length,
+                      onPageChanged: (index) {
+                        currentPage = index;
+                      },
+                      itemBuilder: (context, index) {
+                        return controller.posts.length > 0
+                            ? Stack(
+                                children: [
+                                  VideoPlayerWidget(
+                                    key: Key(
+                                        "${Values.postMediaUrl}${controller.posts[index].postMedia[0].mediaName}"),
+                                    reelUrl:
+                                        "${Values.postMediaUrl}${controller.posts[index].postMedia[0].mediaName}",
+                                  ),
+                                  Positioned(
+                                    top: 10,
+                                    left: 10,
+                                    child: InkWell(
+                                      child: IconButton(
+                                        icon: const Icon(
+                                          Icons.arrow_back,
+                                          color: Colors.white,
+                                          size: 30,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          Get.offAll(() => MyCommunity(),
+                                              transition:
+                                                  Transition.rightToLeft);
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 50,
+                                    right: 0,
+                                    child: Column(
+                                      children: [
+                                        Column(children: [
+                                          //likes
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              children: [
+                                                InkWell(
+                                                  child: controller.posts[index]
+                                                          .likedByCurrentUser
+                                                      ? const Icon(
+                                                          FontAwesomeIcons
+                                                              .solidHeart,
+                                                          color: Colors.red,
+                                                          size: 25,
+                                                        )
+                                                      : const Icon(
+                                                          FontAwesomeIcons
+                                                              .heart,
+                                                          color: Colors.white,
+                                                          size: 35,
+                                                        ),
+                                                  onTap: () {
+                                                    if (controller.posts[index]
+                                                        .likedByCurrentUser) {
+                                                      controller.posts[index]
+                                                              .totalLikes =
+                                                          controller
+                                                                  .posts[index]
+                                                                  .totalLikes -
+                                                              1;
+                                                      controller.processLikes(
+                                                          controller
+                                                              .posts[index].id,
+                                                          false);
+                                                    } else {
+                                                      controller.posts[index]
+                                                              .totalLikes =
+                                                          controller
+                                                                  .posts[index]
+                                                                  .totalLikes +
+                                                              1;
+                                                      controller.processLikes(
+                                                          controller
+                                                              .posts[index].id,
+                                                          true);
+                                                    }
+                                                  },
+                                                ),
+                                                Text(
+                                                  "${controller.posts[index].totalLikes}",
+                                                  style: const TextStyle(
+                                                      fontSize: 18,
+                                                      color: Colors.white),
+                                                ),
+                                              ],
                                             ),
-                                      onTap: () {
-                                        if (controller
-                                            .posts[index].likedByCurrentUser) {
-                                          controller.posts[index].totalLikes =
-                                              controller
-                                                      .posts[index].totalLikes -
-                                                  1;
-                                          controller.processLikes(
-                                              controller.posts[index].id,
-                                              false);
-                                        } else {
-                                          controller.posts[index].totalLikes =
-                                              controller
-                                                      .posts[index].totalLikes +
-                                                  1;
-                                          controller.processLikes(
-                                              controller.posts[index].id, true);
-                                        }
-                                      },
-                                    ),
-                                    Text(
-                                      "${controller.posts[index].totalLikes}",
-                                      style: const TextStyle(
-                                          fontSize: 18, color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                          ),
 
-                              //comment
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    InkWell(
-                                      child: const Icon(
-                                        FontAwesomeIcons.comment,
-                                        color: Colors.white,
-                                        size: 25,
+                                          //comment
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              children: [
+                                                InkWell(
+                                                  child: const Icon(
+                                                    FontAwesomeIcons.comment,
+                                                    color: Colors.white,
+                                                    size: 25,
+                                                  ),
+                                                  onTap: () {
+                                                    showCommentWindow(
+                                                        controller
+                                                            .posts[index].id,
+                                                        context);
+                                                  },
+                                                ),
+                                                Text(
+                                                    "${controller.posts[index].totalComments}",
+                                                    style: const TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.white)),
+                                              ],
+                                            ),
+                                          ),
+
+                                          //share
+                                          const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Column(
+                                              children: [
+                                                Icon(
+                                                  FontAwesomeIcons.paperPlane,
+                                                  color: Colors.white,
+                                                  size: 25,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+                                          //bookmark
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              children: [
+                                                controller.posts[index]
+                                                            .postCreatedBy !=
+                                                        controller
+                                                            .current_user_id
+                                                            .value
+                                                    ? InkWell(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: controller
+                                                                      .posts[
+                                                                          index]
+                                                                      .isBookmarked !=
+                                                                  1
+                                                              ? const Icon(
+                                                                  FontAwesomeIcons
+                                                                      .bookmark,
+                                                                  color: Colors
+                                                                      .white,
+                                                                )
+                                                              : const Icon(
+                                                                  FontAwesomeIcons
+                                                                      .solidBookmark,
+                                                                  color: Colors
+                                                                      .red,
+                                                                ),
+                                                        ),
+                                                        onTap: () async {
+                                                          if (controller
+                                                                  .posts[index]
+                                                                  .isBookmarked !=
+                                                              1) {
+                                                            if (await controller
+                                                                .bookmarkPost(
+                                                                    controller
+                                                                        .posts[
+                                                                            index]
+                                                                        .id)) {
+                                                            } else {}
+                                                          } else {
+                                                            if (await controller
+                                                                .unBookmarkPost(
+                                                                    controller
+                                                                        .posts[
+                                                                            index]
+                                                                        .id)) {
+                                                            } else {}
+                                                          }
+                                                        },
+                                                      )
+                                                    : const SizedBox(
+                                                        height: 1,
+                                                      )
+                                              ],
+                                            ),
+                                          ),
+
+                                          //reel options
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                0, 0, 0, 0),
+                                            child: IconButton(
+                                                onPressed: () {},
+                                                icon: const Icon(
+                                                  FontAwesomeIcons
+                                                      .ellipsisVertical,
+                                                  size: 25,
+                                                  color: Colors.white,
+                                                )),
+                                          )
+                                        ]),
+                                      ],
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 60,
+                                    left: 2,
+                                    child: InkWell(
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
+                                              '${Values.profilePic}${controller.posts[index].postCreatedByUserIcon}',
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0),
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  controller.posts[index]
+                                                      .postCreatedByUsername,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
+                                                Text(
+                                                  DateFormat('yyyy-MM-dd')
+                                                      .format(controller
+                                                          .posts[index]
+                                                          .postCreatedAt),
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
                                       ),
                                       onTap: () {
-                                        showCommentWindow(
-                                            controller.posts[index].id,
+                                        controller.userGoingToSocialProfile(
+                                            controller
+                                                .posts[index].postCreatedBy,
                                             context);
                                       },
                                     ),
-                                    Text(
-                                        "${controller.posts[index].totalComments}",
-                                        style: const TextStyle(
-                                            fontSize: 18, color: Colors.white)),
-                                  ],
-                                ),
-                              ),
-
-                              //share
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Icon(
-                                      FontAwesomeIcons.paperPlane,
-                                      color: Colors.white,
-                                      size: 25,
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              //bookmark
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    controller.posts[index].postCreatedBy !=
-                                            controller.current_user_id.value
-                                        ? InkWell(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: controller.posts[index]
-                                                          .isBookmarked !=
-                                                      1
-                                                  ? const Icon(
-                                                      FontAwesomeIcons.bookmark,
-                                                      color: Colors.white,
-                                                    )
-                                                  : const Icon(
-                                                      FontAwesomeIcons
-                                                          .solidBookmark,
-                                                      color: Colors.red,
-                                                    ),
-                                            ),
-                                            onTap: () async {
-                                              if (controller.posts[index]
-                                                      .isBookmarked !=
-                                                  1) {
-                                                if (await controller
-                                                    .bookmarkPost(controller
-                                                        .posts[index].id)) {
-                                                } else {}
-                                              } else {
-                                                if (await controller
-                                                    .unBookmarkPost(controller
-                                                        .posts[index].id)) {
-                                                } else {}
-                                              }
-                                            },
-                                          )
-                                        : const SizedBox(
-                                            height: 1,
-                                          )
-                                  ],
-                                ),
-                              ),
-
-                              //reel options
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                child: IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      FontAwesomeIcons.ellipsisVertical,
-                                      size: 25,
-                                      color: Colors.white,
-                                    )),
+                                  ),
+                                  Positioned(
+                                      bottom: 30,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            8.0, 15, 0.0, 0.0),
+                                        child: Text(
+                                          controller.posts[index].postCaption,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white),
+                                        ),
+                                      ))
+                                ],
                               )
-                            ]),
-                          ],
+                            : Container(
+                                child: Center(
+                                  child: Text("No Reels Available"),
+                                ),
+                              );
+                      },
+                    )
+                  : Container(
+                      child: Center(
+                        child: Text(
+                          "Be the first one to create a Reel",
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Values.primaryColor,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Positioned(
-                        bottom: 60,
-                        left: 2,
-                        child: InkWell(
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: CachedNetworkImageProvider(
-                                  '${Values.profilePic}${controller.posts[index].postCreatedByUserIcon}',
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      controller
-                                          .posts[index].postCreatedByUsername,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    ),
-                                    Text(
-                                      DateFormat('yyyy-MM-dd').format(controller
-                                          .posts[index].postCreatedAt),
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          onTap: () {
-                            controller.userGoingToSocialProfile(
-                                controller.posts[index].postCreatedBy, context);
-                          },
-                        ),
-                      ),
-                      Positioned(
-                          bottom: 30,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(8.0, 15, 0.0, 0.0),
-                            child: Text(
-                              controller.posts[index].postCaption,
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
-                            ),
-                          ))
-                    ],
-                  );
-                },
-              ),
+                    ),
             ),
           ],
         ));

@@ -113,23 +113,7 @@ class UserCertificates extends StatelessWidget {
                 ),
               )
             : SliverToBoxAdapter(
-                child: InkWell(
-                  onTap: () async {
-                    var status = await _pickImage();
-                    userCertificatesController.showMessage(status, context);
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.only(top: 50.0),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [Icon(Icons.add), Text("Add Certificates")],
-                      ),
-                    ),
-                  ),
-                ),
+                child: Center(child: Text("Your uploaded certificates will appear here")),
               );
       },
     );
