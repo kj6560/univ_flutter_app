@@ -28,7 +28,6 @@ class UserSearchController extends GetxController {
     var allPosts = await RemoteServices.fetchUsers(user_name.value);
     if (allPosts != null) {
       var response = usersFromJson(allPosts);
-      print("total ${response.length} users fetched from api");
       if (usersInDb.length != response.length) {
         for (User user in response) {
           try {
@@ -47,7 +46,6 @@ class UserSearchController extends GetxController {
       users.value = usersInDb;
     }
     userList = users.value;
-    print("showing ${userList.length} users");
   }
 
   void filterUsers(String query) {

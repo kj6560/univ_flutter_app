@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:univ_app/controllers/postcontroller.dart';
 import 'package:univ_app/models/post.dart';
 import 'package:univ_app/services/remote_services.dart';
@@ -26,6 +27,16 @@ class _PickActionState extends State<PickAction>
   var isLoading = false;
 
   Future<void> _fetchGalleryImages() async {
+    if (_imageFile.length > 0) {
+      setState(() {
+        _imageFile.clear();
+      });
+    }
+    if (videoLink != null) {
+      setState(() {
+        videoLink = null;
+      });
+    }
     if (post_type == 1) {
       await ImagePicker().pickMultiImage().then((value) {
         setState(() {
@@ -65,111 +76,116 @@ class _PickActionState extends State<PickAction>
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverToBoxAdapter(
-          child: Container(
-            margin: EdgeInsets.fromLTRB(8.0, 50, 0, 0),
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Post Type",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 3.0),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      for (String option in options)
-                        Row(
-                          children: [
-                            option != ""
-                                ? Radio(
-                                    value: option,
-                                    groupValue: selectedPostType,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedPostType = value as String;
-                                      });
-                                      if (selectedPostType == "Post") {
-                                        post_type = 1;
-                                      } else if (selectedPostType == "Video") {
-                                        post_type = 2;
-                                      }
-                                    },
-                                  )
-                                : Radio(
-                                    value: option,
-                                    groupValue: selectedPostType,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedPostType = value as String;
-                                      });
-                                      if (selectedPostType == "Post") {
-                                        post_type = 1;
-                                      } else if (selectedPostType == "Video") {
-                                        post_type = 2;
-                                      }
-                                      _fetchGalleryImages();
-                                    },
-                                  ),
-                            Text(option),
-                          ],
-                        ),
-                      ElevatedButton(
-                          onPressed: () {
-                            _fetchGalleryImages();
-                          },
-                          child: Text("Select"))
-                    ],
+    return ModalProgressHUD(
+      inAsyncCall: isLoading,
+      color: Colors.white,
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: Container(
+              margin: EdgeInsets.fromLTRB(8.0, 50, 0, 0),
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Post Type",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                ),
-                const SizedBox(height: 10.0), // Add some spacing
-              ],
+                  const SizedBox(height: 3.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        for (String option in options)
+                          Row(
+                            children: [
+                              option != ""
+                                  ? Radio(
+                                      value: option,
+                                      groupValue: selectedPostType,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedPostType = value as String;
+                                        });
+                                        if (selectedPostType == "Post") {
+                                          post_type = 1;
+                                        } else if (selectedPostType ==
+                                            "Video") {
+                                          post_type = 2;
+                                        }
+                                      },
+                                    )
+                                  : Radio(
+                                      value: option,
+                                      groupValue: selectedPostType,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedPostType = value as String;
+                                        });
+                                        if (selectedPostType == "Post") {
+                                          post_type = 1;
+                                        } else if (selectedPostType ==
+                                            "Video") {
+                                          post_type = 2;
+                                        }
+                                        _fetchGalleryImages();
+                                      },
+                                    ),
+                              Text(option),
+                            ],
+                          ),
+                        ElevatedButton(
+                            onPressed: () {
+                              _fetchGalleryImages();
+                            },
+                            child: Text("Select"))
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                ],
+              ),
             ),
           ),
-        ),
-        post_type == 1
-            ? SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 0.0,
-                  mainAxisSpacing: 0.0,
+          post_type == 1
+              ? SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 0.0,
+                    mainAxisSpacing: 0.0,
+                  ),
+                  delegate: SliverChildListDelegate(
+                    _prepareMediaList(_imageFile),
+                  ),
+                )
+              : SliverToBoxAdapter(
+                  child: Container(
+                    height: 300,
+                    color: Colors.grey,
+                    child: videoLink != null
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: LocalVideoPlayerScreen(
+                                videoUrl: videoLink!.path),
+                          )
+                        : SizedBox(
+                            height: 1,
+                          ),
+                  ),
                 ),
-                delegate: SliverChildListDelegate(
-                  _prepareMediaList(_imageFile),
-                ),
-              )
-            : SliverToBoxAdapter(
-                child: Container(
-                  height: 300,
-                  color: Colors.grey,
-                  child: videoLink != null
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child:
-                              LocalVideoPlayerScreen(videoUrl: videoLink!.path),
-                        )
-                      : SizedBox(
-                          height: 1,
-                        ),
-                ),
-              ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: postCaptionController..text = "",
-              maxLines: null,
-              // Setting maxLines to null allows multiple lines
-              keyboardType: TextInputType.multiline,
-              decoration: const InputDecoration(
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: postCaptionController..text = "",
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.teal)),
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
                   hintText: 'Describe about the post in 512 chars max',
                   helperText: 'Describe about the post',
                   labelText: 'Post Caption',
@@ -178,18 +194,19 @@ class _PickActionState extends State<PickAction>
                     color: Colors.green,
                   ),
                   prefixText: ' ',
-                  suffixStyle: TextStyle(color: Colors.green)),
+                  suffixStyle: TextStyle(color: Colors.green),
+                ),
+              ),
             ),
           ),
-        ),
-        SliverToBoxAdapter(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0, bottom: 10),
-                child: ElevatedButton(
-                    onPressed: () {
+          SliverToBoxAdapter(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0, bottom: 10),
+                  child: ElevatedButton(
+                    onPressed: () async {
                       setState(() {
                         isLoading = true;
                       });
@@ -215,25 +232,34 @@ class _PickActionState extends State<PickAction>
                         mediaFiles.add(pm);
                       }
                       if (mediaFiles.length > 0) {
-                        PostController.createPost(mediaFiles,
-                            postCaptionController.text, post_type, context);
+                        await PostController.createPost(
+                          mediaFiles,
+                          postCaptionController.text,
+                          post_type,
+                          context,
+                        );
                       } else {
                         Values.showMsgDialog(
-                            "New Post", "Please select post media", context,
-                            () {
-                          Navigator.of(context).pop();
-                        });
+                          "New Post",
+                          "Please select post media",
+                          context,
+                          () {
+                            Navigator.of(context).pop();
+                          },
+                        );
                       }
                       setState(() {
                         isLoading = false;
                       });
                     },
-                    child: const Text("Create Post")),
-              )
-            ],
-          ),
-        )
-      ],
+                    child: const Text("Create Post"),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

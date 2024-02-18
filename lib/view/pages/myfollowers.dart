@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:univ_app/view/constantpages/communitybottomnavigationbar.dart';
-import 'package:univ_app/view/contents/PickAction.dart';
+import 'package:univ_app/view/contents/Followers.dart';
 
-class MyPickAction extends StatelessWidget {
+import '../constantpages/communitybottomnavigationbar.dart';
+
+class MyFollowers extends StatelessWidget {
+  const MyFollowers({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: false,
-      body: PickAction(),
+      body: Followers(),
       bottomNavigationBar: MyCommunityBottomNavigationBar(),
     );
   }
 }
-

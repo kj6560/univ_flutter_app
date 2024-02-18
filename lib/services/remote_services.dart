@@ -367,7 +367,6 @@ class RemoteServices {
         },
       );
       if (response.statusCode == 200) {
-        print(response.body);
         return response.body;
       }
     } catch (e) {
@@ -375,14 +374,15 @@ class RemoteServices {
     }
   }
 
-  static Future<String?> fetchReels(int current_user_id) async {
+  static Future<String?> fetchReels(int current_user_id,{var selfReel = 0}) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
-
+      print(Uri.parse(
+          Values.fetchPosts + "?user_id=${current_user_id}&post_type=2&self_reel=${selfReel}"));
       http.Response response = await http.get(
         Uri.parse(
-            Values.fetchPosts + "?user_id=${current_user_id}&post_type=2"),
+            Values.fetchPosts + "?user_id=${current_user_id}&post_type=2&self_reel=${selfReel}"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',
@@ -964,6 +964,48 @@ class RemoteServices {
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  static fetchFollowers(var id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      http.Response response = await http.post(
+        Uri.parse("${Values.fetchFollowers}?user_id=$id"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        print(response.body);
+        return response.body;
+      }
+    } catch (e) {
+
+    }
+  }
+
+  static fetchFollowings(var id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      http.Response response = await http.post(
+        Uri.parse("${Values.fetchFollowings}?user_id=$id"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        print(response.body);
+        return response.body;
+      }
+    } catch (e) {
+
     }
   }
 }

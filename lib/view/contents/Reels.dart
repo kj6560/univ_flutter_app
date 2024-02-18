@@ -290,7 +290,7 @@ class _ReelsState extends State<Reels> {
                                                       color: Colors.white),
                                                 ),
                                                 Text(
-                                                  DateFormat('yyyy-MM-dd')
+                                                  DateFormat('dd MMM yyyy')
                                                       .format(controller
                                                           .posts[index]
                                                           .postCreatedAt),

@@ -7,6 +7,10 @@ import 'package:univ_app/utility/values.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserCertificates extends StatelessWidget {
+  bool isCurrentUser;
+
+  UserCertificates({required this.isCurrentUser});
+
   UserCertificatesController userCertificatesController =
       Get.put(UserCertificatesController());
   var _isLoading = false;
@@ -87,23 +91,30 @@ class UserCertificates extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Positioned(
-                            right: 0,
-                            top: 0,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                              child: IconButton(
-                                  onPressed: () {
-                                    showPostModal(logic.userFiles[index].id,
-                                        context, logic);
-                                  },
-                                  icon: const Icon(
-                                    FontAwesomeIcons.ellipsisVertical,
-                                    size: 20,
-                                    color: Colors.white,
-                                  )),
-                            ),
-                          )
+                          this.isCurrentUser
+                              ? Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                    child: IconButton(
+                                        onPressed: () {
+                                          showPostModal(
+                                              logic.userFiles[index].id,
+                                              context,
+                                              logic);
+                                        },
+                                        icon: const Icon(
+                                          FontAwesomeIcons.ellipsisVertical,
+                                          size: 20,
+                                          color: Colors.white,
+                                        )),
+                                  ),
+                                )
+                              : SizedBox(
+                                  height: 1,
+                                )
                         ],
                       ),
                     );
@@ -113,7 +124,8 @@ class UserCertificates extends StatelessWidget {
                 ),
               )
             : SliverToBoxAdapter(
-                child: Center(child: Text("Your uploaded certificates will appear here")),
+                child: Center(
+                    child: Text("Your uploaded certificates will appear here",style: TextStyle(color: Values.primaryColor,fontSize: 16),)),
               );
       },
     );

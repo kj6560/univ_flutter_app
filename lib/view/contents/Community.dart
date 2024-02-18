@@ -148,7 +148,7 @@ class Community extends StatelessWidget {
                                                 color: Colors.white),
                                           ),
                                           subtitle: Text(
-                                            DateFormat('yyyy-MM-dd').format(
+                                            DateFormat('dd MMM yyyy').format(
                                                 controller.posts[index]
                                                     .postCreatedAt),
                                             style:

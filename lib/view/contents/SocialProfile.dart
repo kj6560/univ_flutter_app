@@ -57,13 +57,22 @@ class _SocialProfileState extends State<SocialProfile>
 
   Widget _getTabAtIndex() {
     var list = [
-      UserPostsGallery(socialProfileController: socialProfileController,isCurrentUser: user == null ||
-          user!.id == current_user_id ?true:false,),
+      UserPostsGallery(
+        socialProfileController: socialProfileController,
+        isCurrentUser:
+            user == null || user!.id == current_user_id ? true : false,
+      ),
       // FIRST ITEM
-      UserReelsGallery(socialProfileController: socialProfileController,isCurrentUser: user == null ||
-      user!.id == current_user_id ?true:false,),
+      UserReelsGallery(
+        socialProfileController: socialProfileController,
+        isCurrentUser:
+            user == null || user!.id == current_user_id ? true : false,
+      ),
       // SECOND ITEM
-      UserCertificates(),
+      UserCertificates(
+        isCurrentUser:
+            user == null || user!.id == current_user_id ? true : false,
+      ),
       // THIRD ITEM
     ];
     return list[_selectedIndex];
@@ -590,11 +599,16 @@ class _SocialProfileState extends State<SocialProfile>
                                               color: Colors.black,
                                               fontSize: 16,
                                             )),
-                                        const Text("Following",
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                            )),
+                                        InkWell(
+                                          onTap:(){
+                                            Get.toNamed("/followings",arguments: user);
+                                          },
+                                          child: const Text("Following",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                              )),
+                                        ),
                                       ],
                                     )),
                                 //followers
@@ -608,11 +622,16 @@ class _SocialProfileState extends State<SocialProfile>
                                               color: Colors.black,
                                               fontSize: 16,
                                             )),
-                                        const Text("Followers",
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                            )),
+                                        InkWell(
+                                          onTap: () {
+                                            Get.toNamed("/followers",arguments: user);
+                                          },
+                                          child: const Text("Followers",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                              )),
+                                        ),
                                       ],
                                     ))
                               ],

@@ -14,7 +14,7 @@ class PostController extends GetxController {
     super.onInit();
   }
 
-  static void createPost(List<PostMedia> mediaFiles, String caption,
+  static Future<bool> createPost(List<PostMedia> mediaFiles, String caption,
       int post_type, var context) async {
     var post_id =
         await RemoteServices.createPost(mediaFiles, caption, post_type);
@@ -30,6 +30,7 @@ class PostController extends GetxController {
         statusCheck(media_uploaded, context, post_id);
       }
     }
+    return true;
   }
 
   static statusCheck(var uploadResponse, var context, int post_id) async {

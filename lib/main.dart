@@ -5,6 +5,8 @@ import 'package:univ_app/view/pages/mycommunity.dart';
 import 'package:univ_app/view/pages/myeventdetails.dart';
 import 'package:univ_app/view/pages/myeventgallery.dart';
 import 'package:univ_app/view/pages/myeventregistration.dart';
+import 'package:univ_app/view/pages/myfollowers.dart';
+import 'package:univ_app/view/pages/myfollowings.dart';
 import 'package:univ_app/view/pages/myforgotpassword.dart';
 import 'package:univ_app/view/pages/myhome.dart';
 import 'package:univ_app/view/pages/mylogin.dart';
@@ -27,75 +29,102 @@ void main() {
     getPages: [
       GetPage(name: '/', page: () => const MySudoHome()),
       GetPage(
-          name: '/search',
-          page: () => MyUserSearch(),
-          transition: Transition.rightToLeft,),
+        name: '/search',
+        page: () => MyUserSearch(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/post_detail',
-          page: () => MyPostDetail(),
-          transition: Transition.rightToLeft,),
+        name: '/post_detail',
+        page: () => MyPostDetail(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/messenger',
-          page: () => const MyMessenger(),
-          transition: Transition.rightToLeft,),
+        name: '/messenger',
+        page: () => const MyMessenger(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/home',
-          page: () => MyHome(),
-          transition: Transition.rightToLeft,),
+        name: '/home',
+        page: () => MyHome(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/new',
-          page: () => MyPickAction(),
-          transition: Transition.rightToLeft,),
+        name: '/new',
+        page: () => MyPickAction(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/social_profile',
-          page: () => MySocialProfile(),
-          transition: Transition.rightToLeft,),
+        name: '/social_profile',
+        page: () => MySocialProfile(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/user_profile',
-          page: () => MyUserProfile(),
-          transition: Transition.rightToLeft,),
+        name: '/user_profile',
+        page: () => MyUserProfile(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/performance',
-          page: () => MyUserPerformance(),
-          transition: Transition.rightToLeft,),
+        name: '/performance',
+        page: () => MyUserPerformance(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/event_details',
-          page: () => MyEventDetails(),
-          transition: Transition.rightToLeft,),
+        name: '/event_details',
+        page: () => MyEventDetails(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/event_gallery',
-          page: () => MyEventGallery(),
-          transition: Transition.rightToLeft,),
+        name: '/event_gallery',
+        page: () => MyEventGallery(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
           name: '/event_registration', page: () => const MyEventRegistration()),
       GetPage(
-          name: '/community',
-          page: () => MyCommunity(),
-          transition: Transition.rightToLeft,),
+        name: '/community',
+        page: () => MyCommunity(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/reels',
-          page: () => MyReels(),
-          transition: Transition.rightToLeft,),
+        name: '/reels',
+        page: () => MyReels(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/register',
-          page: () => const MyRegister(),
-          transition: Transition.rightToLeft,),
+        name: '/followers',
+        page: () => MyFollowers(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/login',
-          page: () => const MyLogin(),
-          transition: Transition.rightToLeft,),
+        name: '/followings',
+        page: () => MyFollowings(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/forgot_password',
-          page: () => const MyForgotPassword(),
-          transition: Transition.rightToLeft,),
+        name: '/register',
+        page: () => const MyRegister(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/verify_otp',
-          page: () => const MyOtpVerification(),
-          transition: Transition.rightToLeft,),
+        name: '/login',
+        page: () => const MyLogin(),
+        transition: Transition.rightToLeft,
+      ),
       GetPage(
-          name: '/reset_password',
-          page: () => const MyResetPassword(),
-          transition: Transition.rightToLeft,)
+        name: '/forgot_password',
+        page: () => const MyForgotPassword(),
+        transition: Transition.rightToLeft,
+      ),
+      GetPage(
+        name: '/verify_otp',
+        page: () => const MyOtpVerification(),
+        transition: Transition.rightToLeft,
+      ),
+      GetPage(
+        name: '/reset_password',
+        page: () => const MyResetPassword(),
+        transition: Transition.rightToLeft,
+      )
     ],
     home: MySudoHome(),
   ));

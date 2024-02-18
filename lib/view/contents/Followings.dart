@@ -2,33 +2,23 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:univ_app/controllers/usersearchcontroller.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
 
+import '../../controllers/followingcontroller.dart';
 import '../../utility/values.dart';
 
-class UserSearch extends StatefulWidget {
-  const UserSearch({super.key});
-
-  @override
-  State<UserSearch> createState() => _UserSearchState();
-}
-
-class _UserSearchState extends State<UserSearch> {
+class Followings extends StatelessWidget {
+  final followingController = Get.put(FollowingController());
   TextEditingController userController = TextEditingController();
-  UserSearchController userSearchController = Get.put(UserSearchController());
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: !Platform.isAndroid ? EdgeInsets.only(top: 55):EdgeInsets.only(top: 10),
+      margin: !Platform.isAndroid
+          ? EdgeInsets.only(top: 55)
+          : EdgeInsets.only(top: 10),
       child: CustomScrollView(
         slivers: <Widget>[
           SliverToBoxAdapter(
@@ -51,18 +41,18 @@ class _UserSearchState extends State<UserSearch> {
                     decoration: InputDecoration(
                       disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(22.0),
-                        borderSide:
-                        const BorderSide(color: Color(0x00ffffff), width: 1),
+                        borderSide: const BorderSide(
+                            color: Color(0x00ffffff), width: 1),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(22.0),
-                        borderSide:
-                        const BorderSide(color: Color(0x00ffffff), width: 1),
+                        borderSide: const BorderSide(
+                            color: Color(0x00ffffff), width: 1),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(22.0),
-                        borderSide:
-                        const BorderSide(color: Color(0x00ffffff), width: 1),
+                        borderSide: const BorderSide(
+                            color: Color(0x00ffffff), width: 1),
                       ),
                       hintText: "Search User",
                       hintStyle: const TextStyle(
@@ -74,15 +64,15 @@ class _UserSearchState extends State<UserSearch> {
                       filled: true,
                       fillColor: const Color(0xfff2f2f3),
                       isDense: false,
-                      contentPadding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 12),
                     ),
                     onChanged: (value) {
                       if (value.length > 2) {
-                        userSearchController.user_name.value = value;
-                        userSearchController.filterUsers(value);
+                        followingController.user_name.value = value;
+                        followingController.filterUsers(value);
                       } else {
-                        userSearchController.fetchUsers(value);
+                        followingController.fetchFollowers(value);
                       }
                     },
                   ),
@@ -90,7 +80,7 @@ class _UserSearchState extends State<UserSearch> {
               ),
             ),
           ),
-          GetX<UserSearchController>(builder: (logic) {
+          GetX<FollowingController>(builder: (logic) {
             return SliverList(
               delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
@@ -100,29 +90,28 @@ class _UserSearchState extends State<UserSearch> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          logic.userList[index].image != null || logic.userList[index].image !=""
+                          logic.userList[index].image !=null || logic.userList[index].image != ""
                               ? CircleAvatar(
                             radius: 25,
                             foregroundColor: Colors.black,
                             backgroundColor: Colors.white,
                             foregroundImage: CachedNetworkImageProvider(
-                              '${Values.profilePic}${logic.userList[index]
-                                  .image}',
+                              '${Values.profilePic}${logic.userList[index].image}',
                             ),
-                            backgroundImage:AssetImage("assets/avatar_placeholder.png"),
+                            backgroundImage: AssetImage("assets/avatar_placeholder.png"),
                           )
                               : const CircleAvatar(
                             radius: 25,
                             foregroundColor: Colors.black,
                             backgroundColor: Colors.white,
-                            backgroundImage: AssetImage("assets/avatar_placeholder.png"),
+                            backgroundImage:
+                            AssetImage("assets/avatar_placeholder.png"),
                           ),
                           const SizedBox(width: 10),
                           Column(
                             children: [
-                              Text("${Values.capitalize(
-                                  logic.userList[index].firstName)} ${logic
-                                  .userList[index].lastName}"),
+                              Text(
+                                  "${Values.capitalize(logic.userList[index].firstName)} ${logic.userList[index].lastName}"),
                               Text(Values.capitalize(
                                   logic.userList[index].userName))
                             ],
@@ -136,7 +125,7 @@ class _UserSearchState extends State<UserSearch> {
                     ),
                   );
                 },
-                childCount: logic.users.length,
+                childCount: logic.followers.length,
               ),
             );
           }),

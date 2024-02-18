@@ -61,6 +61,8 @@ class Values {
   static const String fetchUserPost = "$baseUrl/api/fetchUserPost";
   static const String fetchPostsById = "$baseUrl/api/fetchPostsById";
   static const String archiveUserFile = "$baseUrl/api/archiveUserFile";
+  static const String fetchFollowers = "$baseUrl/api/fetchFollowers";
+  static const String fetchFollowings = "$baseUrl/api/fetchFollowing";
 
   static const Color primaryColor = const Color.fromRGBO(26, 188, 156, 70);
 

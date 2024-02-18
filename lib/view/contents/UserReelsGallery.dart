@@ -21,60 +21,70 @@ class UserReelsGallery extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetX<UserVideosController>(
       builder: (logic) {
-        return SliverGrid(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-          ),
-          delegate: SliverChildBuilderDelegate(
-            addRepaintBoundaries: true,
-            (BuildContext context, int index) {
-              final videoUrl =
-                  Values.postMediaUrl + logic.userPosts[index].postMedia;
-              return Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: Stack(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      color: Colors.grey,
-                      child: InkWell(
-                        child: ProfileVideoPlayerScreen(videoUrl: videoUrl),
-                        onTap: () {
-                          Get.offAllNamed("/reels",
-                              arguments: {"post_id":logic
-                                  .userPosts[index].id,"index":index});
-                        },
-                      ),
-                    ),
-                    this.isCurrentUser
-                        ? Positioned(
-                            right: 0,
-                            top: 0,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                              child: IconButton(
-                                  onPressed: () {
-                                    showPostModal(logic.userPosts[index].id,
-                                        context, logic);
-                                  },
-                                  icon: const Icon(
-                                    FontAwesomeIcons.ellipsisVertical,
-                                    size: 20,
-                                    color: Colors.white,
-                                  )),
-                            ),
-                          )
-                        : SizedBox(
-                            height: 1,
-                          )
-                  ],
+        return !logic.userPosts.isEmpty
+            ? SliverGrid(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
                 ),
+                delegate: SliverChildBuilderDelegate(
+                  addRepaintBoundaries: true,
+                  (BuildContext context, int index) {
+                    final videoUrl =
+                        Values.postMediaUrl + logic.userPosts[index].postMedia;
+                    return Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
+                            color: Colors.grey,
+                            child: InkWell(
+                              child:
+                                  ProfileVideoPlayerScreen(videoUrl: videoUrl),
+                              onTap: () {
+                                Get.offAllNamed("/reels", arguments: {
+                                  "post_id": logic.userPosts[index].id,
+                                  "index": index,
+                                  "self": 1
+                                });
+                              },
+                            ),
+                          ),
+                          this.isCurrentUser
+                              ? Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                    child: IconButton(
+                                        onPressed: () {
+                                          showPostModal(
+                                              logic.userPosts[index].id,
+                                              context,
+                                              logic);
+                                        },
+                                        icon: const Icon(
+                                          FontAwesomeIcons.ellipsisVertical,
+                                          size: 20,
+                                          color: Colors.white,
+                                        )),
+                                  ),
+                                )
+                              : SizedBox(
+                                  height: 1,
+                                )
+                        ],
+                      ),
+                    );
+                  },
+                  childCount: logic.userPosts.length,
+                ),
+              )
+            : SliverToBoxAdapter(
+                child: Center(child: Text("Yet Upload Short Video",style: TextStyle(color: Values.primaryColor,fontSize: 16),)),
               );
-            },
-            childCount: logic.userPosts.length,
-          ),
-        );
       },
     );
   }
