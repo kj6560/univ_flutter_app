@@ -6,6 +6,8 @@ import 'package:univ_app/services/remote_services.dart';
 import '../utility/values.dart';
 
 class PostController extends GetxController {
+
+
   @override
   void onInit() {
     // TODO: implement onInit
