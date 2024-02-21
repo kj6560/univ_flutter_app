@@ -342,6 +342,7 @@ class _PostDetailState extends State<PostDetail>
                                 commentTextController.clear();
                                 controller.totalComments.value += 1;
                                 controller.posts.refresh();
+                                controller.totalComments.refresh();
                                 commentsController.refresh();
                               }
                             },
