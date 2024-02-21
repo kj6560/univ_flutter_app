@@ -42,7 +42,7 @@ class Posts {
         id: json['id'],
         postCreatedBy: json['post_created_by'] ?? 0,
         postCreatedByUsername: json['post_created_by_username'] ?? "",
-        postCreatedByUserIcon: json['post_created_by_user_icon'],
+        postCreatedByUserIcon: json['post_created_by_user_icon'] ??"",
         postCreatedAt: json['post_created_at'] != null
             ? DateTime.parse(json['post_created_at'])
             : DateTime(2017, 9, 7, 17, 30),

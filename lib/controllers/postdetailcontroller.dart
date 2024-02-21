@@ -41,16 +41,17 @@ class PostDetailController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     var pageArgs = Get.arguments;
+    print(pageArgs);
     post_id.value = pageArgs["post_id"];
     post_type.value = pageArgs["post_type"];
-    fetchPostById();
+    fetchPostById(post_id.value,post_type.value);
   }
 
-  void fetchPostById() async {
+  void fetchPostById(int post__id,int post__type) async {
     var prefs = await SharedPreferences.getInstance();
     current_user_id.value = prefs.getInt("id")!;
     var allPosts = await RemoteServices.fetchPostsById(
-        post_id.value, current_user_id.value, post_type.value);
+        post__id, current_user_id.value, post__type);
     if (allPosts != null) {
       Posts response = Posts.fromJson(jsonDecode(allPosts));
       id.value = response.id;

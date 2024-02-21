@@ -15,13 +15,25 @@ class Followers extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: !Platform.isAndroid
-          ? EdgeInsets.only(top: 55)
-          : EdgeInsets.only(top: 10),
+          ? const EdgeInsets.only(top: 55)
+          : const EdgeInsets.only(top: 10),
       child: CustomScrollView(
         slivers: <Widget>[
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(25.0, 2.0, 0.0, 20.0),
+              child: Text(
+                "Followers",
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -88,7 +100,8 @@ class Followers extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          logic.userList[index].image !=null || logic.userList[index].image != ""
+                          logic.userList[index].image != null ||
+                                  logic.userList[index].image != ""
                               ? CircleAvatar(
                                   radius: 25,
                                   foregroundColor: Colors.black,
@@ -96,14 +109,15 @@ class Followers extends StatelessWidget {
                                   foregroundImage: CachedNetworkImageProvider(
                                     '${Values.profilePic}${logic.userList[index].image}',
                                   ),
-                                  backgroundImage: AssetImage("assets/avatar_placeholder.png"),
-                          )
+                                  backgroundImage: const AssetImage(
+                                      "assets/avatar_placeholder.png"),
+                                )
                               : const CircleAvatar(
                                   radius: 25,
                                   foregroundColor: Colors.black,
                                   backgroundColor: Colors.white,
-                                  backgroundImage:
-                                      AssetImage("assets/avatar_placeholder.png"),
+                                  backgroundImage: AssetImage(
+                                      "assets/avatar_placeholder.png"),
                                 ),
                           const SizedBox(width: 10),
                           Column(

@@ -15,10 +15,16 @@ class CommentsController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    var arguments = Get.arguments;
+    post_id.value = arguments != null ?arguments["post_id"]:0;
     fetchComments();
   }
 
-  Future<List<Comment>> fetchComments() async {
+  Future<List<Comment>> fetchComments({post__id=0}) async {
+    if(post__id !=0){
+      post_id.value = post__id;
+    }
+    print("post id inside post detail: ${post_id.value}");
     var response = await RemoteServices.fetchComments(post_id.value);
     List<Comment> commentsRecieved = commentFromJson(response);
     for (var comment in commentsRecieved) {
@@ -26,6 +32,7 @@ class CommentsController extends GetxController {
           "${Values.profilePic}${comment.commentatorProfileImage}");
     }
     total_comments.value = commentsRecieved.length;
+    print("Total comments: ${total_comments.value}");
     return comments.value = commentsRecieved;
   }
 

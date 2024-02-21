@@ -21,6 +21,18 @@ class Followings extends StatelessWidget {
           : EdgeInsets.only(top: 10),
       child: CustomScrollView(
         slivers: <Widget>[
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(25.0, 2.0, 0.0, 20.0),
+              child: Text(
+                "Followings",
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.all(8.0),

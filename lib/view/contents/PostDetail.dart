@@ -23,11 +23,18 @@ class _PostDetailState extends State<PostDetail>
     with SingleTickerProviderStateMixin {
   final PostDetailController controller = Get.put(PostDetailController());
   final commentsController = Get.put(CommentsController());
-
+  var post_id=0;
+  var post_type = 1;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    var args = Get.arguments;
+    print("args in post detail:${args}");
+    setState(() {
+      post_id = args["post_id"];
+      post_type = args["post_type"];
+    });
   }
 
   @override
@@ -130,7 +137,7 @@ class _PostDetailState extends State<PostDetail>
                                 child: Icon(FontAwesomeIcons.comment),
                               ),
                               onTap: () {
-                                showCommentModel(controller.id.value, context);
+                                showCommentModel( context);
                               },
                             ),
                             Padding(
@@ -201,12 +208,12 @@ class _PostDetailState extends State<PostDetail>
         ));
   }
 
-  void showCommentModel(int post_id, BuildContext context) {
+  void showCommentModel(BuildContext context) {
+
     if (commentsController.comments.length > 0) {
       commentsController.comments.clear();
     }
-    commentsController.setPostId(post_id);
-    commentsController.fetchComments();
+    commentsController.fetchComments(post__id: post_id);
     final commentTextController = TextEditingController();
 
     showModalBottomSheet(
@@ -237,7 +244,7 @@ class _PostDetailState extends State<PostDetail>
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "Comments(${commentsController.total_comments.value})",
+                            "Comments(${controller.totalComments.value})",
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
@@ -335,7 +342,7 @@ class _PostDetailState extends State<PostDetail>
                                 commentTextController.clear();
                                 controller.totalComments.value += 1;
                                 controller.posts.refresh();
-                                commentsController.total_comments.value += 1;
+                                commentsController.refresh();
                               }
                             },
                             child: Text("post"),

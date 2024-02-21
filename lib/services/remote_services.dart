@@ -357,7 +357,7 @@ class RemoteServices {
     try {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
-
+      print(Uri.parse(Values.fetchPosts + "?user_id=$current_user_id"));
       http.Response response = await http.get(
         Uri.parse(Values.fetchPosts + "?user_id=$current_user_id"),
         headers: <String, String>{
