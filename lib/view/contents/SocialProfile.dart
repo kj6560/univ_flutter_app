@@ -592,47 +592,49 @@ class _SocialProfileState extends State<SocialProfile>
                                 Container(
                                     margin: const EdgeInsets.only(
                                         left: 5, top: 0, right: 10, bottom: 0),
-                                    child: Column(
-                                      children: [
-                                        Text("${logic.following}",
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                            )),
-                                        InkWell(
-                                          onTap:(){
-                                            Get.toNamed("/followings",arguments: user);
-                                          },
-                                          child: const Text("Following",
+                                    child: InkWell(
+                                      onTap: () {
+                                        Get.toNamed("/followings",
+                                            arguments: user);
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Text("${logic.following}",
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                              )),
+                                          const Text("Following",
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 16,
                                               )),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     )),
                                 //followers
                                 Container(
                                     margin: const EdgeInsets.only(
                                         left: 5, top: 0, right: 10, bottom: 0),
-                                    child: Column(
-                                      children: [
-                                        Text("${logic.followers}",
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                            )),
-                                        InkWell(
-                                          onTap: () {
-                                            Get.toNamed("/followers",arguments: user);
-                                          },
-                                          child: const Text("Followers",
+                                    child: InkWell(
+                                      onTap: () {
+                                        Get.toNamed("/followers",
+                                            arguments: user);
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Text("${logic.followers}",
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                              )),
+                                          const Text("Followers",
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 16,
                                               )),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ))
                               ],
                             ),
@@ -722,7 +724,7 @@ class _SocialProfileState extends State<SocialProfile>
     );
   }
 
-  final List<String> items = ["Add Certificates"];
+  final List<String> items = ["Add Posts","Add Certificates"];
 
   void _showBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -749,6 +751,17 @@ class _SocialProfileState extends State<SocialProfile>
               height: 2,
               thickness: 2,
               color: Values.primaryColor,
+            ),
+            InkWell(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(padding:EdgeInsets.all(8.0), child: Text("Add Posts", style: TextStyle(fontSize: 16))),
+                ],
+              ),
+              onTap: (){
+                Get.offAllNamed("/new");
+              },
             ),
             InkWell(
               onTap: () {
@@ -805,7 +818,8 @@ class _SocialProfileState extends State<SocialProfile>
                     ))
                 : const SizedBox(
                     height: 0,
-                  )
+                  ),
+
           ]),
         );
       },
