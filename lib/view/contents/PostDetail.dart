@@ -1,15 +1,10 @@
-import 'dart:ffi';
 
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/controllers/commentscontroller.dart';
-import 'package:univ_app/controllers/communitycontroller.dart';
-import 'package:univ_app/models/post.dart';
 import 'package:univ_app/utility/values.dart';
 
 import '../../controllers/postdetailcontroller.dart';
@@ -344,6 +339,7 @@ class _PostDetailState extends State<PostDetail>
                                 controller.posts.refresh();
                                 controller.totalComments.refresh();
                                 commentsController.refresh();
+                                Navigator.pop(context);
                               }
                             },
                             child: Text("post"),
