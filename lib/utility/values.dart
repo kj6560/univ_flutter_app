@@ -25,6 +25,7 @@ class Values {
   static const String profilePic = "$baseUrl/uploads/profile/profileImage/";
   static const String postMediaUrl = "$baseUrl/uploads/post_media/";
   static const String eventPartnerUrl = "$baseUrl/api/eventPartners";
+  static const String esportsImageUrl = "$baseUrl/uploads/esports/";
   static const String eventPartnerPic = "$baseUrl/images/";
   static const String eventFiles = "$baseUrl/api/eventFiles";
   static const String userFiles = "$baseUrl/api/userFiles";
@@ -64,6 +65,10 @@ class Values {
   static const String archiveUserFile = "$baseUrl/api/archiveUserFile";
   static const String fetchFollowers = "$baseUrl/api/fetchFollowers";
   static const String fetchFollowings = "$baseUrl/api/fetchFollowing";
+
+  //Esports
+  static const String fetchEsportsContent = "$baseUrl/api/fetchEsportsContent";
+
 
   static const Color primaryColor = const Color.fromRGBO(26, 188, 156, 70);
 

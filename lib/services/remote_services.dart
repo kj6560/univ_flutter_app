@@ -1000,4 +1000,23 @@ class RemoteServices {
 
     }
   }
+  static Future<String?> fetchEsportsData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      http.Response response = await http.get(
+        Uri.parse(Values.fetchEsportsContent ),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return response.body;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }
