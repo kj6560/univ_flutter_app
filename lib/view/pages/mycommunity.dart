@@ -16,24 +16,43 @@ import 'package:univ_app/view/contents/Community.dart';
 class MyCommunity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      extendBodyBehindAppBar: false,
-      appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(1.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(18.0),
-                child: Text(
-                  "Community",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
-          )),
+      resizeToAvoidBottomInset: false,
+      appBar: _appBar(theme),
       body: Community(),
       bottomNavigationBar: MyCommunityBottomNavigationBar(),
+    );
+  }
+  AppBar _appBar(ThemeData theme) {
+    final textTheme = theme.textTheme;
+    return AppBar(
+      automaticallyImplyLeading: false,
+      flexibleSpace: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Community',
+                  style: textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.send_sharp,
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
     );
   }
 }

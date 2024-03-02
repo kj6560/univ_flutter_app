@@ -85,20 +85,24 @@ class _EventDetailsState extends State<EventDetails> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                        children: [
-                          Center(child: Text(logic.eventDate,style: const TextStyle(color: Colors.green,fontWeight: FontWeight.bold))),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(logic.eventLocation,
-                                  style: const TextStyle(
-                                      color: Colors.green,
-                                      fontSize: 14,fontWeight: FontWeight.bold)),
-                            ),
-                          )
-                        ],
-                      ),
-
+                      children: [
+                        Center(
+                            child: Text(logic.eventDate,
+                                style: const TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold))),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(logic.eventLocation,
+                                style: const TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

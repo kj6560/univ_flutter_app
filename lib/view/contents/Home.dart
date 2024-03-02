@@ -34,8 +34,6 @@ class _HomeState extends State<Home> {
   }
   @override
   Widget build(BuildContext context) {
-
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     return _isLoading
         ? Container(
             color: Colors.transparent,

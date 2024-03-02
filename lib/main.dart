@@ -25,6 +25,10 @@ import 'package:univ_app/view/pages/myusersearch.dart';
 void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      useMaterial3: true,
+    ),
     initialRoute: '/',
     getPages: [
       GetPage(name: '/', page: () => const MySudoHome()),

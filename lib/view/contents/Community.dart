@@ -21,23 +21,6 @@ class Community extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() => Column(
           children: [
-            Platform.isAndroid
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(18.0),
-                        child: Text(
-                          "Community",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  )
-                : SizedBox(
-                    height: 1,
-                  ),
             Expanded(
               child: controller.posts.length > 0
                   ? ListView.builder(
