@@ -105,6 +105,7 @@ class _RegisterState extends State<Register> {
                               ),
                             ),
                           ),
+                          //first name
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextField(
@@ -151,6 +152,7 @@ class _RegisterState extends State<Register> {
                               ),
                             ),
                           ),
+                          //last name
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextField(
@@ -197,6 +199,7 @@ class _RegisterState extends State<Register> {
                               ),
                             ),
                           ),
+                          //email
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextField(
@@ -243,6 +246,7 @@ class _RegisterState extends State<Register> {
                               ),
                             ),
                           ),
+                          //mobile number
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextField(
@@ -289,6 +293,7 @@ class _RegisterState extends State<Register> {
                               ),
                             ),
                           ),
+                          //password
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextField(
@@ -333,20 +338,20 @@ class _RegisterState extends State<Register> {
                                 prefixIcon: const Icon(Icons.lock,
                                     color: Values.primaryColor, size: 24),
                               ),
-
-                              onTap: (){
+                              onTap: () {
                                 if (!shown) {
                                   setState(() {
                                     shown = true;
                                   });
                                   Values.showMsgDialog("Password Policy",
                                       Values.passwordPolicy, context, () {
-                                        Navigator.of(context).pop();
-                                      });
+                                    Navigator.of(context).pop();
+                                  });
                                 }
                               },
                             ),
                           ),
+                          //submit button
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: MaterialButton(
@@ -355,7 +360,7 @@ class _RegisterState extends State<Register> {
                                   _isLoading = true;
                                 });
 
-                                await _controller.registerUser(
+                                var registered = await _controller.registerUser(
                                   firstNameController.text.toString(),
                                   lastNameController.text.toString(),
                                   emailController.text.toString(),
@@ -363,10 +368,15 @@ class _RegisterState extends State<Register> {
                                   passwordController.text.toString(),
                                   context,
                                 );
-
                                 setState(() {
                                   _isLoading = false;
                                 });
+                                Values.showMsgDialog(
+                                    "Registration", "${registered}", context,
+                                    () {
+                                  Get.offAllNamed("/login");
+                                });
+
                               },
                               color: Values.primaryColor,
                               elevation: 0,

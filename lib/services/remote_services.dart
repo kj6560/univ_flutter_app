@@ -287,7 +287,7 @@ class RemoteServices {
     } finally {}
   }
 
-  static Future<bool?> registerUser(var firstName, var lastName, var email,
+  static Future<String?> registerUser(var firstName, var lastName, var email,
       var phoneNumber, var password) async {
     try {
       var data = jsonEncode({
@@ -302,16 +302,8 @@ class RemoteServices {
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: data);
-      if (response.statusCode == 200) {
-        var responseObj = jsonDecode(response.body);
-        if (responseObj['success']) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
+      var responseObj = jsonDecode(response.body);
+      return responseObj["msg"];
     } catch (e) {
     } finally {}
   }

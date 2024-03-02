@@ -300,18 +300,21 @@ class _ResetPasswordState extends State<ResetPassword> {
         Values.isValidPassword(password)) {
       try {
         final prefs = await SharedPreferences.getInstance();
-        var savedEmail = prefs.getString("email_for_otp");
+        var number = prefs.getString("number_for_otp");
         var savedOtp = prefs.getString("otp_for_verification");
+        var params = jsonEncode({
+          'number': number,
+          'otp': int.parse(savedOtp!),
+          'password': password
+        });
+        print(Uri.parse(Values.resetPassword));
+        print(params);
         http.Response response = await http.post(
             Uri.parse(Values.resetPassword),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
-            body: jsonEncode({
-              'email': savedEmail,
-              'otp': int.parse(savedOtp!),
-              'password': password
-            }));
+            body: params);
 
         if (response.statusCode == 200) {
           setState(() {

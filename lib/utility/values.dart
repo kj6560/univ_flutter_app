@@ -38,7 +38,8 @@ class Values {
   static const String register = "$baseUrl/api/register";
   static const String profilePicUpload = "$baseUrl/api/uploadProfilePicture";
   static const String logoutUrl = "$baseUrl/api/logout";
-  static const String sendOtp = "$baseUrl/api/sendEmailOtp";
+  static const String sendEmailOtp = "$baseUrl/api/sendEmailOtp";
+  static const String sendSmsOtp = "$baseUrl/api/sendSmsOtp";
   static const String resetPassword = "$baseUrl/api/resetPassword";
   static const String registerForEvents = "$baseUrl/api/registerNow";
 
@@ -184,10 +185,12 @@ class Values {
       });
     }
   }
-  static Future<void> checkAndRequestPermissions() async{
-    if(await Permission.camera.request().isGranted && await Permission.storage.request().isGranted){
+
+  static Future<void> checkAndRequestPermissions() async {
+    if (await Permission.camera.request().isGranted &&
+        await Permission.storage.request().isGranted) {
       print("permission hai");
-    }else{
+    } else {
       print("nahi hai permission");
     }
   }

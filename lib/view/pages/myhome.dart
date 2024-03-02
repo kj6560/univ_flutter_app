@@ -122,6 +122,7 @@ class _MyHomeState extends State<MyHome> {
     Values.cacheFile('${Values.profilePic}$profilePictureUrl');
   }
 
+
   void loadTopQuote() async {
     var resp = await RemoteServices.fetchTopQuote();
     if (resp != null) {

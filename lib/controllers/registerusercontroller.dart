@@ -10,43 +10,30 @@ class RegisterUserController extends GetxController {
     super.onInit();
   }
 
-  registerUser(var firstName, var lastName, var email, var phoneNumber,
+  Future<String> registerUser(var firstName, var lastName, var email, var phoneNumber,
       var password, var context) async {
     if (!Values.isValidEmail(email)) {
-      return showErrorDialog("Invalid email provided", context);
+      return "Invalid email provided";
     }
     if (firstName.isEmpty || lastName.isEmpty) {
-      return showErrorDialog("Invalid first name or last name", context);
+      return "Invalid first name or last name";
     }
-    if (phoneNumber.isEmpty) {
-      return showErrorDialog("Invalid phone number", context);
+    if (phoneNumber.isEmpty || !Values.isValidPhoneNumber(phoneNumber)) {
+      return "Invalid phone number";
     }
 
-    bool? registered = await RemoteServices.registerUser(
+    String? registered = await RemoteServices.registerUser(
         firstName, lastName, email, phoneNumber, password);
-    if (registered! && registered) {
-      return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Registration'),
-            content: const Text(
-                "User Registration successful. Please proceed to login"),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Get.offNamed("/login"); // Close the dialog
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+    if (registered !=null) {
+      try {
+        return registered;
+      } catch (e, s) {
+        return e.toString();
+      }
     }else{
-      showErrorDialog("A user with email: $email already exists!! Please login to continue.", context);
+      return "A user with email: $email already exists!! Please login to continue.";
     }
+    return "";
   }
 
   Future showErrorDialog(String msg, var context) {
