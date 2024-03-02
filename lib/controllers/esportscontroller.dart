@@ -21,7 +21,8 @@ class EsportsController extends GetxController {
       var response = await RemoteServices.fetchEsportsData();
       if(response != null){
         var esportsData = jsonDecode(response);
-        Esports esports = Esports(id: esportsData.id, headerText: esportsData.header_text, images: esportsData.images, status: esportsData.status, createdAt: esportsData.createdAt, updatedAt: esportsData.updatedAt);
+        print(esportsData["id"]);
+        Esports esports = Esports(id: esportsData['id'], headerText: esportsData['header_text'], images: esportsData['images'], status: esportsData['status'], createdAt: DateTime.parse(esportsData['created_at']), updatedAt: DateTime.parse(esportsData['updated_at']));
         header_text.value = esports.headerText;
         var _images = esports.images;
         images.value = _images.split(",");

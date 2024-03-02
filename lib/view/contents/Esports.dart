@@ -72,13 +72,14 @@ class Esports extends StatelessWidget {
                   ),
                   itemCount: controller.images.length,
                   itemBuilder: (BuildContext context, int index) {
+                    print(Values.esportsImageUrl + controller.images[index].replaceAll("\"", ""));
                     return Card(
                         child: GridTile(
                       child: CachedNetworkImage(
-                        fit: BoxFit.contain,
+                        fit: BoxFit.fitHeight,
                         // Adjust the fit based on your requirement
                         imageUrl:
-                            Values.esportsImageUrl + controller.images[index],
+                            Values.esportsImageUrl + controller.images[index].replaceAll("\"", "").replaceAll("[", "").replaceAll("]", ""),
                         placeholder: (context, url) =>
                             CircularProgressIndicator(),
                         errorWidget: (context, url, error) => Icon(Icons.error),
