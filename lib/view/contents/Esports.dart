@@ -24,7 +24,7 @@ class Esports extends StatelessWidget {
                     "UNIV ESPORTS",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold),
                   )
                 ],
@@ -39,7 +39,7 @@ class Esports extends StatelessWidget {
                     "ARENA",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold),
                   )
                 ],
@@ -64,7 +64,7 @@ class Esports extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(28.0),
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
