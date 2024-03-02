@@ -20,9 +20,12 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         Get.offAllNamed("/community");
         break;
       case 2:
-        Get.offAllNamed("/performance");
+        Get.offAllNamed("/esports");
         break;
       case 3:
+        Get.offAllNamed("/performance");
+        break;
+      case 4:
         Get.offAllNamed("/social_profile");
         break;
       default:
@@ -40,13 +43,17 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       setState(() {
         currentRoute = 1;
       });
-    } else if (Get.currentRoute == "/performance") {
+    }else if (Get.currentRoute == "/esports") {
       setState(() {
         currentRoute = 2;
       });
-    } else if (Get.currentRoute == "/social_profile") {
+    } else if (Get.currentRoute == "/performance") {
       setState(() {
         currentRoute = 3;
+      });
+    } else if (Get.currentRoute == "/social_profile") {
+      setState(() {
+        currentRoute = 4;
       });
     }
     loadProfilePicture();
@@ -70,6 +77,10 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         BottomNavigationBarItem(
           icon: Icon(Icons.business),
           label: 'Community',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.sports_basketball),
+          label: 'Esports',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.school),

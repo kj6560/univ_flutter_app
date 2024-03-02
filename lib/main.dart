@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univ_app/view/pages/MyEsports.dart';
 import 'package:univ_app/view/pages/mycommunity.dart';
 import 'package:univ_app/view/pages/myeventdetails.dart';
 import 'package:univ_app/view/pages/myeventgallery.dart';
@@ -87,6 +88,11 @@ void main() {
       GetPage(
         name: '/community',
         page: () => MyCommunity(),
+        transition: Transition.rightToLeft,
+      ),
+      GetPage(
+        name: '/esports',
+        page: () => MyEsports(),
         transition: Transition.rightToLeft,
       ),
       GetPage(
