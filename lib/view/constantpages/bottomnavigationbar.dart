@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univ_app/utility/values.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   @override
@@ -68,33 +69,45 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+    return BottomAppBar(
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: <Color>[Values.primaryColor, Colors.teal]),
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.business),
-          label: 'Community',
+        child: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.business),
+              label: 'Community',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.sports_basketball),
+              label: 'Esports',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              label: 'Performance',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_2_rounded),
+              label: 'Profile',
+            ),
+          ],
+          currentIndex: currentRoute,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: const Color.fromRGBO(26, 188, 156, 70),
+          onTap: _onItemTapped,
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.sports_basketball),
-          label: 'Esports',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.school),
-          label: 'Performance',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_2_rounded),
-          label: 'Profile',
-        ),
-      ],
-      currentIndex: currentRoute,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: const Color.fromRGBO(26, 188, 156, 70),
-      onTap: _onItemTapped,
+      ),
     );
   }
 }
+
+

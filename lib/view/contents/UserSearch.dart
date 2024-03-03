@@ -28,7 +28,7 @@ class _UserSearchState extends State<UserSearch> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: !Platform.isAndroid ? EdgeInsets.only(top: 55):EdgeInsets.only(top: 10),
+      margin: EdgeInsets.only(top: 55),
       child: CustomScrollView(
         slivers: <Widget>[
           SliverToBoxAdapter(

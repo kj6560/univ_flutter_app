@@ -17,86 +17,6 @@ class _MyCommunityBottomNavigationBarState
   int currentRoute = 0;
   final List<String> items = ["Add Photos", "Add Videos", "Add Certificates"];
 
-  void _showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext builder) {
-        return FractionallySizedBox(
-          heightFactor: 0.25,
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(
-                      Icons.close,
-                      size: 24,
-                    )),
-              ],
-            ),
-            const Divider(
-              height: 20,
-              thickness: 2,
-              color: Color.fromRGBO(26, 188, 156, 70),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-
-                //_pickImage();
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Add Photos", style: TextStyle(fontSize: 16)),
-                  ],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-
-                //_pickVideo();
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Add Videos", style: TextStyle(fontSize: 16)),
-                  ],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-
-                //_pickCertificate();
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Add Certificates", style: TextStyle(fontSize: 16)),
-                  ],
-                ),
-              ),
-            ),
-          ]),
-        );
-      },
-    );
-  }
-
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
@@ -162,33 +82,44 @@ class _MyCommunityBottomNavigationBarState
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: <BottomNavigationBarItem>[
-        const BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.home, size: 20), label: ""),
-        const BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.icons, size: 20), label: ""),
-        const BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.magnifyingGlass, size: 20), label: ""),
-        const BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.squarePlus, size: 20), label: ""),
-        const BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.film, size: 20), label: ""),
-        BottomNavigationBarItem(
-            icon: CircleAvatar(
-                radius: 14,
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.white,
-                backgroundImage: CachedNetworkImageProvider(
-                    '${Values.profilePic}$profilePictureUrl')),
-            label: ""),
-      ],
-      currentIndex: currentRoute,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: const Color.fromRGBO(26, 188, 156, 70),
-      onTap: _onItemTapped,
-      unselectedFontSize: 1,
-      selectedFontSize: 1,
+    return BottomAppBar(
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: <Color>[Values.primaryColor, Colors.teal]),
+        ),
+        child: BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            const BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.home, size: 20), label: ""),
+            const BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.icons, size: 20), label: ""),
+            const BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.magnifyingGlass, size: 20), label: ""),
+            const BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.squarePlus, size: 20), label: ""),
+            const BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.film, size: 20), label: ""),
+            BottomNavigationBarItem(
+                icon: CircleAvatar(
+                    radius: 14,
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white,
+                    backgroundImage: CachedNetworkImageProvider(
+                        '${Values.profilePic}$profilePictureUrl')),
+                label: ""),
+          ],
+          currentIndex: currentRoute,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: const Color.fromRGBO(26, 188, 156, 70),
+          onTap: _onItemTapped,
+          unselectedFontSize: 1,
+          selectedFontSize: 1,
+        ),
+      ),
     );
   }
 }
+

@@ -16,7 +16,6 @@ class MyUserSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: false,
       body: UserSearch(),
       bottomNavigationBar: MyCommunityBottomNavigationBar(),
     );
