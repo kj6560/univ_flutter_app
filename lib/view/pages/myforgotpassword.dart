@@ -13,11 +13,9 @@ class _MyCommunityState extends State<MyForgotPassword> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: const Color(0xffffffff),
         body: ForgotPassword()
-      ),
     );
   }
 }

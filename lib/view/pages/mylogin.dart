@@ -15,17 +15,13 @@ class _MyLoginState extends State<MyLogin> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    RemoteServices.showSnackBar(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      child: Scaffold(
-          extendBodyBehindAppBar: true,
-          backgroundColor: Color(0xffffffff),
-          body: Login()),
+    return Scaffold(
+
+      body: Login(), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

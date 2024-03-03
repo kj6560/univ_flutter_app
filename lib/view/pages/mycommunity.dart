@@ -41,13 +41,13 @@ class MyCommunity extends StatelessWidget {
                     color: theme.colorScheme.primary,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.send_sharp,
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: Icon(
+                //     Icons.send_sharp,
+                //     color: theme.colorScheme.primary,
+                //   ),
+                // ),
               ],
             ),
           ),

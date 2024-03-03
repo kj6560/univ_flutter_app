@@ -19,11 +19,13 @@ class CategoryController extends GetxController {
     var dbclient = await conn.db;
     List<Category>? all_categories = [];
     try{
+      all_categories = await RemoteServices.fetchCategories();
+      print(all_categories);
       var total_count = await Sqflite.firstIntValue(
           await dbclient!.rawQuery('SELECT COUNT(*) FROM sports'));
       var hasInternet = await RemoteServices.hasInternet();
       if (hasInternet) {
-        all_categories = await RemoteServices.fetchCategories();
+
         if (all_categories != null && total_count != all_categories.length) {
           for(var category in all_categories){
             await dbclient!.insert('sports', category.toJson());
@@ -40,7 +42,9 @@ class CategoryController extends GetxController {
 
       categories.value = all_categories!;
       initialCategory.value = all_categories.first.name;
-    }catch(e){}
+    }catch(e){
+      print(e);
+    }
 
   }
 }

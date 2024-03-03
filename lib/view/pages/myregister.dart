@@ -15,11 +15,8 @@ class _MyRegisterState extends State<MyRegister> {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      child: Scaffold(
-          backgroundColor: Color(0xffffffff),
-          body: Register()
-      ),
+    return Scaffold(
+        body: Register()
     );
   }
 }

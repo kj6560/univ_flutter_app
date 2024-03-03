@@ -32,6 +32,7 @@ class _HomeState extends State<Home> {
     super.initState();
     RemoteServices.showSnackBar(context);
   }
+
   @override
   Widget build(BuildContext context) {
     return _isLoading
@@ -52,22 +53,26 @@ class _HomeState extends State<Home> {
                           builder: (BuildContext context) {
                             return Container(
                               width: MediaQuery.of(context).size.width,
-                              margin: const EdgeInsets.symmetric(horizontal: 1.0),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 1.0),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0), // Optional: add border radius
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  // Optional: add border radius
                                   child: CachedNetworkImage(
                                     height: 200,
                                     width: MediaQuery.of(context).size.width,
                                     fit: BoxFit.cover,
-                                    imageUrl: '${Values.sliderImageUrl}/${slider.image}',
+                                    imageUrl:
+                                        '${Values.sliderImageUrl}/${slider.image}',
                                     placeholder: (context, url) => const Center(
                                       child: CircularProgressIndicator(
                                         strokeWidth: 3.0,
                                       ),
                                     ),
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   ),
                                 ),
                               ),
@@ -83,14 +88,14 @@ class _HomeState extends State<Home> {
                         reverse: false,
                         autoPlay: true,
                         autoPlayInterval: const Duration(seconds: 3),
-                        autoPlayAnimationDuration: const Duration(milliseconds: 1000),
+                        autoPlayAnimationDuration:
+                            const Duration(milliseconds: 1000),
                         autoPlayCurve: Curves.fastOutSlowIn,
                         enlargeCenterPage: true,
                         enlargeFactor: 1.0,
                         scrollDirection: Axis.horizontal,
                       ),
-                    )
-                    ,
+                    ),
                   );
                 },
               ),
@@ -116,6 +121,8 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
+
+              //categories
               SliverPadding(
                 padding: EdgeInsets.all(8.0),
                 sliver: SliverToBoxAdapter(
@@ -184,8 +191,10 @@ class _HomeState extends State<Home> {
                           child: Column(
                             children: [
                               Text(
-                                controller.events[index].eventName.toUpperCase(),
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),
+                                controller.events[index].eventName
+                                    .toUpperCase(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 17),
                               ),
                               InkWell(
                                 onTap: () {
@@ -228,7 +237,9 @@ class _HomeState extends State<Home> {
                                               padding:
                                                   const EdgeInsets.all(2.0),
                                               child: Text(
-                                                DateFormat('d MMM y').format(controller.events[index].eventDate),
+                                                DateFormat('d MMM y').format(
+                                                    controller.events[index]
+                                                        .eventDate),
                                                 style: const TextStyle(
                                                   color: Values.primaryColor,
                                                   fontSize: 15,

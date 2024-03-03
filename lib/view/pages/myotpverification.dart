@@ -14,11 +14,9 @@ class _MyOtpVerificationState extends State<MyOtpVerification> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: const Color(0xffffffff),
-          body: OtpVerification()
-      ),
+    return Scaffold(
+        backgroundColor: const Color(0xffffffff),
+        body: OtpVerification()
     );
   }
 }

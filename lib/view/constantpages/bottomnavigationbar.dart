@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,6 +37,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   @override
   void initState() {
     super.initState();
+    loadProfilePicture();
     if (Get.currentRoute == "/home") {
       setState(() {
         currentRoute = 0;
@@ -78,7 +80,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
               colors: <Color>[Values.primaryColor, Colors.teal]),
         ),
         child: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
@@ -96,9 +98,13 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
               label: 'Performance',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_2_rounded),
-              label: 'Profile',
-            ),
+                icon: CircleAvatar(
+                    radius: 11,
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white,
+                    backgroundImage: CachedNetworkImageProvider(
+                        '${Values.profilePic}$profilePictureUrl')),
+                label: "Profile"),
           ],
           currentIndex: currentRoute,
           type: BottomNavigationBarType.fixed,

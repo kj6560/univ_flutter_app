@@ -109,7 +109,7 @@ class _MyCommunityBottomNavigationBarState
                     backgroundColor: Colors.white,
                     backgroundImage: CachedNetworkImageProvider(
                         '${Values.profilePic}$profilePictureUrl')),
-                label: ""),
+                label: " "),
           ],
           currentIndex: currentRoute,
           type: BottomNavigationBarType.fixed,
