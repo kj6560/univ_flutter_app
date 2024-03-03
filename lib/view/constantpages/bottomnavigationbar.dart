@@ -72,45 +72,38 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              colors: <Color>[Values.primaryColor, Colors.teal]),
-        ),
-        child: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.business),
-              label: 'Community',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.sports_basketball),
-              label: 'Esports',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              label: 'Performance',
-            ),
-            BottomNavigationBarItem(
-                icon: CircleAvatar(
-                    radius: 11,
-                    foregroundColor: Colors.black,
-                    backgroundColor: Colors.white,
-                    backgroundImage: CachedNetworkImageProvider(
-                        '${Values.profilePic}$profilePictureUrl')),
-                label: "Profile"),
-          ],
-          currentIndex: currentRoute,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: const Color.fromRGBO(26, 188, 156, 70),
-          onTap: _onItemTapped,
-        ),
+      child: BottomNavigationBar(
+        iconSize: 22,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            label: 'Community',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.sports_basketball),
+            label: 'Esports',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            label: 'Performance',
+          ),
+          BottomNavigationBarItem(
+              icon: CircleAvatar(
+                  radius: 10,
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.white,
+                  backgroundImage: CachedNetworkImageProvider(
+                      '${Values.profilePic}$profilePictureUrl')),
+              label: "Profile"),
+        ],
+        currentIndex: currentRoute,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: const Color.fromRGBO(26, 188, 156, 70),
+        onTap: _onItemTapped,
       ),
     );
   }
