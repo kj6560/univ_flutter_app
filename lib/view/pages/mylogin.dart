@@ -20,7 +20,6 @@ class _MyLoginState extends State<MyLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Login(), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
