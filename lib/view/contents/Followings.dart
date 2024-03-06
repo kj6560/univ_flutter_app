@@ -16,23 +16,9 @@ class Followings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: !Platform.isAndroid
-          ? EdgeInsets.only(top: 55)
-          : EdgeInsets.only(top: 10),
+      margin: EdgeInsets.only(top: 8.0),
       child: CustomScrollView(
         slivers: <Widget>[
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(25.0, 2.0, 0.0, 20.0),
-              child: Text(
-                "Followings",
-                style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.all(8.0),
@@ -66,7 +52,7 @@ class Followings extends StatelessWidget {
                         borderSide: const BorderSide(
                             color: Color(0x00ffffff), width: 1),
                       ),
-                      hintText: "Search User",
+                      hintText: "Search",
                       hintStyle: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
@@ -95,30 +81,32 @@ class Followings extends StatelessWidget {
           GetX<FollowingController>(builder: (logic) {
             return SliverList(
               delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
+                (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          logic.userList[index].image !=null || logic.userList[index].image != ""
+                          logic.userList[index].image != null ||
+                                  logic.userList[index].image != ""
                               ? CircleAvatar(
-                            radius: 25,
-                            foregroundColor: Colors.black,
-                            backgroundColor: Colors.white,
-                            foregroundImage: CachedNetworkImageProvider(
-                              '${Values.profilePic}${logic.userList[index].image}',
-                            ),
-                            backgroundImage: AssetImage("assets/avatar_placeholder.png"),
-                          )
+                                  radius: 25,
+                                  foregroundColor: Colors.black,
+                                  backgroundColor: Colors.white,
+                                  foregroundImage: CachedNetworkImageProvider(
+                                    '${Values.profilePic}${logic.userList[index].image}',
+                                  ),
+                                  backgroundImage: AssetImage(
+                                      "assets/avatar_placeholder.png"),
+                                )
                               : const CircleAvatar(
-                            radius: 25,
-                            foregroundColor: Colors.black,
-                            backgroundColor: Colors.white,
-                            backgroundImage:
-                            AssetImage("assets/avatar_placeholder.png"),
-                          ),
+                                  radius: 25,
+                                  foregroundColor: Colors.black,
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: AssetImage(
+                                      "assets/avatar_placeholder.png"),
+                                ),
                           const SizedBox(width: 10),
                           Column(
                             children: [

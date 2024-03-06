@@ -14,23 +14,10 @@ class Followers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: !Platform.isAndroid
-          ? const EdgeInsets.only(top: 55)
-          : const EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 8.0),
       child: CustomScrollView(
         slivers: <Widget>[
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(25.0, 2.0, 0.0, 20.0),
-              child: Text(
-                "Followers",
-                style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
+
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -64,7 +51,7 @@ class Followers extends StatelessWidget {
                         borderSide: const BorderSide(
                             color: Color(0x00ffffff), width: 1),
                       ),
-                      hintText: "Search User",
+                      hintText: "Search a Follower",
                       hintStyle: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,

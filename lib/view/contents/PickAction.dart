@@ -83,7 +83,7 @@ class _PickActionState extends State<PickAction>
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: Container(
-              margin: EdgeInsets.fromLTRB(8.0, 50, 0, 0),
+              margin: EdgeInsets.fromLTRB(8.0, 8.0, 0, 0),
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

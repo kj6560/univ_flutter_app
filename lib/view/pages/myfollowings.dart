@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:univ_app/view/constantpages/MyCustomAppBarCommunity.dart';
 import 'package:univ_app/view/contents/Followings.dart';
 
 import '../constantpages/communitybottomnavigationbar.dart';
@@ -9,7 +10,7 @@ class MyFollowings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: false,
+      appBar: MyCustomAppBarCommunity("Following"),
       body: Followings(),
       bottomNavigationBar: MyCommunityBottomNavigationBar(),
     );

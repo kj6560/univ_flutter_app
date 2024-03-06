@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:univ_app/controllers/communitycontroller.dart';
 import 'package:univ_app/controllers/eventcontroller.dart';
 import 'package:univ_app/controllers/slidercontroller.dart';
+import 'package:univ_app/view/constantpages/MyCustomAppBarCommunity.dart';
 import 'package:univ_app/view/constantpages/bottomnavigationbar.dart';
 import 'package:univ_app/view/constantpages/communitybottomnavigationbar.dart';
 import 'package:univ_app/view/constantpages/myappbar.dart';
@@ -16,6 +17,7 @@ class MyUserSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyCustomAppBarCommunity("Search User"),
       body: UserSearch(),
       bottomNavigationBar: MyCommunityBottomNavigationBar(),
     );
