@@ -137,15 +137,8 @@ class _MyHomeState extends State<MyHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyCustomAppBar(
-        temp: temp,
-        showBack: showBack,
-        context: context,
-        profilePictureUrl: profilePictureUrl,
-        topQuote: topQuote,
-        city: city,
-      ),
-      body: Home(),
+      extendBodyBehindAppBar: false,
+      body: Home(profilePicture:profilePictureUrl),
       bottomNavigationBar:
           MyBottomNavigationBar(), // This trailing comma makes auto-formatting nicer for build methods.
     );

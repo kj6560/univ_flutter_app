@@ -34,6 +34,7 @@ class HomeController extends GetxController {
     var all_categories = await RemoteServices.fetchCategories();
     if (all_categories != null) {
       categories.assignAll(all_categories);
+      print(categories.length);
       update();
     }
   }

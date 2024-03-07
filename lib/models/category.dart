@@ -24,12 +24,12 @@ class Category {
   });
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        icon: json["icon"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        id: json["id"]??0,
+        name: json["name"] !=null ?json["name"]:"",
+        description: json["description"] !=null?json["description"]:"",
+        icon: json["icon"] !=null?json["icon"]:"",
+        createdAt: json["created_at"] !=null?DateTime.parse(json["created_at"]):DateTime.now(),
+        updatedAt: json["updated_at"] !=null?DateTime.parse(json["updated_at"]):DateTime.now(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -43,12 +43,12 @@ class Category {
 
   factory Category.fromMap(Map<String, dynamic> map) {
     return Category(
-      id: map["id"],
-      name: map["name"],
-      description: map["description"],
-      icon: map["icon"],
-      createdAt: DateTime.parse(map["created_at"]),
-      updatedAt: DateTime.parse(map["updated_at"]),
+      id: map["id"]??0,
+      name: map["name"]??"",
+      description: map["description"]??"",
+      icon: map["icon"]??"",
+      createdAt: map["created_at"]?DateTime.parse(map["created_at"]):DateTime.now(),
+      updatedAt: map["updated_at"]?DateTime.parse(map["updated_at"]):DateTime.now(),
     );
   }
 }
