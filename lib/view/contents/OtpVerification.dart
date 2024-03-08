@@ -169,8 +169,6 @@ class _OtpVerificationState extends State<OtpVerification> {
     try {
       final prefs = await SharedPreferences.getInstance();
       var savedOtp = prefs.getString("otp_for_verification");
-      print(savedOtp);
-      print(otp);
       if (savedOtp!.contains(otp)) {
         prefs.setBool("show_reset", true);
         Get.toNamed('/reset_password');

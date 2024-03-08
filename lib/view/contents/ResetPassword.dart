@@ -41,7 +41,6 @@ class _ResetPasswordState extends State<ResetPassword> {
               width: MediaQuery.of(context).size.width,
               child: Stack(
                 alignment: Alignment.topLeft,
-
                 children: [
                   Container(
                     margin: const EdgeInsets.fromLTRB(0, 150, 0, 0),
@@ -105,16 +104,18 @@ class _ResetPasswordState extends State<ResetPassword> {
                               padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: Colors.grey, // Choose your border color
+                                  color:
+                                      Colors.grey, // Choose your border color
                                   width: 1.0, // Choose your border width
                                 ),
-                                borderRadius: BorderRadius.circular(8), // Optional: for rounded corners
+                                borderRadius: BorderRadius.circular(
+                                    8), // Optional: for rounded corners
                               ),
                               child: const Text(
                                 Values.passwordPolicy,
                                 style: TextStyle(
-                                  // Add any additional styles for the text here
-                                ),
+                                    // Add any additional styles for the text here
+                                    ),
                               ),
                             ),
                             const Padding(
@@ -281,7 +282,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                         fit: BoxFit.cover,
                         placeholder: (context, url) =>
                             const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       ),
                     ),
                   ),
@@ -301,20 +303,29 @@ class _ResetPasswordState extends State<ResetPassword> {
       try {
         final prefs = await SharedPreferences.getInstance();
         var number = prefs.getString("number_for_otp");
+        var email = prefs.getString("email_for_otp");
         var savedOtp = prefs.getString("otp_for_verification");
-        var params = jsonEncode({
-          'number': number,
-          'otp': int.parse(savedOtp!),
-          'password': password
-        });
-        print(Uri.parse(Values.resetPassword));
-        print(params);
-        http.Response response = await http.post(
-            Uri.parse(Values.resetPassword),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-            },
-            body: params);
+
+        var params;
+        if (number !=null && number.isNotEmpty) {
+          params = jsonEncode({
+            'number': number,
+            'otp': int.parse(savedOtp!),
+            'password': password
+          });
+        } else if(email !=null && email.isNotEmpty) {
+          params = jsonEncode({
+            'email': email,
+            'otp': int.parse(savedOtp!),
+            'password': password
+          });
+        }
+        http.Response response =
+            await http.post(Uri.parse(Values.resetPassword),
+                headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                },
+                body: params);
 
         if (response.statusCode == 200) {
           setState(() {
@@ -332,7 +343,7 @@ class _ResetPasswordState extends State<ResetPassword> {
         setState(() {
           _isLoading = false;
         });
-        Values.showInternetErrorDialog("Reset Password",e, context);
+        Values.showInternetErrorDialog("Reset Password", e, context);
       }
     } else {
       setState(() {

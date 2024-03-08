@@ -15,6 +15,7 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   final TextEditingController _controller = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   var _isLoading = false;
 
   @override
@@ -149,11 +150,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             vertical: 8, horizontal: 12),
                       ),
                     ),
-                    Text("OR"),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0.0,25.0,0.0,0.0),
+                      child: Text("OR",style: TextStyle(fontSize: 18),),
+                    ),
                     const Padding(
                       padding: EdgeInsets.all(16),
                       child: Text(
-                        "Please enter your registered mobile number to receive a confirmation code for setting up a new password.",
+                        "Please enter your registered email to receive a confirmation code for setting up a new password.",
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.clip,
                         style: TextStyle(
@@ -165,7 +169,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       ),
                     ),
                     TextField(
-                      controller: _controller,
+                      controller: _emailController,
                       obscureText: false,
                       textAlign: TextAlign.start,
                       maxLines: 1,
@@ -191,14 +195,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           borderSide: const BorderSide(
                               color: Color(0xff000000), width: 1),
                         ),
-                        labelText: "Enter Mobile Number",
+                        labelText: "Enter Email Address",
                         labelStyle: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 16,
                           color: Color(0xff000000),
                         ),
-                        hintText: "Enter Your Registered Mobile Number",
+                        hintText: "Enter Your Registered Email address",
                         hintStyle: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
@@ -216,8 +220,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                       child: MaterialButton(
                         onPressed: () {
-                          if(Values.isValidPhoneNumber(_controller.text.toString())){
-                            _sendOtp(_controller.text.toString(), context);
+                          if(Values.isValidPhoneNumber(_controller.text.toString()) || Values.isValidEmail(_emailController.text.toString())){
+                            _sendOtp(_controller.text.toString(), _emailController.text.toString(), context);
                           }else{
                             Values.showMsgDialog("Forgot Password", "Invalid email", context, () {
                               Navigator.of(context).pop();
@@ -251,25 +255,43 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           );
   }
 
-  void _sendOtp(String number, var context) async {
+  void _sendOtp(String number,String email, var context) async {
     try {
+
       setState(() {
         _isLoading = true;
       });
-      print(Uri.parse(Values.sendSmsOtp));
-      http.Response response = await http.post(Uri.parse(Values.sendSmsOtp),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode({'number': number}));
-      var responseObject = jsonDecode(response.body);
-      print(responseObject);
-      if (response.statusCode == 200) {
+      late http.Response resp;
+      if(!number.isEmpty){
+        print("number");
+         resp= await http.post(Uri.parse(Values.sendSmsOtp),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode({'number': number}));
+      }else if(!email.isEmpty){
+        print("email");
+        resp = await http.post(Uri.parse(Values.sendEmailOtp),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode({'email': email}));
+      }
+
+      var responseObject = jsonDecode(resp.body);
+
+      if (resp.statusCode == 200) {
 
         final prefs = await SharedPreferences.getInstance();
         prefs.setString(
             "otp_for_verification", responseObject['otp'].toString());
-        prefs.setString("number_for_otp", number);
+        if(!number.isEmpty){
+          print("number");
+          prefs.setString("number_for_otp", number);
+        }else if(!email.isEmpty){
+          print("email");
+          prefs.setString("email_for_otp", email);
+        }
         setState(() {
           _isLoading = false;
         });

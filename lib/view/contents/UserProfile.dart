@@ -18,6 +18,7 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   DateTime selectedDate = DateTime.now(); // Track selected date
   Future<void> _selectDate(BuildContext context, var logic) async {
+    print(logic.birthday);
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.parse(logic.birthday), // Initial date set to selectedDate
@@ -170,7 +171,6 @@ class _UserProfileState extends State<UserProfile> {
     return GetBuilder<UserProfileController>(
       assignId: true,
       builder: (logic) {
-        print(selectedDate.toString());
         return CustomScrollView(
           slivers: <Widget>[
             SliverToBoxAdapter(
@@ -547,7 +547,7 @@ class _UserProfileState extends State<UserProfile> {
                                               ),
                                             ),
                                             Text(
-                                              'Date Of Birth: ${logic.birthday != null && logic.birthday != "" ? logic.birthday.toString().substring(0, 10) : selectedDate.toString().substring(0, 10)}',
+                                              'Date Of Birth: ${logic.birthday != null && logic.birthday != "" && logic.birthday.length>9 ? logic.birthday.toString().substring(0, 10) : selectedDate.toString().substring(0, 10)}',
                                               style: TextStyle(fontSize: 14),
                                             ),
                                           ],

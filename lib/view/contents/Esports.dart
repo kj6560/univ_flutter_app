@@ -15,8 +15,8 @@ class Esports extends StatelessWidget {
     return Obx(() => Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -30,8 +30,8 @@ class Esports extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -53,7 +53,7 @@ class Esports extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(20, 60, 20, 10),
                     child: Text(
                       "${controller.header_text}",
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
@@ -66,7 +66,7 @@ class Esports extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(28.0),
                 child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 2,
                   ),
@@ -81,8 +81,8 @@ class Esports extends StatelessWidget {
                         imageUrl:
                             Values.esportsImageUrl + controller.images[index].replaceAll("\"", "").replaceAll("[", "").replaceAll("]", ""),
                         placeholder: (context, url) =>
-                            CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     ));
                   },

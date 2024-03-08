@@ -106,8 +106,13 @@ class UserProfileController extends GetxController {
     prefs.setString("weight", weight.toString());
     prefs.setString("age", calculateAge(dob).toString());
     prefs.setString("user_doc", user_doc);
-    String formattedDate = DateTime.parse(birthday).toIso8601String();
-    prefs.setString("birthday", formattedDate);
+    String formattedDate="";
+    if(birthday.length>=10){
+      formattedDate = DateTime.parse(birthday).toIso8601String();
+      prefs.setString("birthday", formattedDate);
+    }
+
+
     prefs.setString("address_line1", address_line1);
     prefs.setString("city", city);
     prefs.setString("state", state);
