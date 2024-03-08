@@ -83,6 +83,9 @@ class MyCustomAppBar extends AppBar {
             )
           ],
           elevation: 8,
+          iconTheme: IconThemeData(
+            color: Colors.white, //change your color here
+          ),
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(

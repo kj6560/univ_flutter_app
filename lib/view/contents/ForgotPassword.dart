@@ -149,6 +149,69 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             vertical: 8, horizontal: 12),
                       ),
                     ),
+                    Text("OR"),
+                    const Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Text(
+                        "Please enter your registered mobile number to receive a confirmation code for setting up a new password.",
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.clip,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14,
+                          color: Color(0xff545252),
+                        ),
+                      ),
+                    ),
+                    TextField(
+                      controller: _controller,
+                      obscureText: false,
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                        fontSize: 14,
+                        color: Color(0xff000000),
+                      ),
+                      decoration: InputDecoration(
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                          borderSide: const BorderSide(
+                              color: Color(0xff000000), width: 1),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                          borderSide: const BorderSide(
+                              color: Color(0xff000000), width: 1),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                          borderSide: const BorderSide(
+                              color: Color(0xff000000), width: 1),
+                        ),
+                        labelText: "Enter Mobile Number",
+                        labelStyle: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 16,
+                          color: Color(0xff000000),
+                        ),
+                        hintText: "Enter Your Registered Mobile Number",
+                        hintStyle: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14,
+                          color: Color(0xff000000),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xffffffff),
+                        isDense: false,
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 12),
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                       child: MaterialButton(
