@@ -7,6 +7,7 @@ import 'package:univ_app/view/pages/mycommunity.dart';
 import 'package:univ_app/view/pages/myeventdetails.dart';
 import 'package:univ_app/view/pages/myeventgallery.dart';
 import 'package:univ_app/view/pages/myeventregistration.dart';
+import 'package:univ_app/view/pages/myeventslist.dart';
 import 'package:univ_app/view/pages/myfollowers.dart';
 import 'package:univ_app/view/pages/myfollowings.dart';
 import 'package:univ_app/view/pages/myforgotpassword.dart';
@@ -77,6 +78,11 @@ void main() {
       GetPage(
         name: '/event_details',
         page: () => MyEventDetails(),
+        transition: Transition.rightToLeft,
+      ),
+      GetPage(
+        name: '/all_events',
+        page: () => MyEventsList(),
         transition: Transition.rightToLeft,
       ),
       GetPage(

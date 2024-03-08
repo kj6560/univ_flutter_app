@@ -7,7 +7,7 @@ class MyPickAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyCustomAppBarCommunity("Create"),
+      appBar: MyCustomAppBarCommunity("Create Post"),
       body: PickAction(),
       bottomNavigationBar: MyCommunityBottomNavigationBar(),
     );

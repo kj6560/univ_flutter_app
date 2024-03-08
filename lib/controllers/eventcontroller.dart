@@ -46,16 +46,19 @@ class EventController extends GetxController {
         eventList = all_events!;
       }
       events.value = all_events!;
+      eventList = events.value;
     } catch (e) {
       print(e);
     }
   }
 
   void filterEvents(String query) {
+    print(query);
     events.value = eventList
         .where((element) =>
             element.eventName!.toLowerCase().contains(query.toLowerCase()))
         .toList();
+    print(events.length);
   }
 
   void filterEventsByCategory(String category_id) {

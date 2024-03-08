@@ -62,14 +62,14 @@ class _ReelsState extends State<Reels> {
                                         "${Values.postMediaUrl}${controller.posts[index].postMedia[0].mediaName}",
                                   ),
                                   Positioned(
-                                    top: 10,
+                                    top: 25,
                                     left: 10,
                                     child: InkWell(
                                       child: IconButton(
                                         icon: const Icon(
                                           Icons.arrow_back,
                                           color: Colors.white,
-                                          size: 30,
+                                          size: 25,
                                         ),
                                         onPressed: () {
                                           Navigator.pop(context);
@@ -104,7 +104,7 @@ class _ReelsState extends State<Reels> {
                                                           FontAwesomeIcons
                                                               .heart,
                                                           color: Colors.white,
-                                                          size: 35,
+                                                          size: 25,
                                                         ),
                                                   onTap: () {
                                                     if (controller.posts[index]
@@ -256,7 +256,7 @@ class _ReelsState extends State<Reels> {
                                                 icon: const Icon(
                                                   FontAwesomeIcons
                                                       .ellipsisVertical,
-                                                  size: 25,
+                                                  size: 20,
                                                   color: Colors.white,
                                                 )),
                                           )

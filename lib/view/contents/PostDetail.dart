@@ -25,7 +25,6 @@ class _PostDetailState extends State<PostDetail>
     // TODO: implement initState
     super.initState();
     var args = Get.arguments;
-    print("args in post detail:${args}");
     setState(() {
       post_id = args["post_id"];
       post_type = args["post_type"];
@@ -35,7 +34,7 @@ class _PostDetailState extends State<PostDetail>
   @override
   Widget build(BuildContext context) {
     return Obx(() => Container(
-          margin: const EdgeInsets.only(bottom: 100),
+          margin: const EdgeInsets.only(bottom: 10),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(

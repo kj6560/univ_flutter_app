@@ -1,32 +1,28 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:univ_app/controllers/appbarcontroller.dart';
-import 'package:univ_app/services/remote_services.dart';
-import 'package:univ_app/utility/values.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univ_app/view/constantpages/MyCustomAppBar.dart';
 import 'package:univ_app/view/constantpages/bottomnavigationbar.dart';
+import 'package:univ_app/view/contents/EventsList.dart';
 
-import '../constantpages/MyCustomAppBar.dart';
-import '../contents/Home.dart';
-
-class MyHome extends StatefulWidget {
-  const MyHome({super.key});
+import '../../services/remote_services.dart';
+import '../../utility/values.dart';
+class MyEventsList extends StatefulWidget {
+  const MyEventsList({super.key});
 
   @override
-  State<MyHome> createState() => _MyHomeState();
+  State<MyEventsList> createState() => _MyEventsListState();
 }
 
-class _MyHomeState extends State<MyHome> {
+class _MyEventsListState extends State<MyEventsList> {
   bool servicestatus = false;
   bool haspermission = false;
   String city = "";
-  String user_name = "";
   var temp = 0.0;
   late LocationPermission permission;
   late Position position;
@@ -36,8 +32,6 @@ class _MyHomeState extends State<MyHome> {
   String profilePictureUrl = '';
   var showBack = false;
   var topQuote = "";
-
-
   @override
   void dispose() {
     // TODO: implement dispose
@@ -119,11 +113,9 @@ class _MyHomeState extends State<MyHome> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       profilePictureUrl = prefs.getString('image') ?? "";
-      user_name = prefs.getString("first_name")! +" "+ prefs.getString("last_name")!;
     });
     Values.cacheFile('${Values.profilePic}$profilePictureUrl');
   }
-
 
   void loadTopQuote() async {
     var resp = await RemoteServices.fetchTopQuote();
@@ -139,17 +131,33 @@ class _MyHomeState extends State<MyHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: false,
       appBar: AppBar(
-        title: Text("Univ Sportatech"),
+        iconTheme: IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        title: Text("Univ Events",style: TextStyle(color: Colors.white),),
+        actions: <Widget>[
+
+          IconButton(
+            icon: const Icon(
+              Icons.notifications,
+              color: Colors.white,
+            ),
+            onPressed: () {},
+          )
+        ],
+        elevation: 8,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: <Color>[Values.primaryColor, Colors.teal]),
+          ),
+        ),
       ),
-      body: Home(profilePicture:profilePictureUrl,temp:temp,city:city,user_name:user_name),
-      bottomNavigationBar:
-          MyBottomNavigationBar(), // This trailing comma makes auto-formatting nicer for build methods.
+      body: EventsList(),
+      bottomNavigationBar: MyBottomNavigationBar(),
     );
   }
-
-
 }
-
-

@@ -17,28 +17,29 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 class Home extends StatelessWidget {
   final String profilePicture;
+  final double temp;
+  final String city;
+  final String user_name;
 
-  Home({super.key, required this.profilePicture});
+  Home(
+      {super.key,
+      required this.profilePicture,
+      required this.temp,
+      required this.city,
+      required this.user_name});
 
   SliderController sliderController = Get.put(SliderController());
   EventController eventController = Get.put(EventController());
   CategoryController categoryController = Get.put(CategoryController());
-  PageController _pageController = PageController();
-
-  int _activePage = 0;
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => CustomScrollView(
           slivers: [
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 45,
-              ),
-            ),
+
             SliverToBoxAdapter(
               child: Container(
-                height: 180,
+                height: 160,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
@@ -71,20 +72,20 @@ class Home extends StatelessWidget {
                               )
                             ],
                           ),
-                          const Row(
+                          Row(
                             children: [
                               Expanded(
                                   child: Text(
-                                "Hi Keshav Jha!",
+                                'Hi ${user_name}',
                                 style: TextStyle(fontSize: 22),
                               )),
                             ],
                           ),
-                          const Row(
+                          Row(
                             children: [
                               Expanded(
-                                  child:
-                                      Text("Its currently 10.4 °C in Delhi")),
+                                  child: Text(
+                                      "Its currently ${temp!=0.0?temp:'NA'} °C in ${city != '' ? city : 'Your City'}")),
                             ],
                           )
                         ],
@@ -144,40 +145,15 @@ class Home extends StatelessWidget {
               ),
             ),
             SliverToBoxAdapter(
-              child: SizedBox(
-                height: 50,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categoryController.categories.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(child: Text("${categoryController.categories[index].name}")),
-                          ),
-                        )
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
+                  height: 50,
                     decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(4)),
-                        border: Border.all(width: 1.0)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                        border: Border.all(color: Values.primaryColor)),
+                    child: Center(
                       child: const Text(
-                        "Our Events",
+                        "OUR EVENTS",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -185,111 +161,128 @@ class Home extends StatelessWidget {
               ),
             ),
             SliverList(
-
               delegate: SliverChildBuilderDelegate(
-                    (BuildContext ctxt, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          eventController.events[index].eventName.toUpperCase(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Get.offAllNamed(
-                              "/event_details",
-                              parameters: {
-                                "event_id": "${eventController.events[index].id}"
-                              },
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                height: 120,
-                                width: MediaQuery.of(context).size.width / 4,
-                                child: CachedNetworkImage(
-                                  height: MediaQuery.of(context).size.width,
-                                  fit: BoxFit.fill,
-                                  imageUrl:
-                                  '${Values.eventImageUrl}/${eventController.events[index].eventImage}',
-                                  placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 3.0,
+                (BuildContext ctxt, int index) {
+                  if (index <= 1)
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            eventController.events[index].eventName
+                                .toUpperCase(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Get.offAllNamed(
+                                "/event_details",
+                                parameters: {
+                                  "event_id":
+                                      "${eventController.events[index].id}"
+                                },
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: 120,
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  child: CachedNetworkImage(
+                                    height: MediaQuery.of(context).size.width,
+                                    fit: BoxFit.fill,
+                                    imageUrl:
+                                        '${Values.eventImageUrl}/${eventController.events[index].eventImage}',
+                                    placeholder: (context, url) => const Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 3.0,
+                                      ),
                                     ),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   ),
-                                  errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
                                 ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(3.0),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Text(
-                                          DateFormat('d MMM y').format(
-                                              eventController
-                                                  .events[index].eventDate),
-                                          style: const TextStyle(
-                                            color: Values.primaryColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(3.0),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(
+                                            DateFormat('d MMM y').format(
+                                                eventController
+                                                    .events[index].eventDate),
+                                            style: const TextStyle(
+                                              color: Values.primaryColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Text(
-                                          "${eventController.events[index].eventBio != null && eventController.events[index].eventBio.length > 30 ? eventController.events[index].eventBio.substring(0, 120) : ""}...",
+                                        Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(
+                                            "${eventController.events[index].eventBio != null && eventController.events[index].eventBio.length > 30 ? eventController.events[index].eventBio.substring(0, 120) : ""}...",
+                                          ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 130,
-                                          right: 8,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                registerForEvent(
-                                                    eventController.events[index].id,
-                                                    context);
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  Text('Register'),
-                                                ],
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 130,
+                                            right: 8,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  registerForEvent(
+                                                      eventController
+                                                          .events[index].id,
+                                                      context);
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Text('Register'),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        Divider(
-                          height: 1,
-                          thickness: 1,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  );
+                          Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    );
+                  else if (index == 2)
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Get.toNamed("/all_events");
+                          },
+                          child: Text("All Events")),
+                    );
+                  else
+                    return SizedBox(
+                      height: 1,
+                    );
                 },
                 childCount: eventController.events.length,
               ),
             ),
+
           ],
         ));
   }

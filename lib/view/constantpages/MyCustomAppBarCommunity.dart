@@ -12,7 +12,7 @@ class MyCustomAppBarCommunity extends AppBar {
           title: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(title),
+              Text(title,style: TextStyle(color: Colors.white),),
             ],
           ),
           elevation: 8,
