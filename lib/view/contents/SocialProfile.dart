@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -724,7 +725,7 @@ class _SocialProfileState extends State<SocialProfile>
     );
   }
 
-  final List<String> items = ["Add Posts","Add Certificates"];
+  final List<String> items = ["Add Posts", "Add Certificates"];
 
   void _showBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -748,18 +749,29 @@ class _SocialProfileState extends State<SocialProfile>
               ],
             ),
             const Divider(
-              height: 2,
-              thickness: 2,
-              color: Values.primaryColor,
+              height: 1,
+              thickness: 1,
+              color: Colors.white,
             ),
             InkWell(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(padding:EdgeInsets.all(8.0), child: Text("Add Posts", style: TextStyle(fontSize: 16))),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Values.primaryColor)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("Add Posts",
+                              style: TextStyle(fontSize: 16))),
+                    ],
+                  ),
+                ),
               ),
-              onTap: (){
+              onTap: () {
                 Get.offAllNamed("/new");
               },
             ),
@@ -771,55 +783,69 @@ class _SocialProfileState extends State<SocialProfile>
                 });
                 _pickCertificate();
               },
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Add Certificates", style: TextStyle(fontSize: 16)),
-                  ],
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Values.primaryColor)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Add Certificates", style: TextStyle(fontSize: 16)),
+                    ],
+                  ),
                 ),
               ),
             ),
             user == null
-                ? Container(
-                    margin: const EdgeInsets.all(8),
-                    width: 150,
-                    child: InkWell(
-                      child: const Center(child: Text("LOGOUT")),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Logout'),
-                              content: const Text(
-                                  'Are you sure you want to logout ?'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    socialProfileController
-                                        .logout(); // Close the dialog
-                                  },
-                                  child: const Text('Yes'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('No'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    ))
+                ? InkWell(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Values.primaryColor)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Logout", style: TextStyle(fontSize: 16)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Logout'),
+                            content:
+                                const Text('Are you sure you want to logout ?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  socialProfileController
+                                      .logout(); // Close the dialog
+                                },
+                                child: const Text('Yes'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('No'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  )
                 : const SizedBox(
                     height: 0,
                   ),
-
           ]),
         );
       },
@@ -848,9 +874,9 @@ class _SocialProfileState extends State<SocialProfile>
               ],
             ),
             const Divider(
-              height: 2,
-              thickness: 2,
-              color: Values.primaryColor,
+              height: 1,
+              thickness: 1,
+              color: Colors.white,
             ),
             InkWell(
               onTap: () {
@@ -869,19 +895,29 @@ class _SocialProfileState extends State<SocialProfile>
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: logic.followed != 1
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Follow ${logic.profileName}",
-                              style: TextStyle(fontSize: 16)),
-                        ],
+                    ? Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Values.primaryColor)),
+                        height: 40,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Follow ${logic.profileName}",
+                                style: TextStyle(fontSize: 16)),
+                          ],
+                        ),
                       )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("UnFollow ${logic.profileName}",
-                              style: TextStyle(fontSize: 16)),
-                        ],
+                    : Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Values.primaryColor)),
+                        height: 40,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("UnFollow ${logic.profileName}",
+                                style: TextStyle(fontSize: 16)),
+                          ],
+                        ),
                       ),
               ),
             ),
