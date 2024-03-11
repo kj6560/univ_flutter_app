@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:univ_app/controllers/eventgallerycontroller.dart';
 import 'package:univ_app/services/remote_services.dart';
@@ -62,47 +63,38 @@ class _EventGalleryState extends State<EventGallery>
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(3.0),
-              child: Expanded(
-                child: Container(
-                  color: Colors.grey,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(logic.eventName.string),
-                        IconButton(onPressed: () {}, icon: Icon(Icons.share))
-                      ]),
-                ),
+              child: Container(
+                color: Colors.grey,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(child: Text(logic.eventName.string)),
+                      IconButton(onPressed: () {}, icon: Icon(Icons.share))
+                    ]),
               ),
             ),
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        logic.eventDate.string,
-                        style: TextStyle(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      logic.eventDate.string,
+                      style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(logic.eventLocation.string,
+                        style: const TextStyle(
                             color: Colors.green,
                             fontSize: 14,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(logic.eventLocation.string,
-                            style: const TextStyle(
-                                color: Colors.green,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold)),
-                      ),
-                    )
-                  ]),
-            ),
+                            fontWeight: FontWeight.bold)),
+                  )
+                ]),
           ),
           SliverToBoxAdapter(
             child: Padding(

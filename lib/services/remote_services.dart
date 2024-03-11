@@ -534,6 +534,7 @@ class RemoteServices {
         },
       );
       if (response.statusCode == 200) {
+        print(response.body);
         return response.body;
       }
     } catch (e) {
