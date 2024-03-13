@@ -15,11 +15,10 @@ class LoginController extends GetxController {
     super.onInit();
   }
 
-  void login(String email, String password, var context) async {
+  Future<String> login(String email, String password, var context) async {
+    var returnData = "";
     try {
-      print("reached login controller");
       var response = await RemoteServices.login(email, password);
-      print(response);
       if (!response!['error']) {
         final prefs = await SharedPreferences.getInstance();
 
@@ -46,15 +45,15 @@ class LoginController extends GetxController {
         prefs.setString("state", userObj['state'] ?? "");
         prefs.setString("pincode", userObj['pincode'] ?? "");
 
-        Get.offAllNamed("/home");
+        returnData =  "";
       } else {
-        Values.showMsgDialog("Login", response['message'], context, () {
-          Navigator.pop(context);
-        });
+        returnData =  response["message"];
       }
+
     } catch (e) {
       print(e);
       Values.showInternetErrorDialog("Login", e, context);
     }
+    return returnData;
   }
 }

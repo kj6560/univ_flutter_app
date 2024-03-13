@@ -61,6 +61,23 @@ class RemoteServices {
     }
   }
 
+  static Future<List<Sliders>?> fetchAppSliders() async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
+    String urL = Values.appSliderUrl;
+    var response = await http.get(Uri.parse(urL), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return slidersFromJson(jsonString);
+    } else {
+      return null;
+    }
+  }
+
   static Future<List<Category>?> fetchCategories() async {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
@@ -339,6 +356,13 @@ class RemoteServices {
       });
       if (response.statusCode == 200) {
         var responseObj = jsonDecode(response.body);
+        var temp = responseObj['current']['temp_c'];
+        var city = responseObj['location']['region'];
+        var now = DateTime.now();
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString("fetch_datetime",now.toIso8601String());
+        prefs.setString("city_user",city);
+        prefs.setDouble("temp_user",temp);
         return responseObj;
       }
     } catch (e) {

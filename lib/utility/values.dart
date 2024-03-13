@@ -17,6 +17,7 @@ class Values {
 
   static const String appName = "Univ";
   static const String sliderUrl = "$baseUrl/api/sliders";
+  static const String appSliderUrl = "$baseUrl/api/appSliders";
   static const String sliderImageUrl = "$baseUrl/uploads/event_gallery/images";
   static const String categoriesUrl = "$baseUrl/api/sports";
   static const String eventsUrl = "$baseUrl/api/events";

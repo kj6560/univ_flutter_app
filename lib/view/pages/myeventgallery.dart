@@ -23,6 +23,7 @@ class _MyEventGalleryState extends State<MyEventGallery> {
   bool haspermission = false;
   String city = "";
   var temp = 0.0;
+  String user_name = "";
   late LocationPermission permission;
   late Position position;
   double long = 0.0, lat = 0.0;
@@ -46,6 +47,7 @@ class _MyEventGalleryState extends State<MyEventGallery> {
         showBack = true;
       });
     }
+    setupLocAndTemp();
     checkGps();
     loadProfilePicture();
     loadTopQuote();
@@ -76,42 +78,81 @@ class _MyEventGalleryState extends State<MyEventGallery> {
     }
   }
 
+  setupLocAndTemp()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? fetch_time = prefs.getString("fetch_datetime");
+    if (fetch_time != null) {
+      var _city = prefs.getString("city_user");
+      var _temp = prefs.getDouble("temp_user");
+      if (_city!=null && _temp!= null) {
+        setState(() {
+          temp = _temp;
+          city = _city;
+        });
+      }
+    }
+  }
+
   getLocation() async {
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
 
     long = position.longitude;
     lat = position.latitude;
-    //print("lat: $lat,lon: $long");
-    RemoteServices.fetchTemperature(lat, long);
-
     LocationSettings locationSettings = const LocationSettings(
       accuracy: LocationAccuracy.high, //accuracy of the location data
       distanceFilter: 5, //minimum distance (measured in meters) a
       //device must move horizontally before an update event is generated;
     );
-
     Geolocator.getPositionStream(locationSettings: locationSettings)
         .listen((Position position) async {
       if (!disposed) {
         long = position.longitude;
         lat = position.latitude;
 
-        var tempData = await RemoteServices.fetchTemperature(lat, long);
-        if (tempData != null) {
-          setState(() {
-            temp = tempData['current']['temp_c'];
-            city = tempData['location']['region'];
-          });
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? fetch_time = prefs.getString("fetch_datetime");
+        if (fetch_time != null) {
+          DateTime fetchDateTime = DateTime.parse(fetch_time);
+          var timeDifference =
+              fetchDateTime.difference(DateTime.now()).inMinutes % 60;
+          if (timeDifference > 60) {
+            getTemperatureData(lat, long);
+          }else{
+            var _city = prefs.getString("city_user");
+            var _temp = prefs.getDouble("temp_user");
+            if(_city !=null && _city.isNotEmpty && _temp !=null && _temp.isFinite){
+              setState(() {
+                temp = _temp;
+                city = _city;
+              });
+            }else{
+              getTemperatureData(lat, long);
+            }
+          }
+        } else {
+          getTemperatureData(lat, long);
         }
       }
     });
+  }
+
+  getTemperatureData(var latt, var lon) async {
+    var tempData = await RemoteServices.fetchTemperature(latt, lon);
+    if (tempData != null) {
+      setState(() {
+        temp = tempData['current']['temp_c'];
+        city = tempData['location']['region'];
+      });
+    }
   }
 
   Future<void> loadProfilePicture() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       profilePictureUrl = prefs.getString('image') ?? "";
+      user_name =
+          prefs.getString("first_name")! + " " + prefs.getString("last_name")!;
     });
     Values.cacheFile('${Values.profilePic}$profilePictureUrl');
   }
