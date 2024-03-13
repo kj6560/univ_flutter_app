@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:async';
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:univ_app/controllers/appbarcontroller.dart';
 import 'package:univ_app/services/remote_services.dart';
 import 'package:univ_app/utility/values.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -91,6 +85,7 @@ class _MyEventDetailsState extends State<MyEventDetails> {
       }
     }
   }
+
   getLocation() async {
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);

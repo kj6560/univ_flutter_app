@@ -39,7 +39,7 @@ class Home extends StatelessWidget {
 
             SliverToBoxAdapter(
               child: Container(
-                height: 160,
+                height: 130,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
@@ -55,7 +55,7 @@ class Home extends StatelessWidget {
                                   Get.offAllNamed("/user_profile");
                                 },
                                 child: CircleAvatar(
-                                  radius: 35,
+                                  radius: 25,
                                   foregroundColor: Colors.black,
                                   backgroundColor: Colors.white,
                                   backgroundImage: CachedNetworkImageProvider(
@@ -100,28 +100,24 @@ class Home extends StatelessWidget {
                 items: sliderController.sliders.map((slider) {
                   return Builder(
                     builder: (BuildContext context) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.symmetric(horizontal: 1.0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            // Optional: add border radius
-                            child: CachedNetworkImage(
-                              height: 200,
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.cover,
-                              imageUrl:
-                                  '${Values.sliderImageUrl}/${slider.image}',
-                              placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 3.0,
-                                ),
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(4.0),
+                          // Optional: add border radius
+                          child: CachedNetworkImage(
+                            height: 260,
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.fill,
+                            imageUrl:
+                            '${Values.sliderImageUrl}/${slider.image}',
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 3.0,
                               ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
                             ),
+                            errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                           ),
                         ),
                       );
@@ -129,18 +125,18 @@ class Home extends StatelessWidget {
                   );
                 }).toList(),
                 options: CarouselOptions(
-                  height: 200,
+                  enlargeCenterPage: true,
+                  enlargeFactor: 0.1,
                   viewportFraction: 1.0,
+                  height: 260,
                   initialPage: 0,
                   enableInfiniteScroll: true,
-                  reverse: false,
+                  reverse: true,
                   autoPlay: true,
-                  autoPlayInterval: const Duration(seconds: 3),
-                  autoPlayAnimationDuration: const Duration(milliseconds: 1000),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enlargeCenterPage: true,
-                  enlargeFactor: 1.0,
-                  scrollDirection: Axis.horizontal,
+                  autoPlayInterval: const Duration(seconds: 4),
+                  autoPlayAnimationDuration: const Duration(milliseconds: 2000),
+                  autoPlayCurve: Curves.fastLinearToSlowEaseIn,
+                  scrollDirection: Axis.vertical,
                 ),
               ),
             ),
@@ -153,7 +149,7 @@ class Home extends StatelessWidget {
                         border: Border.all(color: Values.primaryColor)),
                     child: Center(
                       child: const Text(
-                        "OUR EVENTS",
+                        "LATEST EVENTS",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),

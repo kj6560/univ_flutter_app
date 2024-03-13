@@ -175,7 +175,7 @@ class _MyAppBarProfileState extends State<MyAppBarProfile> {
           ),
         ),
         IconButton(
-          icon: const Icon(Icons.notifications),
+          icon: const Icon(Icons.notifications,color: Colors.white,),
           onPressed: () {},
         )
       ],
