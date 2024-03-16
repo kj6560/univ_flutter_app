@@ -95,10 +95,45 @@ class RemoteServices {
     }
   }
 
+  static Future<List<Category>?> fetchEsportsCategories() async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
+    String urL = Values.esportsCategoriesUrl;
+    var response = await http.get(Uri.parse(urL), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return categoryFromJson(jsonString);
+    } else {
+      return null;
+    }
+  }
+
   static Future<List<Event>?> fetchEvents() async {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     String urL = Values.eventsUrl;
+    var response = await http.get(Uri.parse(urL), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return eventFromJson(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  static Future<List<Event>?> fetchEsportsEvents() async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
+    String urL = Values.esportsEventsUrl;
     var response = await http.get(Uri.parse(urL), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

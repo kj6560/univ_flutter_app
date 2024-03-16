@@ -20,6 +20,7 @@ class Values {
   static const String appSliderUrl = "$baseUrl/api/appSliders";
   static const String sliderImageUrl = "$baseUrl/uploads/event_gallery/images";
   static const String categoriesUrl = "$baseUrl/api/sports";
+  static const String esportsCategoriesUrl = "$baseUrl/api/esportsCategories";
   static const String eventsUrl = "$baseUrl/api/events";
   static const String userPerformanceUrl = "$baseUrl/api/userPerformance";
   static const String eventImageUrl = "$baseUrl/uploads/events/images/";
@@ -69,6 +70,7 @@ class Values {
 
   //Esports
   static const String fetchEsportsContent = "$baseUrl/api/fetchEsportsContent";
+  static const String esportsEventsUrl = "$baseUrl/api/esportsEvents";
 
 
   static const Color primaryColor = const Color.fromRGBO(26, 188, 156, 70);
