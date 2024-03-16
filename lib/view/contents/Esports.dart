@@ -34,7 +34,6 @@ class _EsportsState extends State<Esports> {
       setState(() {
         selectedCategory = categoryController.categories[0].id;
       });
-      print(selectedCategory);
     }
     return Obx(() => CustomScrollView(
           slivers: [
@@ -187,7 +186,22 @@ class _EsportsState extends State<Esports> {
                                       const Icon(Icons.error),
                                 )),
                           ),
-
+                          Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Row(children: [
+                            Expanded(
+                                child: Text(controller.events[index].eventName))
+                          ])),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.left
+                            children:[
+                              Column(
+                                children:[
+                                  Expanded(child:Text(controller.events[index].eventLocation) )
+                                ]
+                              )
+                            ]
+                          )
                         ],
                       ),
                     ),
