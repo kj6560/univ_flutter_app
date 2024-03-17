@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/utility/values.dart';
 import 'package:univ_app/view/pages/MyEsports.dart';
+import 'package:univ_app/view/pages/MyEsportsEventDetails.dart';
 import 'package:univ_app/view/pages/mycommunity.dart';
 import 'package:univ_app/view/pages/myeventdetails.dart';
 import 'package:univ_app/view/pages/myeventgallery.dart';
@@ -78,6 +79,11 @@ void main() {
       GetPage(
         name: '/event_details',
         page: () => MyEventDetails(),
+        transition: Transition.rightToLeft,
+      ),
+      GetPage(
+        name: '/esports_event_details',
+        page: () => MyEsportsEventDetails(),
         transition: Transition.rightToLeft,
       ),
       GetPage(

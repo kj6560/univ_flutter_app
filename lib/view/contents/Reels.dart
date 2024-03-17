@@ -369,13 +369,26 @@ class _ReelsState extends State<Reels> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      IconButton(
-                        onPressed: () {
+                      InkWell(
+                        onTap: () {
                           Navigator.of(context).pop();
                         },
-                        icon: const Icon(
-                          FontAwesomeIcons.circleXmark,
-                          size: 30,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                                child: SizedBox(
+                                  height: 5,
+                                  width: 100,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Center(

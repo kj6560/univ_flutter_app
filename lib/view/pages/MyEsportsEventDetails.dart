@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/view/contents/Esports.dart';
+import 'package:univ_app/view/contents/EsportsEventDetails.dart';
 
 import '../../utility/values.dart';
 import '../constantpages/MyCustomAppBar.dart';
 import '../constantpages/bottomnavigationbar.dart';
 import '../constantpages/esportsbottomnavigationbar.dart';
 
-class MyEsports extends StatefulWidget {
-  const MyEsports({super.key});
+class MyEsportsEventDetails extends StatefulWidget {
+  const MyEsportsEventDetails({super.key});
 
   @override
-  State<MyEsports> createState() => _MyEsportsState();
+  State<MyEsportsEventDetails> createState() => _MyEsportsEventDetailsState();
 }
 
-class _MyEsportsState extends State<MyEsports> {
+class _MyEsportsEventDetailsState extends State<MyEsportsEventDetails> {
   var user_name = "";
   var profilePictureUrl="";
   Future<void> loadProfilePicture() async {
@@ -36,11 +37,8 @@ class _MyEsportsState extends State<MyEsports> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: Text("Esports Arena",style: TextStyle(color: Colors.white),),
-        backgroundColor: Colors.black,
-      ),
-      body: Esports(profilePicture:profilePictureUrl,user_name:user_name),
+
+      body: EsportsEventDetails(profilePicture:profilePictureUrl,user_name:user_name),
       bottomNavigationBar:
       MyEsportsBottomNavigationBar(), // This trailing comma makes auto-formatting nicer for build methods.
     );

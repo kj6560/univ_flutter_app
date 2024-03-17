@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -14,36 +12,69 @@ import '../utility/DBHelper.dart';
 import '../utility/values.dart';
 
 class EsportsController extends GetxController {
-
   var header_text = "".obs;
   var images = List<String>.empty().obs;
 
   var events = List<Event>.empty().obs;
   List<Event> eventList = [];
+  late final SharedPreferences prefs;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    initPrefs();
     fetchEsportsEvents();
     fetchEsportsData();
   }
 
   void fetchEsportsData() async {
-      var response = await RemoteServices.fetchEsportsData();
-      if(response != null){
-        var esportsData = jsonDecode(response);
-        Esports esports = Esports(id: esportsData['id'], headerText: esportsData['header_text'], images: esportsData['images'], status: esportsData['status'], createdAt: DateTime.parse(esportsData['created_at']), updatedAt: DateTime.parse(esportsData['updated_at']));
-        header_text.value = esports.headerText;
-        var _images = esports.images;
-        images.value = _images.split(",");
-      }
+    var response = await RemoteServices.fetchEsportsData();
+    if (response != null) {
+      var esportsData = jsonDecode(response);
+      Esports esports = Esports(
+          id: esportsData['id'],
+          headerText: esportsData['header_text'],
+          images: esportsData['images'],
+          status: esportsData['status'],
+          createdAt: DateTime.parse(esportsData['created_at']),
+          updatedAt: DateTime.parse(esportsData['updated_at']));
+      header_text.value = esports.headerText;
+      var _images = esports.images;
+      images.value = _images.split(",");
+    }
   }
 
   void fetchEsportsEvents() async {
+    final conn = DBHelper.instance;
+    var dbclient = await conn.db;
     List<Event>? all_events = [];
     try {
-      all_events = await RemoteServices.fetchEsportsEvents();
+      var total_count = await Sqflite.firstIntValue(await dbclient!
+          .rawQuery('SELECT COUNT(*) FROM events where events.parent_id=33'));
+      var hasInternet = await RemoteServices.hasInternet();
+      if (hasInternet) {
+        all_events = await RemoteServices.fetchEsportsEvents();
+        if (all_events != null && total_count != all_events.length) {
+          for (var event in all_events) {
+            Values.cacheFile("${Values.eventImageUrl}/${event.eventImage}");
+            var isInDb = await Sqflite.firstIntValue(await dbclient!.rawQuery(
+                'SELECT COUNT(*) FROM events where events.id=${event.id}'));
+            if (isInDb == 0) {
+              await dbclient!.insert('events', event.toJson());
+            }
+          }
+          eventList = all_events;
+        }
+      } else {
+        List<Map<String, dynamic>> maps = await dbclient!
+            .rawQuery('SELECT * FROM events where events.parent_id=33');
+        maps.forEach((element) {
+          Event ev = Event.fromMap(element);
+          all_events?.add(ev);
+        });
+        eventList = all_events!;
+      }
       events.value = all_events!;
       eventList = events.value;
     } catch (e) {
@@ -51,19 +82,37 @@ class EsportsController extends GetxController {
     }
   }
 
-  void filterEvents(String query) {
-    events.value = eventList
-        .where((element) =>
-        element.eventName!.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-    print(events.length);
+
+
+  void applyFilters() {
+    var filter_name = prefs.getString("esports_filter_name");
+    var filter_category = prefs.getInt("esports_filter_category_id");
+    var filter_registration_available = prefs.getInt("esports_filter_registration_available");
+    print(filter_registration_available ==0 ?"reg_available_is_zero":"reg_available_is_one");
+    if(filter_name!.length >2){
+      events.value = eventList
+          .where((element) =>
+          element.eventName!.toLowerCase().contains(filter_name.toLowerCase()))
+          .toList();
+    }
+    if (filter_category != 0) {
+      events.value = eventList
+          .where((element) => element.eventCategory == filter_category)
+          .toList();
+    }
+
+    if(filter_registration_available == 1){
+      events.value = eventList
+          .where((element) => element.eventRegistrationAvailable == 1)
+          .toList();
+    }
   }
 
-  void filterEventsByCategory(String category_id) {
-    events.value = eventList
-        .where((element) =>
-        element.eventCategory.toString()!.contains(category_id))
-        .toList();
+  void resetFilters() {
+    prefs.setString("esports_filter_name","");
+    prefs.setInt("esports_filter_category_id",0);
+    prefs.setInt("esports_filter_registration_available",0);
+    events.value = eventList;
   }
 
   Future<String> registerForEvent(var event_id) async {
@@ -105,5 +154,9 @@ class EsportsController extends GetxController {
       },
     );
     return done;
+  }
+
+  void initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
   }
 }
