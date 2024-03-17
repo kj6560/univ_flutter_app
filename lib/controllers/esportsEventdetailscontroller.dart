@@ -20,6 +20,7 @@ class EsportsEventDetailsController extends GetxController {
   String eventLocation = "";
   String eventBio = "";
   String eventLiveLink = "";
+  int registrationAvailable = 0;
   var event_partners_list = List<EventPartner>.empty().obs;
   var event_files_list = List<EventFile>.empty().obs;
 
@@ -48,6 +49,7 @@ class EsportsEventDetailsController extends GetxController {
     eventBio = eventDetail.eventBio;
     eventId = eventDetail.id;
     eventLiveLink = eventDetail.eventLiveLink;
+    registrationAvailable = eventDetail.eventRegistrationAvailable;
     update();
   }
 
