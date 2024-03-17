@@ -131,7 +131,7 @@ class _MyAppBarState extends State<MyAppBar> {
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () {
                       Navigator.pop(context);
-                      Get.offAllNamed(Get.previousRoute);
+                      Get.toNamed(Get.previousRoute);
                     },
                   ),
                 )
@@ -145,7 +145,7 @@ class _MyAppBarState extends State<MyAppBar> {
                 width: 45,
                 child: InkWell(
                   onTap: () {
-                    Get.offAllNamed("/user_profile");
+                    Get.toNamed("/user_profile");
                   },
                   child: CircleAvatar(
                     radius: 25,

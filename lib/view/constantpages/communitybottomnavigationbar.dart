@@ -23,19 +23,19 @@ class _MyCommunityBottomNavigationBarState
         Get.offAllNamed("/home");
         break;
       case 1:
-        Get.offAllNamed("/community");
+        Get.toNamed("/community");
         break;
       case 2:
-        Get.offAllNamed("/search");
+        Get.toNamed("/search");
         break;
       case 3:
-        Get.offAllNamed("/new");
+        Get.toNamed("/new");
         break;
       case 4:
-        Get.offAllNamed("/reels");
+        Get.toNamed("/reels");
         break;
       case 5:
-        Get.offAllNamed("/social_profile");
+        Get.toNamed("/social_profile");
         break;
       default:
     }

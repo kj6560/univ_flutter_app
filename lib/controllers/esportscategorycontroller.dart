@@ -16,12 +16,32 @@ class EsportsCategoryController extends GetxController {
   }
 
   void fetchCategory() async {
-
     final conn = DBHelper.instance;
     var dbclient = await conn.db;
     List<Category>? all_categories = [];
-    try {
+    try{
       all_categories = await RemoteServices.fetchEsportsCategories();
+      var total_count = await Sqflite.firstIntValue(
+          await dbclient!.rawQuery('SELECT COUNT(*) FROM sports where parent=33'));
+      var hasInternet = await RemoteServices.hasInternet();
+      if (hasInternet) {
+        if (all_categories != null && total_count != all_categories.length) {
+          for(var category in all_categories){
+            var isInDb = await Sqflite.firstIntValue(await dbclient!.rawQuery(
+                'SELECT COUNT(*) FROM sports where sports.id=${category.id}'));
+            if (isInDb == 0) {
+              await dbclient!.insert('sports', category.toJson());
+            }
+
+          }
+        }
+      }else{
+        List<Map<String, dynamic>> maps = await dbclient!.rawQuery('SELECT * FROM sports where parent=33');
+        maps.forEach((element) {
+          Category ev = Category.fromMap(element);
+          all_categories?.add(ev);
+        });
+      }
 
       categories.value = all_categories!;
       initialCategory.value = all_categories.first.name;
@@ -33,8 +53,11 @@ class EsportsCategoryController extends GetxController {
           createdAt: DateTime.now(),
           updatedAt: DateTime.now()));
       initialCategory.value = "All";
-    } catch (e) {
+    }catch(e){
       print(e);
     }
+
   }
+
+
 }

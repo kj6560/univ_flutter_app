@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:univ_app/controllers/categorycontroller.dart';
+import 'package:univ_app/controllers/esportscontroller.dart';
 import 'package:univ_app/controllers/homcontroller.dart';
 import 'package:univ_app/controllers/slidercontroller.dart';
 import 'package:univ_app/models/category.dart';
@@ -30,13 +31,13 @@ class Home extends StatelessWidget {
 
   SliderController sliderController = Get.put(SliderController());
   EventController eventController = Get.put(EventController());
+  EsportsController esportsController = Get.put(EsportsController());
   CategoryController categoryController = Get.put(CategoryController());
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => CustomScrollView(
           slivers: [
-
             SliverToBoxAdapter(
               child: Container(
                 height: 130,
@@ -52,7 +53,7 @@ class Home extends StatelessWidget {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  Get.offAllNamed("/user_profile");
+                                  Get.toNamed("/user_profile");
                                 },
                                 child: CircleAvatar(
                                   radius: 25,
@@ -77,7 +78,7 @@ class Home extends StatelessWidget {
                               Expanded(
                                   child: Text(
                                 'Hi ${user_name}',
-                                style: TextStyle(fontSize: 22),
+                                style: const TextStyle(fontSize: 22),
                               )),
                             ],
                           ),
@@ -85,7 +86,7 @@ class Home extends StatelessWidget {
                             children: [
                               Expanded(
                                   child: Text(
-                                      "Its currently ${temp!=0.0?temp:'NA'} °C in ${city != '' ? city : 'Your City'}")),
+                                      "Its currently ${temp != 0.0 ? temp : 'NA'} °C in ${city != '' ? city : 'Your City'}")),
                             ],
                           )
                         ],
@@ -110,14 +111,14 @@ class Home extends StatelessWidget {
                             width: MediaQuery.of(context).size.width,
                             fit: BoxFit.fill,
                             imageUrl:
-                            '${Values.sliderImageUrl}/${slider.image}',
+                                '${Values.sliderImageUrl}/${slider.image}',
                             placeholder: (context, url) => const Center(
                               child: CircularProgressIndicator(
                                 strokeWidth: 3.0,
                               ),
                             ),
                             errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                                const Icon(Icons.error),
                           ),
                         ),
                       );
@@ -144,15 +145,185 @@ class Home extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  height: 50,
+                    height: 50,
                     decoration: BoxDecoration(
                         border: Border.all(color: Values.primaryColor)),
-                    child: Center(
-                      child: const Text(
-                        "LATEST EVENTS",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "CATEGORIES",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    )),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: (){
+                            Get.toNamed("/esports");
+                          },
+                          child: Container(
+                            decoration: const BoxDecoration(
+                                color: Values.primaryColor,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0))),
+                            height: 200,
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(3.0),
+                                          child: Text(
+                                            "ESPORTS",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(3.0),
+                                          child: SizedBox(
+                                            height: 2,
+                                            child: Container(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text("Total Events:",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.white),),
+                                              Text(
+                                                "${esportsController.events.length}",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.white),)
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: (){
+                            Get.toNamed("/all_events");
+                          },
+                          child: Container(
+                            decoration: const BoxDecoration(
+                                color: Values.primaryColor,
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(8.0))),
+                            height: 200,
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(3.0),
+                                          child: Text(
+                                            "SPORTS",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(3.0),
+                                          child: SizedBox(
+                                            height: 2,
+                                            child: Container(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text("Total Events:",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.white),),
+                                              Text(
+                                                "${eventController.events.length}",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.white),)
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Values.primaryColor)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "SPORTS EVENTS",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              Get.toNamed("/all_events");
+                            },
+                            child: Text(
+                              "View All",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        )
+                      ],
                     )),
               ),
             ),
@@ -167,12 +338,12 @@ class Home extends StatelessWidget {
                           Text(
                             eventController.events[index].eventName
                                 .toUpperCase(),
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 17),
                           ),
                           InkWell(
                             onTap: () {
-                              Get.offAllNamed(
+                              Get.toNamed(
                                 "/event_details",
                                 parameters: {
                                   "event_id":
@@ -237,7 +408,7 @@ class Home extends StatelessWidget {
                                                           .events[index].id,
                                                       context);
                                                 },
-                                                child: Row(
+                                                child: const Row(
                                                   children: [
                                                     Text('Register'),
                                                   ],
@@ -253,7 +424,7 @@ class Home extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Divider(
+                          const Divider(
                             height: 1,
                             thickness: 1,
                             color: Colors.grey,
@@ -268,17 +439,172 @@ class Home extends StatelessWidget {
                           onPressed: () {
                             Get.toNamed("/all_events");
                           },
-                          child: Text("All Events")),
+                          child: const Text("All Events")),
                     );
                   else
-                    return SizedBox(
+                    return const SizedBox(
                       height: 1,
                     );
                 },
                 childCount: eventController.events.length,
               ),
             ),
-
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Values.primaryColor)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "ESPORTS EVENTS",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              Get.toNamed("/esports");
+                            },
+                            child: Text(
+                              "View All",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        )
+                      ],
+                    )),
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext ctxt, int index) {
+                  if (index <= 1)
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            esportsController.events[index].eventName
+                                .toUpperCase(),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(
+                                "/esports_event_details",
+                                parameters: {
+                                  "event_id":
+                                      "${esportsController.events[index].id}"
+                                },
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: 120,
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  child: CachedNetworkImage(
+                                    height: MediaQuery.of(context).size.width,
+                                    fit: BoxFit.fill,
+                                    imageUrl:
+                                        '${Values.eventImageUrl}/${esportsController.events[index].eventImage}',
+                                    placeholder: (context, url) => const Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 3.0,
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(3.0),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(
+                                            DateFormat('d MMM y').format(
+                                                esportsController
+                                                    .events[index].eventDate),
+                                            style: const TextStyle(
+                                              color: Values.primaryColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(
+                                            "${esportsController.events[index].eventBio != null && esportsController.events[index].eventBio.length > 30 ? esportsController.events[index].eventBio.substring(0, 120) : ""}...",
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 130,
+                                            right: 8,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  registerForEvent(
+                                                      esportsController
+                                                          .events[index].id,
+                                                      context);
+                                                },
+                                                child: const Row(
+                                                  children: [
+                                                    Text('Register'),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          const Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    );
+                  else if (index == 2)
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Get.toNamed("/all_events");
+                          },
+                          child: const Text("All Events")),
+                    );
+                  else
+                    return const SizedBox(
+                      height: 1,
+                    );
+                },
+                childCount: esportsController.events.length,
+              ),
+            )
           ],
         ));
   }

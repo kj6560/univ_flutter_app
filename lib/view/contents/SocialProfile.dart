@@ -545,7 +545,7 @@ class _SocialProfileState extends State<SocialProfile>
                                               user!.id == current_user_id
                                           ? InkWell(
                                               onTap: () {
-                                                Get.offAllNamed(
+                                                Get.toNamed(
                                                     "/user_profile");
                                               },
                                               child: const Text(

@@ -9,6 +9,7 @@ class MyCustomAppBarCommunity extends AppBar {
   MyCustomAppBarCommunity(title)
       : super(
     backgroundColor: Values.primaryColor,
+    automaticallyImplyLeading: false,
     title: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [

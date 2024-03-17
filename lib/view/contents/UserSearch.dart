@@ -130,7 +130,7 @@ class _UserSearchState extends State<UserSearch> {
                         ],
                       ),
                       onTap: () {
-                        Get.offAllNamed("/social_profile",
+                        Get.toNamed("/social_profile",
                             arguments: logic.userList[index]);
                       },
                     ),

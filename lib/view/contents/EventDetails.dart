@@ -206,7 +206,7 @@ class _EventDetailsState extends State<EventDetails> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Get.offNamed("/event_gallery",
+                      Get.toNamed("/event_gallery",
                           parameters: {"event_id": event_id!});
                     },
                     child: const Text('Gallery'),

@@ -181,7 +181,7 @@ class _MyAppBarProfileState extends State<MyAppBarProfile> {
       ],
       leading: InkWell(
         onTap: () {
-          Get.offAllNamed("/user_profile");
+          Get.toNamed("/user_profile");
         },
         child: CircleAvatar(
             radius: 30,

@@ -9,6 +9,7 @@ class MyCustomAppBar extends AppBar {
   MyCustomAppBar({temp, showBack, context, profilePictureUrl, topQuote, city})
       : super(
           backgroundColor: Values.primaryColor,
+          automaticallyImplyLeading: false,
           title: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -18,7 +19,7 @@ class MyCustomAppBar extends AppBar {
                         icon: const Icon(Icons.arrow_back),
                         onPressed: () {
                           Navigator.pop(context);
-                          Get.offAllNamed(Get.previousRoute);
+                          Get.toNamed(Get.previousRoute);
                         },
                       ),
                     )
@@ -32,7 +33,7 @@ class MyCustomAppBar extends AppBar {
                     width: 45,
                     child: InkWell(
                       onTap: () {
-                        Get.offAllNamed("/user_profile");
+                        Get.toNamed("/user_profile");
                       },
                       child: CircleAvatar(
                         radius: 25,

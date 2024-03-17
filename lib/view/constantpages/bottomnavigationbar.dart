@@ -20,16 +20,16 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         Get.offAllNamed("/home");
         break;
       case 1:
-        Get.offAllNamed("/community");
+        Get.toNamed("/community");
         break;
       case 2:
-        Get.offAllNamed("/esports");
+        Get.toNamed("/esports");
         break;
       case 3:
-        Get.offAllNamed("/performance");
+        Get.toNamed("/performance");
         break;
       case 4:
-        Get.offAllNamed("/social_profile");
+        Get.toNamed("/social_profile");
         break;
       default:
     }

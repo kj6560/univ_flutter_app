@@ -37,6 +37,7 @@ class _MyEsportsState extends State<MyEsports> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Esports Arena",style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.black,
       ),

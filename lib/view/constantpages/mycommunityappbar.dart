@@ -42,7 +42,7 @@ class _MyAppBarState extends State<MyCommunityAppBar> {
               onPressed: () {
                 Navigator.pop(context);
                 String previous = Get.previousRoute;
-                Get.offAll(() => MyCommunity(), transition: Transition.rightToLeft);
+                Get.to(() => MyCommunity(), transition: Transition.rightToLeft);
               },
             ),
           ),

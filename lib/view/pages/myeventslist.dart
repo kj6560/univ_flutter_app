@@ -132,6 +132,7 @@ class _MyEventsListState extends State<MyEventsList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         iconTheme: IconThemeData(
           color: Colors.white, //change your color here
         ),
