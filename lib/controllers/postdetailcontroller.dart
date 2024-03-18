@@ -74,7 +74,7 @@ class PostDetailController extends GetxController {
     try {
       var response = await fetchUserById(postCreatedBy);
       if (response != null) {
-        Get.offAllNamed("/social_profile", arguments: response);
+        Get.toNamed("/social_profile", arguments: response);
       } else {
         Values.showMsgDialog("Community", "User Not Found", context, () {
           Navigator.of(context).pop();

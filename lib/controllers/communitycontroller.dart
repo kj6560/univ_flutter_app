@@ -43,6 +43,7 @@ class CommunityController extends GetxController {
 
   void userGoingToSocialProfile(int postCreatedBy, var context) async {
     try {
+      print(postCreatedBy);
       var response = await fetchUserById(postCreatedBy);
       if (response != null) {
         Get.toNamed("/social_profile", arguments: response);

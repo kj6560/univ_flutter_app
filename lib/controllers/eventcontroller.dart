@@ -26,7 +26,7 @@ class EventController extends GetxController {
     List<Event>? all_events = [];
     try {
       var total_count = await Sqflite.firstIntValue(await dbclient!
-          .rawQuery('SELECT COUNT(*) FROM events where events.parent_id !=33'));
+          .rawQuery('SELECT COUNT(*) FROM events where events.event_major_category !=33'));
       var hasInternet = await RemoteServices.hasInternet();
       if (hasInternet) {
         all_events = await RemoteServices.fetchEvents();
@@ -43,7 +43,7 @@ class EventController extends GetxController {
         }
       } else {
         List<Map<String, dynamic>> maps = await dbclient!
-            .rawQuery('SELECT * FROM events where events.parent_id !=33');
+            .rawQuery('SELECT * FROM events where events.event_major_category !=33');
         maps.forEach((element) {
           Event ev = Event.fromMap(element);
           all_events?.add(ev);

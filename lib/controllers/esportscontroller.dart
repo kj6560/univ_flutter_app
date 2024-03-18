@@ -25,33 +25,15 @@ class EsportsController extends GetxController {
     super.onInit();
     initPrefs();
     fetchEsportsEvents();
-    fetchEsportsData();
   }
-
-  void fetchEsportsData() async {
-    var response = await RemoteServices.fetchEsportsData();
-    if (response != null) {
-      var esportsData = jsonDecode(response);
-      Esports esports = Esports(
-          id: esportsData['id'],
-          headerText: esportsData['header_text'],
-          images: esportsData['images'],
-          status: esportsData['status'],
-          createdAt: DateTime.parse(esportsData['created_at']),
-          updatedAt: DateTime.parse(esportsData['updated_at']));
-      header_text.value = esports.headerText;
-      var _images = esports.images;
-      images.value = _images.split(",");
-    }
-  }
-
   void fetchEsportsEvents() async {
     final conn = DBHelper.instance;
     var dbclient = await conn.db;
     List<Event>? all_events = [];
     try {
       var total_count = await Sqflite.firstIntValue(await dbclient!
-          .rawQuery('SELECT COUNT(*) FROM events where events.parent_id=33'));
+          .rawQuery('SELECT COUNT(*) FROM events where events.event_major_category=33'));
+      print(total_count);
       var hasInternet = await RemoteServices.hasInternet();
       if (hasInternet) {
         all_events = await RemoteServices.fetchEsportsEvents();
@@ -68,7 +50,7 @@ class EsportsController extends GetxController {
         }
       } else {
         List<Map<String, dynamic>> maps = await dbclient!
-            .rawQuery('SELECT * FROM events where events.parent_id=33');
+            .rawQuery('SELECT * FROM events where events.event_major_category=33');
         maps.forEach((element) {
           Event ev = Event.fromMap(element);
           all_events?.add(ev);
@@ -94,11 +76,15 @@ class EsportsController extends GetxController {
           .where((element) =>
           element.eventName!.toLowerCase().contains(filter_name.toLowerCase()))
           .toList();
+    }else{
+      events.value = eventList;
     }
     if (filter_category != 0) {
       events.value = eventList
           .where((element) => element.eventCategory == filter_category)
           .toList();
+    }else if(filter_category == 0){
+      events.value = eventList;
     }
 
     if(filter_registration_available == 1){

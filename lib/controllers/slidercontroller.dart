@@ -31,19 +31,22 @@ class SliderController extends GetxController {
         all_sliders = await RemoteServices.fetchSliders();
         if (all_sliders != null && total_count != all_sliders.length) {
           for (var slider in all_sliders) {
+            print(slider.toJson());
             await dbclient!.insert('sliders', slider.toJson());
             Values.cacheFile('${Values.sliderImageUrl}/${slider.image}');
             sliders.add(
+
                 Sliders(image: '${Values.sliderImageUrl}/${slider.image}'));
           }
         }
       } else {
         List<Map<String, dynamic>> maps =
-            await dbclient!.query('sliders');
+        await dbclient!.rawQuery('SELECT * FROM sliders');
         maps.forEach((element) {
           Sliders slider = Sliders.fromMap(element);
           all_sliders?.add(slider);
         });
+
       }
       sliders.value = all_sliders!;
 

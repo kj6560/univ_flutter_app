@@ -95,8 +95,9 @@ class RemoteServices {
     }
   }
 
-  static Future<List<Category>?> fetchEsportsCategories() async {
+  static Future<List<Category>> fetchEsportsCategories() async {
     final prefs = await SharedPreferences.getInstance();
+    var all_categories = List<Category>.empty();
     var token = prefs.getString("token");
     String urL = Values.esportsCategoriesUrl;
     var response = await http.get(Uri.parse(urL), headers: {
@@ -106,10 +107,9 @@ class RemoteServices {
     });
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      return categoryFromJson(jsonString);
-    } else {
-      return null;
+      all_categories =  categoryFromJson(jsonString);
     }
+    return all_categories;
   }
 
   static Future<List<Event>?> fetchEvents() async {

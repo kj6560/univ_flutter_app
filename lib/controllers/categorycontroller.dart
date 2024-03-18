@@ -19,22 +19,27 @@ class CategoryController extends GetxController {
     var dbclient = await conn.db;
     List<Category>? all_categories = [];
     try{
-      all_categories = await RemoteServices.fetchCategories();
+
       var total_count = await Sqflite.firstIntValue(
-          await dbclient!.rawQuery('SELECT COUNT(*) FROM sports'));
+          await dbclient!.rawQuery('SELECT COUNT(*) FROM sports where parent != 33'));
       var hasInternet = await RemoteServices.hasInternet();
       if (hasInternet) {
+        all_categories = await RemoteServices.fetchCategories();
         if (all_categories != null && total_count != all_categories.length) {
           for(var category in all_categories){
-            await dbclient!.insert('sports', category.toJson());
+            var isInDb = await Sqflite.firstIntValue(await dbclient!.rawQuery(
+                'SELECT COUNT(*) FROM sports where sports.id=${category.id}'));
+            if (isInDb == 0) {
+              await dbclient!.insert('sports', category.toJson());
+            }
           }
         }
       }else{
-        List<Map<String, dynamic>> maps = await dbclient!.query('sports');
-        maps.forEach((element) {
-          Category ev = Category.fromMap(element);
-          all_categories?.add(ev);
-        });
+        List<Map<String, dynamic>> maps = await dbclient!.rawQuery('SELECT * FROM sports where parent != 33');
+        for(var ele in maps){
+          Category ev = Category.fromJson(ele);
+          all_categories.add(ev);
+        }
       }
 
       categories.value = all_categories!;

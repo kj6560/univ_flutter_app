@@ -18,6 +18,7 @@ class Event {
   String eventLiveLink;
   String eventDetailHeader;
   int eventRegistrationAvailable;
+  int eventMajorCategory;
   String name;
   String description;
   String icon;
@@ -37,6 +38,7 @@ class Event {
       required this.eventLiveLink,
       required this.eventDetailHeader,
       required this.eventRegistrationAvailable,
+      required this.eventMajorCategory,
       required this.name,
       required this.description,
       required this.icon,
@@ -58,6 +60,7 @@ class Event {
         eventLiveLink: json["event_live_link"] ?? "",
         eventDetailHeader: json["event_detail_header"] ?? "",
         eventRegistrationAvailable: json["event_registration_available"] ?? 0,
+        eventMajorCategory: json["event_major_category"] ?? 0,
         name: json["name"] ?? "",
         description: json["description"] ?? "",
         icon: json["icon"] ?? "",
@@ -82,12 +85,13 @@ class Event {
         "event_live_link": eventLiveLink,
         "event_detail_header": eventDetailHeader,
         "event_registration_available": eventRegistrationAvailable,
+    "event_major_category": eventMajorCategory,
         "name": name,
         "description": description,
         "icon": icon,
-        "parent_id" : parent_id,
-        "created_at" :created_at?.toIso8601String(),
-        "updated_at" :updated_at?.toIso8601String()
+        "parent_id": parent_id,
+        "created_at": created_at?.toIso8601String(),
+        "updated_at": updated_at?.toIso8601String()
       };
 
   factory Event.fromMap(Map<String, dynamic> map) {
@@ -105,6 +109,7 @@ class Event {
       eventLiveLink: map["event_live_link"] ?? "",
       eventDetailHeader: map["event_detail_header"] ?? "",
       eventRegistrationAvailable: map["event_registration_available"] ?? 0,
+      eventMajorCategory: map["event_major_category"] ?? 0,
       name: map["name"] ?? "",
       description: map["description"] ?? "",
       icon: map["icon"] ?? "",

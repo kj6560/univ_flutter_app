@@ -11,6 +11,7 @@ class Category {
   String name;
   String description;
   String icon;
+  int parent;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -19,6 +20,7 @@ class Category {
     required this.name,
     required this.description,
     required this.icon,
+    required this.parent,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -28,6 +30,7 @@ class Category {
         name: json["name"] !=null ?json["name"]:"",
         description: json["description"] !=null?json["description"]:"",
         icon: json["icon"] !=null?json["icon"]:"",
+        parent: json["parent"] ?? 0,
         createdAt: json["created_at"] !=null?DateTime.parse(json["created_at"]):DateTime.now(),
         updatedAt: json["updated_at"] !=null?DateTime.parse(json["updated_at"]):DateTime.now(),
       );
@@ -37,6 +40,7 @@ class Category {
         "name": name,
         "description": description,
         "icon": icon,
+        "parent":parent,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
       };
@@ -47,6 +51,7 @@ class Category {
       name: map["name"]??"",
       description: map["description"]??"",
       icon: map["icon"]??"",
+      parent: map["parent"]??0,
       createdAt: map["created_at"]?DateTime.parse(map["created_at"]):DateTime.now(),
       updatedAt: map["updated_at"]?DateTime.parse(map["updated_at"]):DateTime.now(),
     );

@@ -90,7 +90,7 @@ class Community extends StatelessWidget {
                                                         videoUrl:
                                                             "${Values.postMediaUrl}${controller.posts[index].postMedia[0].mediaName}"),
                                                     onDoubleTap: () {
-                                                      Get.offAllNamed("/reels",
+                                                      Get.toNamed("/reels",
                                                           arguments: {
                                                             "post_id":
                                                                 controller

@@ -36,6 +36,8 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Values.cacheFile('${Values.categoryIconUrl}1707303677_1705052653_esports.png');
+    Values.cacheFile('${Values.categoryIconUrl}1704826939_football-16.png');
     return Obx(() => CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
@@ -172,14 +174,14 @@ class Home extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
-                          onTap: (){
-                            Get.toNamed("/esports");
+                          onTap: () {
+                            Get.toNamed("/all_events");
                           },
                           child: Container(
                             decoration: const BoxDecoration(
                                 color: Values.primaryColor,
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0))),
+                                BorderRadius.all(Radius.circular(8.0))),
                             height: 200,
                             child: Column(
                               children: [
@@ -188,34 +190,28 @@ class Home extends StatelessWidget {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       children: [
+                                        CachedNetworkImage(
+                                          height: 150,
+                                          fit: BoxFit.fill,
+                                          imageUrl:
+                                          '${Values.categoryIconUrl}1704826939_football-16.png',
+                                          placeholder: (context, url) =>
+                                          const Center(
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 3.0,
+                                            ),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.all(3.0),
                                           child: Text(
-                                            "ESPORTS",
+                                            "SPORTS",
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(3.0),
-                                          child: SizedBox(
-                                            height: 2,
-                                            child: Container(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Text("Total Events:",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.white),),
-                                              Text(
-                                                "${esportsController.events.length}",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.white),)
-                                            ],
                                           ),
                                         )
                                       ],
@@ -233,14 +229,14 @@ class Home extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
-                          onTap: (){
-                            Get.toNamed("/all_events");
+                          onTap: () {
+                            Get.toNamed("/esports");
                           },
                           child: Container(
                             decoration: const BoxDecoration(
                                 color: Values.primaryColor,
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(8.0))),
+                                    BorderRadius.all(Radius.circular(8.0))),
                             height: 200,
                             child: Column(
                               children: [
@@ -249,34 +245,28 @@ class Home extends StatelessWidget {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       children: [
+                                        CachedNetworkImage(
+                                          height: 150,
+                                          fit: BoxFit.fill,
+                                          imageUrl:
+                                              '${Values.categoryIconUrl}1707303677_1705052653_esports.png',
+                                          placeholder: (context, url) =>
+                                              const Center(
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 3.0,
+                                            ),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.all(3.0),
                                           child: Text(
-                                            "SPORTS",
+                                            "ESPORTS",
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(3.0),
-                                          child: SizedBox(
-                                            height: 2,
-                                            child: Container(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Text("Total Events:",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.white),),
-                                              Text(
-                                                "${eventController.events.length}",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.white),)
-                                            ],
                                           ),
                                         )
                                       ],
@@ -587,15 +577,6 @@ class Home extends StatelessWidget {
                           )
                         ],
                       ),
-                    );
-                  else if (index == 2)
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.toNamed("/all_events");
-                          },
-                          child: const Text("All Events")),
                     );
                   else
                     return const SizedBox(

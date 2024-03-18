@@ -24,6 +24,7 @@ class Values {
   static const String eventsUrl = "$baseUrl/api/events";
   static const String userPerformanceUrl = "$baseUrl/api/userPerformance";
   static const String eventImageUrl = "$baseUrl/uploads/events/images/";
+  static const String categoryIconUrl = "$baseUrl/uploads/category/images/";
   static const String profilePic = "$baseUrl/uploads/profile/profileImage/";
   static const String postMediaUrl = "$baseUrl/uploads/post_media/";
   static const String eventPartnerUrl = "$baseUrl/api/eventPartners";

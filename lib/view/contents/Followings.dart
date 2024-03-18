@@ -119,7 +119,7 @@ class Followings extends StatelessWidget {
                         ],
                       ),
                       onTap: () {
-                        Get.offAllNamed("/social_profile",
+                        Get.toNamed("/social_profile",
                             arguments: logic.userList[index]);
                       },
                     ),

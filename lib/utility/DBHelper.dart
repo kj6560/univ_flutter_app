@@ -12,7 +12,7 @@ class DBHelper {
   factory DBHelper() => instance;
 
   static String noteTable = "univ";
-  final _version = 6;
+  final _version = 7;
   Database? _db;
 
   Future<Database?> get db async {
@@ -42,93 +42,11 @@ class DBHelper {
       log('Upgrading database from version $oldVersion to $newVersion');
 
       // Version-specific upgrade logic
-      if (oldVersion == 4) {
-        // Example: Add a new column to an existing table
-        await db.execute(
-            "CREATE TABLE IF NOT EXISTS `quotes` (`id` INTEGER PRIMARY KEY AUTOINCREMENT,`author` varchar(100) DEFAULT NULL,"
-            "`category` varchar(100) DEFAULT NULL,`quote` varchar(2500) DEFAULT NULL,`created_at` datetime DEFAULT NULL,"
-            "`updated_at` datetime DEFAULT NULL)");
+      if (oldVersion == 7) {
         await db.execute('''
-      CREATE TABLE IF NOT EXISTS posts (
-        id INTEGER PRIMARY KEY,
-        post_created_by INTEGER,
-        post_created_by_username TEXT,
-        post_created_at TEXT,
-        post_caption TEXT,
-        post_type INTEGER,
-        post_created_by_user_icon TEXT
-      )
-    ''');
-
-        await db.execute('''
-      CREATE TABLE IF NOT EXISTS media (
-        id INTEGER PRIMARY KEY,
-        post_id INTEGER,
-        media_name TEXT,
-        media_type INTEGER,
-        media_position INTEGER
-      )
-    ''');
-
-        await db.execute('''
-      CREATE TABLE IF NOT EXISTS comments (
-        id INTEGER PRIMARY KEY,
-        post_id INTEGER,
-        comment TEXT,
-        comment_by INTEGER,
-        comment_by_username TEXT,
-        is_parent INTEGER,
-        parent_id INTEGER,
-        is_available INTEGER,
-        created_at TEXT
-      )
-    ''');
-
-        await db.execute('''
-      CREATE TABLE IF NOT EXISTS likes (
-        id INTEGER PRIMARY KEY,
-        post_id INTEGER,
-        liked_by INTEGER,
-        liked_by_username TEXT,
-        created_at TEXT
-      )
-    ''');
-        await db.execute('''
-  CREATE TABLE IF NOT EXISTS event_result (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER DEFAULT NULL,
-    event_id INTEGER DEFAULT NULL,
-    event_result_key VARCHAR(255) DEFAULT NULL,
-    event_result_value VARCHAR(255) DEFAULT NULL,
-    created_at DATETIME DEFAULT NULL,
-    updated_at DATETIME DEFAULT NULL
-  )
-''');
-
-        await db.execute('''
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY,
-        first_name TEXT,
-        last_name TEXT,
-        email TEXT,
-        user_name TEXT,
-        number TEXT,
-        user_role INTEGER,
-        image TEXT,
-        gender INTEGER,
-        married INTEGER,
-        about TEXT,
-        height TEXT,
-        weight TEXT,
-        age TEXT,
-        user_doc TEXT,
-        birthday TEXT,
-        address_line1 TEXT,
-        city TEXT,
-        state TEXT,
-        pincode TEXT
-      )
-    ''');
+        ALTER TABLE events
+ADD event_major_category int
+        ''');
       }
 
       // Add more version-specific upgrade logic as needed
@@ -145,6 +63,7 @@ class DBHelper {
         "`event_name` varchar(255)  NOT NULL,`event_date` datetime DEFAULT NULL,`event_bio` longtext ,"
         "`event_location` varchar(255)  DEFAULT NULL,`event_image` varchar(255)  DEFAULT NULL,"
         "`event_category` int DEFAULT NULL,`event_objective` longtext ,`event_live_link` varchar(512)  DEFAULT NULL,"
+        "`event_major_category` int DEFAULT NULL,"
         "`event_detail_header` varchar(255)  DEFAULT NULL,`event_registration_available` tinyint(1) DEFAULT '1',"
         "`parent_id` int NOT NULL DEFAULT '0',`created_at` timestamp NULL DEFAULT NULL,"
         "`updated_at` timestamp NULL DEFAULT NULL,name varchar(1000),description text,icon text);");
