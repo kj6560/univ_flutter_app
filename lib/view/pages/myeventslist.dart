@@ -136,7 +136,7 @@ class _MyEventsListState extends State<MyEventsList> {
         iconTheme: IconThemeData(
           color: Colors.white, //change your color here
         ),
-        title: Text("Univ Events",style: TextStyle(color: Colors.white),),
+        title: Text("UNIV Events",style: TextStyle(color: Colors.white),),
         actions: <Widget>[
 
           IconButton(

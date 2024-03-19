@@ -735,17 +735,32 @@ class _SocialProfileState extends State<SocialProfile>
         return FractionallySizedBox(
           heightFactor: 0.3,
           child: Column(children: [
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(
-                      FontAwesomeIcons.circleXmark,
-                      size: 30,
-                    )),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                          child: SizedBox(
+                            height: 3,
+                            width: 100,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
               ],
             ),
             const Divider(

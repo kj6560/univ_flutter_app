@@ -42,7 +42,7 @@ class PostController extends GetxController {
         Get.offAllNamed("/community");
       });
     } else {
-      var post_deleted = await RemoteServices.deletePost(post_id,permanently: true);
+      var post_deleted = await RemoteServices.deletePost(post_id,permanently: 1);
       if (post_deleted) {
         Values.showMsgDialog(
             "New Post",

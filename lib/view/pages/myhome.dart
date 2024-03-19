@@ -174,7 +174,7 @@ class _MyHomeState extends State<MyHome> {
     return Scaffold(
       extendBodyBehindAppBar: false,
       appBar: AppBar(
-        title: Text("Univ Sportatech"),
+        title: Text("UNIV Sportatech"),
       ),
       body: Home(
           profilePicture: profilePictureUrl,

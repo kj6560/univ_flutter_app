@@ -485,7 +485,7 @@ class RemoteServices {
   }
 
   static Future<bool> deletePost(int post_id,
-      {bool permanently = false}) async {
+      {int permanently = 0}) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
