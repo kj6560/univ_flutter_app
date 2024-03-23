@@ -36,6 +36,13 @@ class _ReelsState extends State<Reels> {
   void dispose() {
     _pageController.dispose();
     super.dispose();
+    print("disposing reels");
+  }
+
+  void disposeGetController() async {
+    if (await Get.delete<ReelsController>()) {
+      print("delete reels controller");
+    }
   }
 
   @override
@@ -73,9 +80,9 @@ class _ReelsState extends State<Reels> {
                                         ),
                                         onPressed: () {
                                           Navigator.pop(context);
-                                          Get.offAll(() => MyCommunity(),
-                                              transition:
-                                                  Transition.rightToLeft);
+                                          Get.toNamed(
+                                            "/community",
+                                          );
                                         },
                                       ),
                                     ),
@@ -381,7 +388,8 @@ class _ReelsState extends State<Reels> {
                               child: Container(
                                 decoration: BoxDecoration(
                                     color: Colors.black,
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0))),
                                 child: SizedBox(
                                   height: 5,
                                   width: 100,

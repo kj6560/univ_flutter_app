@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univ_app/controllers/socialprofilecontroller.dart';
 
 import 'package:univ_app/models/post.dart';
 import 'package:univ_app/services/remote_services.dart';
@@ -37,6 +38,7 @@ class PostDetailController extends GetxController {
 
   @override
   void onInit() {
+
     setCurrentUser();
     // TODO: implement onInit
     super.onInit();
@@ -48,6 +50,7 @@ class PostDetailController extends GetxController {
   }
 
   void fetchPostById(int post__id,int post__type) async {
+    await Get.delete<SocialProfileController>();
     var prefs = await SharedPreferences.getInstance();
     current_user_id.value = prefs.getInt("id")!;
     var allPosts = await RemoteServices.fetchPostsById(

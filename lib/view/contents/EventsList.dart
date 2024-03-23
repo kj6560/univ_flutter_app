@@ -50,7 +50,7 @@ class EventsList extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            Get.offAllNamed(
+                            Get.toNamed(
                               "/event_details",
                               parameters: {
                                 "event_id":

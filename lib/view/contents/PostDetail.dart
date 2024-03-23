@@ -25,6 +25,7 @@ class _PostDetailState extends State<PostDetail>
     // TODO: implement initState
     super.initState();
     var args = Get.arguments;
+
     setState(() {
       post_id = args["post_id"];
       post_type = args["post_type"];

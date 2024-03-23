@@ -42,7 +42,7 @@ class Home extends StatelessWidget {
           slivers: [
             SliverToBoxAdapter(
               child: Container(
-                height: 130,
+                height: 140,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(

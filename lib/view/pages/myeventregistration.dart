@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_app/view/constantpages/bottomnavigationbar.dart';
 import 'package:univ_app/view/constantpages/myappbar.dart';
 import 'package:univ_app/view/contents/SocialProfile.dart';
@@ -13,6 +14,20 @@ class MyEventRegistration extends StatefulWidget {
 
 class _MyEventRegistrationState extends State<MyEventRegistration> {
   int _selectedIndex = 0;
+  int user_id = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setUpUser();
+  }
+  void setUpUser() async{
+    final prefs = await SharedPreferences.getInstance();
+    var loggedinUserId = prefs.getInt("id");
+    setState(() {
+      user_id = loggedinUserId!;
+    });
+  }
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
@@ -39,7 +54,7 @@ class _MyEventRegistrationState extends State<MyEventRegistration> {
           preferredSize: const Size.fromHeight(55), // Set this height
           child: MyAppBar(),
         ),
-        body: SocialProfile(),
+        body: const Placeholder(),
         bottomNavigationBar: MyBottomNavigationBar(),
       ),
     );

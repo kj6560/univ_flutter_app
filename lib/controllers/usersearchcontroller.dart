@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-
-import 'package:univ_app/models/post.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:univ_app/models/user.dart';
 import 'package:univ_app/services/remote_services.dart';
 
@@ -12,39 +12,35 @@ import '../utility/values.dart';
 class UserSearchController extends GetxController {
   var users = <User>[].obs;
   var userList = <User>[];
-  RxString user_name = "".obs;
+  var user_name = "".obs;
+  var show_more = false.obs;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    fetchUsers(user_name.value);
+    fetchUsers();
   }
 
-  void fetchUsers(String user__name) async {
-    user_name.value = user__name;
-
-    List<User> usersInDb = await getUsers();
-    var allPosts = await RemoteServices.fetchUsers(user_name.value);
-    if (allPosts != null) {
-      var response = usersFromJson(allPosts);
-      if (usersInDb.length != response.length) {
-        for (User user in response) {
-          try {
-            if (user.image != null || user.image != "") {
-              Values.cacheFile('${Values.profilePic}${user.image}');
-            }
-          } catch (e) {}
-        }
-        insertUsers(response);
-        users.value = response;
-      } else if (usersInDb.length == response.length) {
-        users.value = usersInDb;
-      }
-    } else {
-      print("total users in db: ${usersInDb.length}");
-      users.value = usersInDb;
+  void fetchUsers({bool filter = false}) async {
+    var totalApiData = 0;
+    var userCountInDb = await getUsersCount();
+    var perpage = 100;
+    var page = (userCountInDb / perpage).floor() + 1;
+    var allPosts = await RemoteServices.fetchUsers(user_name.value, page);
+    var postIntData = jsonDecode(allPosts!);
+    totalApiData = postIntData["total"];
+    if (userCountInDb != totalApiData) {
+      var apiData = usersFromJson(jsonEncode(postIntData["data"]));
+      await insertUsers(apiData);
     }
+    var usersFromDb = await getUsers(user_name.value);
+    if (show_more.value) {
+      users.value = users.value + usersFromDb;
+    } else {
+      users.value = usersFromDb;
+    }
+
     userList = users.value;
   }
 
@@ -53,6 +49,12 @@ class UserSearchController extends GetxController {
         .where((element) =>
             element.userName!.toLowerCase().contains(query.toLowerCase()))
         .toList();
+  }
+
+  void resetFilters() async {
+    var usersFromDb = await getUsers(user_name.value);
+    users.value = usersFromDb;
+    userList = users.value;
   }
 
   static Future<void> insertUsers(List<User> users) async {
@@ -74,11 +76,48 @@ class UserSearchController extends GetxController {
     }
   }
 
-  static Future<List<User>> getUsers() async {
+  Future<List<User>> getUsers(String userName) async {
+    var limit = 100;
+    final prefs = await SharedPreferences.getInstance();
+    var offset = prefs.getInt("offset");
+    offset = offset != null ? offset : 0;
     final conn = DBHelper.instance;
     var dbclient = await conn.db;
-    List<Map<String, dynamic>> usersData = await dbclient!.rawQuery('select * from users order by id desc');
+    List<User> usersLists = [];
+    var usersData;
+    if (show_more.value) {
+      if (userName.isNotEmpty) {
+        usersData = await dbclient!.rawQuery(
+            "SELECT * FROM users where user_name like '%${userName}%'");
+      } else {
+        usersData = await dbclient!.rawQuery(
+          "SELECT * FROM users order by id desc LIMIT ? OFFSET ?",
+          [limit, offset],
+        );
+        prefs.setInt("offset", limit + offset);
+      }
+    } else {
+      usersData = await dbclient!.rawQuery(
+        "SELECT * FROM users order by id desc LIMIT ? OFFSET ?",
+        [limit, 0],
+      );
+    }
+    if (usersData.length != 0) {
+      for (var dataUser in usersData) {
+        User user = User.fromJson(dataUser);
+        Values.cacheFile('${Values.profilePic}${user.image}');
+        usersLists.add(user);
+      }
+    }
+    return usersLists;
+  }
 
-    return usersData.map((userData) => User.fromJson(userData)).toList();
+  static Future<int> getUsersCount() async {
+    final conn = DBHelper.instance;
+    var dbclient = await conn.db;
+    var total_count = await Sqflite.firstIntValue(
+        await dbclient!.rawQuery('SELECT COUNT(*) FROM users'));
+    total_count = total_count != null ? total_count : 0;
+    return total_count;
   }
 }

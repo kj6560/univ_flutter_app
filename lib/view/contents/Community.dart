@@ -13,6 +13,8 @@ import 'package:univ_app/models/post.dart';
 import 'package:univ_app/utility/values.dart';
 import 'package:univ_app/view/contents/VideoPlayerScreen.dart';
 
+import '../../controllers/socialprofilecontroller.dart';
+
 class Community extends StatelessWidget {
   final CommunityController controller = Get.put(CommunityController());
   final commentsController = Get.put(CommentsController());
@@ -90,6 +92,7 @@ class Community extends StatelessWidget {
                                                         videoUrl:
                                                             "${Values.postMediaUrl}${controller.posts[index].postMedia[0].mediaName}"),
                                                     onDoubleTap: () {
+                                                      Get.delete<SocialProfileController>();
                                                       Get.toNamed("/reels",
                                                           arguments: {
                                                             "post_id":
@@ -139,6 +142,7 @@ class Community extends StatelessWidget {
                                           ),
                                         ),
                                         onTap: () {
+                                          Get.delete<SocialProfileController>();
                                           controller.userGoingToSocialProfile(
                                               controller
                                                   .posts[index].postCreatedBy,

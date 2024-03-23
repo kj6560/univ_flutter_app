@@ -29,6 +29,7 @@ class ReelsController extends GetxController {
     fetchPosts();
   }
 
+
   void fetchPosts() async {
     var prefs = await SharedPreferences.getInstance();
 

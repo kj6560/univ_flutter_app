@@ -24,7 +24,7 @@ class _MyWelcomeState extends State<MyWelcome> {
           preferredSize: const Size.fromHeight(60), // Set this height
           child: Welcome(),
         ),
-        body: SocialProfile(),
+        body: const Placeholder(),//SocialProfile(),
         bottomNavigationBar: MyBottomNavigationBar(),
       ),
     );

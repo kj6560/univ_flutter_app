@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:univ_app/controllers/socialprofilecontroller.dart';
 
 import 'package:univ_app/models/post.dart';
 import 'package:univ_app/services/remote_services.dart';
@@ -43,8 +44,8 @@ class CommunityController extends GetxController {
 
   void userGoingToSocialProfile(int postCreatedBy, var context) async {
     try {
-      print(postCreatedBy);
       var response = await fetchUserById(postCreatedBy);
+      await Get.delete<SocialProfileController>();
       if (response != null) {
         Get.toNamed("/social_profile", arguments: response);
       } else {
@@ -66,11 +67,10 @@ class CommunityController extends GetxController {
     );
 
     if (userData.isNotEmpty) {
-      // If user is found, return the user
       return User.fromJson(userData.first);
     } else {
-      // If user is not found, return null
-      return null;
+      var resp = await RemoteServices.fetchUserById(userId);
+      return User.fromJson(jsonDecode(resp!));
     }
   }
 

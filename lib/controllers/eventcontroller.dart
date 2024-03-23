@@ -58,12 +58,10 @@ class EventController extends GetxController {
   }
 
   void filterEvents(String query) {
-    print(query);
     events.value = eventList
         .where((element) =>
             element.eventName!.toLowerCase().contains(query.toLowerCase()))
         .toList();
-    print(events.length);
   }
 
   void filterEventsByCategory(String category_id) {

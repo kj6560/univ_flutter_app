@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univ_app/services/video_player.dart';
 import 'package:univ_app/utility/values.dart';
+
+import '../../controllers/reelscontroller.dart';
 
 class MyCommunityBottomNavigationBar extends StatefulWidget {
   @override
@@ -18,6 +21,9 @@ class _MyCommunityBottomNavigationBarState
   final List<String> items = ["Add Photos", "Add Videos", "Add Certificates"];
 
   void _onItemTapped(int index) {
+    if(Get.currentRoute == "/reels"){
+      Navigator.pop(context);
+    }
     switch (index) {
       case 0:
         Get.offAllNamed("/home");
@@ -79,7 +85,17 @@ class _MyCommunityBottomNavigationBarState
     }
     loadProfilePicture();
   }
-
+  void disposeGetController() async {
+    if (await Get.delete<ReelsController>()) {
+      print("delete reels controller");
+    }
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    disposeGetController();
+  }
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(

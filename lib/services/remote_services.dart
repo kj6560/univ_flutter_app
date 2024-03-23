@@ -107,7 +107,7 @@ class RemoteServices {
     });
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      all_categories =  categoryFromJson(jsonString);
+      all_categories = categoryFromJson(jsonString);
     }
     return all_categories;
   }
@@ -395,9 +395,9 @@ class RemoteServices {
         var city = responseObj['location']['region'];
         var now = DateTime.now();
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString("fetch_datetime",now.toIso8601String());
-        prefs.setString("city_user",city);
-        prefs.setDouble("temp_user",temp);
+        prefs.setString("fetch_datetime", now.toIso8601String());
+        prefs.setString("city_user", city);
+        prefs.setDouble("temp_user", temp);
         return responseObj;
       }
     } catch (e) {
@@ -425,15 +425,16 @@ class RemoteServices {
     }
   }
 
-  static Future<String?> fetchReels(int current_user_id,{var selfReel = 0}) async {
+  static Future<String?> fetchReels(int current_user_id,
+      {var selfReel = 0}) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
-      print(Uri.parse(
-          Values.fetchPosts + "?user_id=${current_user_id}&post_type=2&self_reel=${selfReel}"));
+      print(Uri.parse(Values.fetchPosts +
+          "?user_id=${current_user_id}&post_type=2&self_reel=${selfReel}"));
       http.Response response = await http.get(
-        Uri.parse(
-            Values.fetchPosts + "?user_id=${current_user_id}&post_type=2&self_reel=${selfReel}"),
+        Uri.parse(Values.fetchPosts +
+            "?user_id=${current_user_id}&post_type=2&self_reel=${selfReel}"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',
@@ -484,13 +485,13 @@ class RemoteServices {
     return 0;
   }
 
-  static Future<bool> deletePost(int post_id,
-      {int permanently = 0}) async {
+  static Future<bool> deletePost(int post_id, {int permanently = 0}) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
       String? token = prefs.getString("token");
-      Uri url = Uri.parse("${Values.deletePost}?post_id=$post_id&permanently=$permanently");
+      Uri url = Uri.parse(
+          "${Values.deletePost}?post_id=$post_id&permanently=$permanently");
       print(url);
       // Send the request
       http.Response response = await http.get(
@@ -579,13 +580,18 @@ class RemoteServices {
     }
   }
 
-  static Future<String?> fetchUsers(String userName) async {
+  static Future<String?> fetchUsers(String userName, int page) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
-
+      var url = "";
+      if (userName.isNotEmpty) {
+        url = "${Values.fetchUsers}?user_name=$userName";
+      } else {
+        url = "${Values.fetchUsers}?user_name=$userName&page=$page";
+      }
       http.Response response = await http.get(
-        Uri.parse("${Values.fetchUsers}?user_name=$userName"),
+        Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',
@@ -639,7 +645,7 @@ class RemoteServices {
         "current_user_id": id,
         "current_user_profile": current_user_profile
       };
-
+      print(data);
       var token = prefs.getString("token");
 
       http.Response response = await http.post(
@@ -663,7 +669,7 @@ class RemoteServices {
     return false;
   }
 
-  static Future<String?> fetchUserById(int id, var context) async {
+  static Future<String?> fetchUserById(int id) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
@@ -680,7 +686,7 @@ class RemoteServices {
         return response.body;
       }
     } catch (e) {
-      Values.showInternetErrorDialog("Forgot Password", e, context);
+
     }
   }
 
@@ -1035,9 +1041,7 @@ class RemoteServices {
         print(response.body);
         return response.body;
       }
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
   static fetchFollowings(var id) async {
@@ -1056,16 +1060,15 @@ class RemoteServices {
         print(response.body);
         return response.body;
       }
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
+
   static Future<String?> fetchEsportsData() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
       http.Response response = await http.get(
-        Uri.parse(Values.fetchEsportsContent ),
+        Uri.parse(Values.fetchEsportsContent),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',
